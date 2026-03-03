@@ -1,0 +1,70 @@
+name: New Playbook Request
+description: Request a new Playbook be built for the Webex Playbooks library
+title: "[New Playbook] "
+labels: ["new-playbook"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to request a new Playbook. The team will review and prioritise based on demand evidence.
+
+  - type: input
+    id: tool_name
+    attributes:
+      label: Tool name
+      description: The third-party tool to integrate (e.g. Epic, Salesforce, Shopify)
+      placeholder: e.g. Epic EHR
+    validations:
+      required: true
+
+  - type: dropdown
+    id: primary_vertical
+    attributes:
+      label: Primary vertical
+      description: Which industry vertical does this belong to?
+      options:
+        - healthcare
+        - financial-services
+        - retail-ecommerce
+    validations:
+      required: true
+
+  - type: input
+    id: use_case
+    attributes:
+      label: Use case
+      description: What integration scenario does this address?
+      placeholder: e.g. CRM screen pop, ticket creation, workforce analytics
+    validations:
+      required: true
+
+  - type: textarea
+    id: justification
+    attributes:
+      label: Justification
+      description: Evidence for prioritisation (lost deal evidence, search gap, sales request, etc.)
+      placeholder: |
+        e.g. Lost deal due to missing Epic integration
+        e.g. High search volume for "Webex Salesforce" with no Playbook
+        e.g. Sales team request from healthcare vertical
+    validations:
+      required: true
+
+  - type: dropdown
+    id: target_persona
+    attributes:
+      label: Target persona
+      description: Who will use this Playbook?
+      options:
+        - admin
+        - developer
+        - architect
+    validations:
+      required: true
+
+  - type: input
+    id: linked_story
+    attributes:
+      label: Linked story (optional)
+      description: Reference to tracking story if applicable
+      placeholder: e.g. STORY-123

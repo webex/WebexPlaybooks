@@ -1,0 +1,52 @@
+name: Playbook Feedback
+description: Report an issue with a published Playbook
+title: "[Feedback] "
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to report issues with a published Playbook. Help us keep Playbooks accurate and useful.
+
+  - type: input
+    id: playbook_path
+    attributes:
+      label: Playbook name or path
+      description: Which Playbook is affected?
+      placeholder: e.g. playbooks/epic-ehr or link to README
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: Issue type
+      description: What kind of issue are you reporting?
+      options:
+        - Broken code scaffold
+        - Outdated API reference
+        - Unclear deployment guide
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe the issue in detail
+      placeholder: What is wrong? What did you expect?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: How can we reproduce this issue?
+      placeholder: |
+        1. Follow deployment guide to step X
+        2. Run the scaffold with ...
+        3. Observe ...
+    validations:
+      required: false

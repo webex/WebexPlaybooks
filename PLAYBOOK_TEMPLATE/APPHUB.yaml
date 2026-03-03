@@ -1,0 +1,42 @@
+# APPHUB.yaml — Playbook metadata for Webex App Hub
+# Copy this file into your Playbook folder under playbooks/<tool-slug>/
+# Fill in all required fields. See CONTRIBUTING.md for field rules.
+
+# App Hub submission
+friendly_id: "my-crm"
+name: "MyCRM + Webex Contact Center Integration"
+tag_line: "Connect MyCRM to Webex Contact Center for screen pop and customer context"
+description: |
+  This sample demonstrates how to build an integration between MyCRM and Webex Contact Center.
+  Agents receive customer context and screen pop when handling calls. The code includes
+  webhook handling, REST API calls, and Agent Desktop configuration.
+
+product_type: "contact_center"
+app_context:
+  - "contact_center"
+  - "sidebar"
+
+categories:
+  - "Productivity"
+  - "Integrations"
+
+company_name: "Webex for Developers"
+company_url: "https://developer.webex.com"
+support_url: "https://github.com/webex/webexplaybooks/issues"
+product_url: "https://github.com/webex/webexplaybooks/tree/main/playbooks/my-crm"
+logo: "https://developer.webex.com/images/webex-logo.svg"
+
+# Playbook metadata (for filtering and validation)
+vertical: "financial-services"
+vertical_tags: []
+use_case: "CRM screen pop"
+target_persona: "developer"
+webex_component: "Agent Desktop"
+third_party_tool: "MyCRM"
+estimated_implementation_time: "2-4 hours"
+author: "Webex Developer Relations"
+status: "draft"
+
+# Optional
+privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"
+submission_date: "2025-03-01"
