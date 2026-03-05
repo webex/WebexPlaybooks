@@ -14,4 +14,4 @@ The source repo to process is: $ARGUMENTS
 
 Replace every instance of `<slug>` in the instructions with the slug derived from
 the repo name in Step 2. Replace every instance of `<ext>` with the appropriate
-file extension for the chosen scaffold language.
+file extension for the chosen source language.

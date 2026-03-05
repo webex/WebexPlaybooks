@@ -23,7 +23,7 @@ body:
       label: Issue type
       description: What kind of issue are you reporting?
       options:
-        - Broken code scaffold
+        - Broken source code
         - Outdated API reference
         - Unclear deployment guide
         - Other
@@ -46,7 +46,7 @@ body:
       description: How can we reproduce this issue?
       placeholder: |
         1. Follow deployment guide to step X
-        2. Run the scaffold with ...
+        2. Run the code with ...
         3. Observe ...
     validations:
       required: false

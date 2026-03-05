@@ -17,8 +17,8 @@ exact headers below (case-insensitive matching is used in validation):
 3. **## Prerequisites** — What must be in place before starting? (Webex org,
    API access, third-party accounts, etc.)
 
-4. **## Code Scaffold** — Describe the scaffold structure and what it
-   demonstrates. Point to the `/scaffold/` folder.
+4. **## Code Scaffold** — Describe the source code structure and what it
+   demonstrates. Point to the `/src/` folder.
 
 5. **## Deployment Guide** — Step-by-step instructions a competent developer
    can follow to get the integration running. Must be tested end-to-end.
@@ -132,7 +132,7 @@ template includes self-attestation and reviewer questions. Ensure your
 
 - All six required sections present in README.md
 - APPHUB.yaml complete and valid
-- Code scaffold connects to a real, documented Webex API endpoint
+- Code in src/ connects to a real, documented Webex API endpoint
 - Deployment guide is followable by a competent developer
 - No competitor tools as primary integration targets (see below)
 

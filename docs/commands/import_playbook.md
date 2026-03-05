@@ -98,7 +98,7 @@ playbooks/<slug>/
 ├── APPHUB.yaml
 ├── diagrams/
 │   └── architecture-diagram.md
-└── scaffold/
+└── src/
     ├── main.<ext>
     └── .env.example
 ```
@@ -137,9 +137,9 @@ Exhaustive list based on source repo docs:
 
 #### ## Code Scaffold
 
-Introduce the scaffold, explain what it demonstrates, and note what it does NOT do
+Introduce the source code, explain what it demonstrates, and note what it does NOT do
 (not production-hardened, minimal error handling, secrets must move to environment
-variables). Reference the files in /scaffold/.
+variables). Reference the files in /src/.
 
 #### ## Deployment Guide
 
@@ -157,7 +157,7 @@ Based on source repo docs:
 - Any deprecated endpoints noticed
 - License constraints (note the open source license type and commercial use implications)
 - Standard Webex disclaimer: "This Playbook is provided as a starting point. Webex does
-  not guarantee the functional accuracy of the code scaffold. Test thoroughly before use
+  not guarantee the functional accuracy of the source code. Test thoroughly before use
   in a production environment."
 
 ### APPHUB.yaml
@@ -189,22 +189,22 @@ real Webex component names and the actual tool name. Show:
 
 Wrap in a ```mermaid code block.
 
-### scaffold/
+### src/
 
 Choose the language based on what the source repo uses (match their SDK language if
 they publish one). Default to Node.js if no clear preference. If the source repo is
 primarily documentation or config (e.g. no clear runtime), default to Node.js for
 Webex SDK compatibility.
 
-The scaffold must:
+The source code must:
 
 - Authenticate with the third-party tool API using the method documented in the source
   repo
 - Perform the primary action of the integration (fetch a record, create a ticket, push
   an event, etc.)
 - Use environment variables for ALL secrets and configuration — never hardcode
-- Include a comment block at the top explaining what the scaffold does, what it does
-  NOT do, and what environment variables must be set
+- Include a comment block at the top explaining what the code does, what it does NOT
+  do, and what environment variables must be set
 
 Use the tool's existing SDK or client library if one exists — do not use raw HTTP calls
 when an SDK is available.
@@ -235,9 +235,9 @@ grep -E "^friendly_id:" "playbooks/<slug>/APPHUB.yaml" | grep -q '\-playbook"$' 
   && echo "✓ friendly_id ends with -playbook" \
   || echo "✗ friendly_id must end with -playbook"
 
-# Check diagrams and scaffold folders exist
+# Check diagrams and src folders exist
 [ -d "playbooks/<slug>/diagrams" ] && echo "✓ diagrams/ exists" || echo "✗ diagrams/ missing"
-[ -d "playbooks/<slug>/scaffold" ] && echo "✓ scaffold/ exists" || echo "✗ scaffold/ missing"
+[ -d "playbooks/<slug>/src" ] && echo "✓ src/ exists" || echo "✗ src/ missing"
 ```
 
 Fix any failures before finishing.
@@ -258,7 +258,7 @@ Output a summary covering:
 4. **Fields to complete in APPHUB.yaml** — remind the author to set `author:` and review
    `vertical` / `use_case` determinations
 5. **Suggested next steps** — fill in author, review architecture diagram for accuracy,
-   run scaffold against a real Webex sandbox, then open a PR using the branch naming
+   run the code against a real Webex sandbox, then open a PR using the branch naming
    convention: `playbook/<slug>`
 
 Do not open a PR or create a branch — leave that to the author.

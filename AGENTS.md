@@ -9,7 +9,7 @@ Playbooks.
 Webex Playbooks are implementation guides that integrate third-party tools with
 Webex programmability (Teams, Meetings, Calling, Rooms, Contact Center). Each
 Playbook is a folder under `playbooks/<tool-slug>/` with README, APPHUB.yaml,
-diagrams, and code scaffold.
+diagrams, and source code.
 
 ## Playbook Structure (Required)
 
@@ -21,7 +21,7 @@ playbooks/<slug>/
 ├── APPHUB.yaml
 ├── diagrams/
 │   └── architecture-diagram.md
-└── scaffold/
+└── src/
     ├── main.<ext>
     └── .env.example
 ```
@@ -33,7 +33,7 @@ Use these exact headers (case-insensitive validation):
 1. **## Use Case Overview** — Problem solved, target persona, estimated implementation time
 2. **## Architecture** — Component connections, reference diagram in `/diagrams/`
 3. **## Prerequisites** — Webex org, API access, third-party accounts, dev environment
-4. **## Code Scaffold** — Describe `/scaffold/` structure and what it demonstrates
+4. **## Code Scaffold** — Describe `/src/` structure and what it demonstrates
 5. **## Deployment Guide** — Numbered, step-by-step instructions (tested end-to-end)
 6. **## Known Limitations** — Rate limits, token expiry, deprecated endpoints, license, Webex disclaimer
 
@@ -62,7 +62,7 @@ Use these exact headers (case-insensitive validation):
 - Kebab-case only: `epic-ehr`, `my-crm`, `meetings-exporter`
 - No spaces, no uppercase
 
-## Code Scaffold Requirements
+## Source Code (src/) Requirements
 
 - Connect to a **real, documented Webex API endpoint** — no internal or experimental APIs
 - Use environment variables for **all** secrets — never hardcode credentials

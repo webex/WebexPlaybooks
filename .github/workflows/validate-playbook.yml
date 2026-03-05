@@ -216,11 +216,11 @@ jobs:
               FOLDER_FAILED=1
             fi
 
-            # /scaffold/ folder exists
-            if [ -d "${FOLDER}/scaffold" ]; then
-              REPORT="${REPORT}- [x] /scaffold/ folder exists\n"
+            # /src/ folder exists
+            if [ -d "${FOLDER}/src" ]; then
+              REPORT="${REPORT}- [x] /src/ folder exists\n"
             else
-              REPORT="${REPORT}- [ ] /scaffold/ folder exists — *Create scaffold/ with working code*\n"
+              REPORT="${REPORT}- [ ] /src/ folder exists — *Create src/ with working code*\n"
               FOLDER_FAILED=1
             fi
 

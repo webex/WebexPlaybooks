@@ -1,11 +1,10 @@
 /**
- * Playbook Code Scaffold — Main Entry Point
+ * Playbook Source Code — Main Entry Point
  *
- * This scaffold should demonstrate a working integration pattern between
- * WxCC and the third-party tool. Replace this file and add supporting
- * files as needed.
+ * This code demonstrates a working integration pattern between Webex and the
+ * third-party tool. Replace this file and add supporting files as needed.
  *
- * The scaffold MUST:
+ * The code MUST:
  * - Connect to a real, documented Webex API endpoint
  * - Be runnable by following the Deployment Guide
  * - Show the core integration logic (e.g. webhook handler, API client, flow)
@@ -14,5 +13,5 @@
  * functional — developers will adapt this to their environment.
  */
 
-// TODO: Implement scaffold logic
+// TODO: Implement integration logic
 // Example: Webhook handler, REST client, or Flow Builder export
