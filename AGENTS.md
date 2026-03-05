@@ -81,6 +81,10 @@ When converting an open source repo into a Playbook, use the instructions in
 `docs/commands/import_playbook.md`. The `/import-playbook` command (Claude/Cursor)
 follows that document.
 
+**Clone flow:** Clone the source repo to `.import-playbook-cache/<slug>/` in the
+workspace (gitignored), read from there, then remove the clone when done. Keeps
+everything local to the project.
+
 ## References
 
 - [CONTRIBUTING.md](CONTRIBUTING.md) — Full authoring guide and field rules

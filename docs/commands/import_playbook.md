@@ -18,9 +18,29 @@ to produce a Playbook that teaches a Webex developer how to integrate with it.
 
 ---
 
+## Step 0 — Clone the source repo into the workspace
+
+Parse the GitHub URL to extract `owner` and `repo`. Derive the slug from the repo
+name: lowercase, kebab-case, strip any "webex-" or "cisco-" prefixes.
+
+Run a shallow clone into the workspace cache (avoids many raw content fetches):
+
+```bash
+mkdir -p .import-playbook-cache
+git clone --depth 1 https://github.com/<owner>/<repo>.git .import-playbook-cache/<slug>
+```
+
+The clone path is `.import-playbook-cache/<slug>/`. All source files are now local.
+
+If the clone fails (e.g. private repo, network error), note the error and fall back to
+fetching individual files via raw content URLs. Continue with Step 1 either way.
+
+---
+
 ## Step 1 — Read the source repo thoroughly
 
-Fetch and read the following from the source repo (use GitHub raw content URLs):
+Read the following from the cloned repo at `.import-playbook-cache/<slug>/` (or fetch
+via raw URLs if the clone was skipped):
 
 - README.md (or README.rst / README.txt if no .md exists)
 - Any docs/ or documentation/ folder contents
@@ -44,7 +64,7 @@ From this reading, extract:
 - Any rate limits, known limitations, or deprecation notices in the docs
 - The license type (important for the Known Limitations section)
 
-If a file cannot be fetched, note it and continue — do not stop.
+If a file cannot be read, note it and continue — do not stop.
 
 ---
 
@@ -196,6 +216,10 @@ they publish one). Default to Node.js if no clear preference. If the source repo
 primarily documentation or config (e.g. no clear runtime), default to Node.js for
 Webex SDK compatibility.
 
+If the repo was cloned in Step 0, copy and adapt relevant files from
+`.import-playbook-cache/<slug>/` into `playbooks/<slug>/src/` rather than writing from
+scratch. Extract the minimal integration logic needed for the Playbook.
+
 The source code must:
 
 - Authenticate with the third-party tool API using the method documented in the source
@@ -262,3 +286,15 @@ Output a summary covering:
    convention: `playbook/<slug>`
 
 Do not open a PR or create a branch — leave that to the author.
+
+---
+
+## Step 6 — Clean up the clone cache
+
+Remove the cloned repo from the workspace so it does not persist on the user's machine:
+
+```bash
+rm -rf .import-playbook-cache/<slug>
+```
+
+If the clone was skipped (fallback to raw URLs), this step is unnecessary.

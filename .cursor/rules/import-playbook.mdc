@@ -22,10 +22,17 @@ Follow the full instructions in `docs/commands/import_playbook.md`.
 
 **Cursor-specific notes:**
 
-- Use Cursor's web fetch capability to retrieve files from the source repo. Construct
-  raw content URLs in the format:
-  `https://raw.githubusercontent.com/<owner>/<repo>/main/<filepath>`
-  If `main` returns a 404, try `master`.
+- **Step 0:** Run `git clone --depth 1 https://github.com/<owner>/<repo>.git
+  .import-playbook-cache/<slug>` in the workspace. Parse the repo URL from the user's
+  message to get owner and repo; derive slug from repo name (lowercase, kebab-case,
+  strip webex-/cisco- prefixes). The clone lives in the workspace under
+  `.import-playbook-cache/` (gitignored) so files stay local to the project.
+
+- **Step 1:** Read files from `.import-playbook-cache/<slug>/` using the Read tool.
+  Do not fetch via raw URLs unless the clone failed.
+
+- **Step 6:** Run `rm -rf .import-playbook-cache/<slug>` to remove the clone after
+  the playbook is created.
 
 - Create all output files directly in the workspace using the editor. Do not attempt
   to run bash validation commands via terminal automatically — instead, after creating
@@ -33,5 +40,5 @@ Follow the full instructions in `docs/commands/import_playbook.md`.
   run them in the integrated terminal.
 
 - Replace every instance of `<slug>` in the instructions with the slug derived from
-  the repo name in Step 2. Replace every instance of `<ext>` with the appropriate
+  the repo name in Step 0. Replace every instance of `<ext>` with the appropriate
   file extension for the chosen source language.
