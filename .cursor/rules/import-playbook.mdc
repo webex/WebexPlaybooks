@@ -1,0 +1,37 @@
+---
+description: Convert an existing open source application into a Webex Integration Playbook (Teams, Meetings, Calling, Rooms, Contact Center)
+globs:
+alwaysApply: false
+---
+
+# Import Playbook (Cursor)
+
+Convert an existing open source application into a Webex Integration Playbook for
+Webex programmability (Teams, Meetings, Calling, Rooms, Contact Center).
+
+**How to invoke:** Type `/import-playbook` in Cursor chat and include the GitHub repo
+URL in your message. Example:
+> `/import-playbook — please process https://github.com/example/some-tool`
+
+The GitHub repo URL will be provided by the user in the chat message that invokes
+this rule. Extract it from their message before proceeding.
+
+---
+
+Follow the full instructions in `docs/commands/import_playbook.md`.
+
+**Cursor-specific notes:**
+
+- Use Cursor's web fetch capability to retrieve files from the source repo. Construct
+  raw content URLs in the format:
+  `https://raw.githubusercontent.com/<owner>/<repo>/main/<filepath>`
+  If `main` returns a 404, try `master`.
+
+- Create all output files directly in the workspace using the editor. Do not attempt
+  to run bash validation commands via terminal automatically — instead, after creating
+  all files, output the validation commands in a code block and prompt the author to
+  run them in the integrated terminal.
+
+- Replace every instance of `<slug>` in the instructions with the slug derived from
+  the repo name in Step 2. Replace every instance of `<ext>` with the appropriate
+  file extension for the chosen scaffold language.

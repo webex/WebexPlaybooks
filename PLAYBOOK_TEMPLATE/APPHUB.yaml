@@ -3,7 +3,7 @@
 # Fill in all required fields. See CONTRIBUTING.md for field rules.
 
 # App Hub submission
-friendly_id: "my-crm"
+friendly_id: "my-crm-playbook"
 name: "MyCRM + Webex Contact Center Integration"
 tag_line: "Connect MyCRM to Webex Contact Center for screen pop and customer context"
 description: |

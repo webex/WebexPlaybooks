@@ -14,7 +14,7 @@ exact headers below (case-insensitive matching is used in validation):
 2. **## Architecture** — How do the components connect? Reference the diagram
    in `/diagrams/`.
 
-3. **## Prerequisites** — What must be in place before starting? (WxCC org,
+3. **## Prerequisites** — What must be in place before starting? (Webex org,
    API access, third-party accounts, etc.)
 
 4. **## Code Scaffold** — Describe the scaffold structure and what it
@@ -33,15 +33,13 @@ App Hub submission. All required fields must be present and non-empty.
 
 ```yaml
 # App Hub submission
-friendly_id: ""              # URL-safe unique ID (e.g. epic-ehr-wxcc, my-crm)
+friendly_id: ""              # {folder-slug}-playbook (e.g. epic-ehr-playbook, my-crm-playbook)
 name: ""                     # Display name for the Playbook
 tag_line: ""                 # Short tagline for App Hub listing
 description: ""              # 1–2 sentences, used as App Hub listing copy
 
-product_type: "contact_center"
-app_context:
-  - "contact_center"
-  - "sidebar"
+product_type: ""             # teams | meetings | calling | rooms | contact_center
+app_context: []             # space | in_meeting | call | device | contact_center | sidebar | mcp | a2a
 
 categories:
   - "Productivity"
@@ -58,7 +56,7 @@ vertical: ""                 # Primary: healthcare | financial-services | retail
 vertical_tags: []            # Additional verticals if the Playbook spans more than one
 use_case: ""                 # e.g. "CRM screen pop", "ticket creation", "workforce analytics"
 target_persona: ""           # admin | developer | architect
-webex_component: ""          # Agent Desktop | Flow Builder | AI Agent Studio | Reporting
+webex_component: ""          # Agent Desktop | Flow Builder | AI Agent Studio | Reporting | Messaging | Meetings | Calling | Bots | Webhooks | Device SDK | Embed SDK | Control Hub
 third_party_tool: ""         # The tool being integrated (e.g. Salesforce, Epic)
 estimated_implementation_time: ""   # e.g. "2-4 hours"
 author: ""                   # Webex team member name
@@ -71,8 +69,17 @@ submission_date: ""          # ISO date (e.g. 2025-03-01)
 
 ### Field Rules
 
-- **friendly_id** — URL-safe slug matching the Playbook folder name
-  (e.g. `epic-ehr`, `my-crm`).
+- **friendly_id** — Must end with `-playbook`. Format: `{folder-slug}-playbook`
+  (e.g. `epic-ehr-playbook`, `my-crm-playbook`). Reduces App Hub name collisions
+  with actual integrations.
+
+- **product_type** — Must be one of: `teams`, `meetings`, `calling`, `rooms`,
+  `contact_center`. Matches the Webex product this Playbook integrates with.
+
+- **app_context** — Array of one or more values. Each must be one of: `space`,
+  `in_meeting`, `call`, `device`, `contact_center`, `sidebar`, `mcp`, `a2a`.
+  Matches where the integration runs (e.g. Contact Center: `["contact_center",
+  "sidebar"]`; Teams: `["space"]`).
 
 - **product_url** — Link to the Playbook in the repo
   (e.g. `https://github.com/webex/webexplaybooks/tree/main/playbooks/epic-ehr`).
@@ -88,7 +95,8 @@ submission_date: ""          # ISO date (e.g. 2025-03-01)
   here (e.g. `[financial-services, retail-ecommerce]`).
 
 - **webex_component** — Must be one of: `Agent Desktop`, `Flow Builder`,
-  `AI Agent Studio`, `Reporting`.
+  `AI Agent Studio`, `Reporting`, `Messaging`, `Meetings`, `Calling`, `Bots`,
+  `Webhooks`, `Device SDK`, `Embed SDK`, `Control Hub`.
 
 - **target_persona** — Must be one of: `admin`, `developer`, `architect`.
 
@@ -153,7 +161,7 @@ Webex developer documentation. Do not reference unsupported or internal APIs.
 ## What NOT to Do
 
 - **No competitor tools as primary targets** — Do not build Playbooks where
-  Genesys, NICE, Five9, or Talkdesk are the primary integration target. WxCC
+  Genesys, NICE, Five9, or Talkdesk are the primary integration target. Webex
   integrations only.
 
 - **No production-hardening claims** — Playbooks are implementation guides. Do
