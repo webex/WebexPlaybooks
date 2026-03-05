@@ -5,26 +5,65 @@ quality floor, metadata requirements, PR process, and style expectations.
 
 ## Quality Floor
 
+Playbooks are sample code clearly marked as such; production implementations
+are expected to follow stricter platform security and access control. The
+following defines the **Playbook Quality Floor** for submission.
+
 Every Playbook **MUST** contain these six sections in its README.md. Use the
 exact headers below (case-insensitive matching is used in validation):
 
-1. **## Use Case Overview** — What problem does this integration solve? Who
-   uses it? Include the estimated implementation time (e.g. "2–4 hours").
+1. **Use Case Overview** — What problem does this integration solve? Who uses it? Include the estimated implementation time (e.g. "2–4 hours").
+    - A clear and concise description of the problem or scenario the playbook addresses.
+    - Explanation of the intended outcome and value of the playbook.
 
-2. **## Architecture** — How do the components connect? Reference the diagram
-   in `/diagrams/`.
+2. **Architecture** — How do the components connect? Reference the diagram in `/diagrams/`.
+    - Visual representation of the playbook's workflow or system architecture.
+    - Illustrates components, integrations, and data flow relevant to the playbook.
 
-3. **## Prerequisites** — What must be in place before starting? (WxCC org,
-   API access, third-party accounts, etc.)
+3. **Prerequisites** — What must be in place before starting? (WxCC org, API access, third-party accounts, etc.)
+    - List of required tools, APIs (Generally Available + publicly documented APIs, SDKs, developer tools ONLY, unless implemented internal to the project), environment setup, permissions, and any dependencies needed before deploying or running the playbook.
+    - Include version requirements and configuration notes.
 
-4. **## Code Scaffold** — Describe the scaffold structure and what it
-   demonstrates. Point to the `/scaffold/` folder.
+4. **Code Scaffold** — Describe the scaffold structure and what it demonstrates. Point to the `/scaffold/` folder.
+    - Sample code that demonstrates the core functionality of the playbook.
+    - Code should be modular, reusable, and clearly commented to aid understanding.
+    - Mark clearly as sample code, not production-ready, with guidance on security and best practices for production use.
 
-5. **## Deployment Guide** — Step-by-step instructions a competent developer
-   can follow to get the integration running. Must be tested end-to-end.
+5. **Deployment Guide** — Step-by-step instructions a competent developer can follow to get the integration running. Must be tested end-to-end.
+    - Detailed instructions on how to deploy, configure, and execute the playbook.
+    - Include any setup steps, commands, or configuration changes required.
+    - Highlight any manual steps or approvals needed.
 
-6. **## Known Limitations** — What does this Playbook not cover? Edge cases,
-   unsupported scenarios, or future work.
+6. **Known Limitations** — What does this Playbook not cover? Edge cases, unsupported scenarios, or future work.
+    - Explicitly document any constraints, assumptions, or gaps in the playbook.
+    - Include security considerations, such as the use of only publicly documented APIs and tools, and disclaimers about production readiness.
+    - Note any scenarios or edge cases not covered by the playbook.
+
+### Additional Considerations for Playbook Quality Floor
+
+- **Clear Marking as Sample Code** — Each playbook must prominently state that
+  it is sample code intended for demonstration or learning purposes only.
+  Production implementations should follow stricter security and operational
+  controls.
+
+- **Security Guidance** — Include notes or references reminding users that
+  production deployments must implement platform security and access control
+  measures, such as authentication, authorization, and audit logging.
+
+- **Modularity and Reusability** — Encourage modular design to facilitate
+  reuse and easier maintenance.
+
+- **Documentation Quality** — Ensure all sections are well-written, accurate,
+  and easy to follow for contributors and reviewers.
+
+- **Review and Approval Alignment** — This quality floor serves as the
+  canonical reference for contributors, reviewers, and AI agent rulesets to
+  enforce consistency and security compliance.
+
+This structured quality floor balances the need for clear, useful sample code
+with the understanding that production security controls are outside the scope
+of the playbook itself but must be implemented by users deploying production
+solutions.
 
 ## APPHUB.yaml Metadata
 
