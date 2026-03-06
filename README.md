@@ -1,6 +1,6 @@
 # Webex Playbooks
 
-Implementation guides and code scaffolds for integrating third-party tools with
+Implementation guides and source code for integrating third-party tools with
 Webex Contact Center (WxCC). These Playbooks help developers, architects, and
 admins build integrations without starting from scratch.
 
@@ -12,11 +12,11 @@ provides:
 - **Use case overview** — What problem the integration solves
 - **Architecture diagram** — How components connect
 - **Prerequisites** — What you need before you start
-- **Code scaffold** — Working starter code you can adapt
+- **Source code** — Working starter code in `/src/` you can adapt
 - **Step-by-step deployment guide** — How to get it running
 - **Known limitations** — What to watch out for
 
-Use them as blueprints: clone the scaffold, follow the deployment guide, and
+Use them as blueprints: clone the playbook, follow the deployment guide, and
 adapt to your environment.
 
 ## Who Are Playbooks For?
@@ -41,7 +41,7 @@ flat directory under [playbooks/](playbooks/).
    use case
 2. **Clone** — Copy the Playbook folder or clone this repo
 3. **Follow** — Work through the deployment guide step by step
-4. **Adapt** — Customise the scaffold for your environment and requirements
+4. **Adapt** — Customise the code for your environment and requirements
 
 Each Playbook is self-contained. You do not need to install the entire repo.
 

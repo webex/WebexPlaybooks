@@ -97,7 +97,7 @@ jobs:
 
             # All required APPHUB.yaml fields present and non-empty
             if [ -f "${FOLDER}/APPHUB.yaml" ]; then
-              REQUIRED_FIELDS="name description vertical use_case target_persona webex_component third_party_tool estimated_implementation_time author status"
+              REQUIRED_FIELDS="friendly_id name description vertical use_case target_persona webex_component third_party_tool estimated_implementation_time author status product_type"
               FIELDS_MISSING=""
               for FIELD in $REQUIRED_FIELDS; do
                 LINE=$(grep -E "^${FIELD}:" "${FOLDER}/APPHUB.yaml" 2>/dev/null)
@@ -131,11 +131,58 @@ jobs:
             # APPHUB.yaml webex_component is allowed value
             if [ -f "${FOLDER}/APPHUB.yaml" ]; then
               COMPONENT=$(grep -E "^webex_component:" "${FOLDER}/APPHUB.yaml" | sed 's/webex_component:\s*["'\'']\?\([^"'\'']*\)["'\'']\?.*/\1/' | tr -d ' ')
-              if echo "$COMPONENT" | grep -qE "^(Agent Desktop|Flow Builder|AI Agent Studio|Reporting)$"; then
+              if echo "$COMPONENT" | grep -qE "^(Agent Desktop|Flow Builder|AI Agent Studio|Reporting|Messaging|Meetings|Calling|Bots|Webhooks|Device SDK|Embed SDK|Control Hub)$"; then
                 REPORT="${REPORT}- [x] APPHUB.yaml webex_component is allowed value\n"
               else
-                REPORT="${REPORT}- [ ] APPHUB.yaml webex_component valid — *Use one of: Agent Desktop, Flow Builder, AI Agent Studio, Reporting*\n"
+                REPORT="${REPORT}- [ ] APPHUB.yaml webex_component valid — *Use one of: Agent Desktop, Flow Builder, AI Agent Studio, Reporting, Messaging, Meetings, Calling, Bots, Webhooks, Device SDK, Embed SDK, Control Hub*\n"
                 FOLDER_FAILED=1
+              fi
+            fi
+
+            # APPHUB.yaml friendly_id ends with -playbook
+            if [ -f "${FOLDER}/APPHUB.yaml" ]; then
+              FRIENDLY_ID=$(grep -E "^friendly_id:" "${FOLDER}/APPHUB.yaml" | sed 's/friendly_id:\s*["'\'']\?\([^"'\'']*\)["'\'']\?.*/\1/' | tr -d ' ')
+              if echo "$FRIENDLY_ID" | grep -qE '\-playbook$'; then
+                REPORT="${REPORT}- [x] APPHUB.yaml friendly_id ends with -playbook\n"
+              else
+                REPORT="${REPORT}- [ ] APPHUB.yaml friendly_id — *Must end with -playbook (e.g. meetings-exporter-playbook)*\n"
+                FOLDER_FAILED=1
+              fi
+            fi
+
+            # APPHUB.yaml product_type is allowed value
+            if [ -f "${FOLDER}/APPHUB.yaml" ]; then
+              PRODUCT_TYPE=$(grep -E "^product_type:" "${FOLDER}/APPHUB.yaml" | sed 's/product_type:\s*["'\'']\?\([^"'\'']*\)["'\'']\?.*/\1/' | tr -d ' ')
+              if echo "$PRODUCT_TYPE" | grep -qE "^(teams|meetings|calling|rooms|contact_center)$"; then
+                REPORT="${REPORT}- [x] APPHUB.yaml product_type is valid\n"
+              else
+                REPORT="${REPORT}- [ ] APPHUB.yaml product_type valid — *Use one of: teams, meetings, calling, rooms, contact_center*\n"
+                FOLDER_FAILED=1
+              fi
+            fi
+
+            # APPHUB.yaml app_context exists and values are allowed
+            if [ -f "${FOLDER}/APPHUB.yaml" ]; then
+              if ! grep -qE "^app_context:" "${FOLDER}/APPHUB.yaml"; then
+                REPORT="${REPORT}- [ ] APPHUB.yaml app_context — *Add app_context with at least one value*\n"
+                FOLDER_FAILED=1
+              else
+                APP_CONTEXT_LINE=$(grep -E "^app_context:" -A 20 "${FOLDER}/APPHUB.yaml" | grep -E "^\s+-\s+" | head -20)
+                APP_CONTEXT_INVALID=""
+                VALID_APP_CONTEXTS="space|in_meeting|call|device|contact_center|sidebar|mcp|a2a"
+                while IFS= read -r line; do
+                  [ -z "$line" ] && continue
+                  CTX=$(echo "$line" | sed 's/^[[:space:]]*-\s*["'\'']\?\([^"'\'']*\)["'\'']\?.*/\1/' | tr -d ' ')
+                  if [ -n "$CTX" ] && ! echo "$CTX" | grep -qE "^(${VALID_APP_CONTEXTS})$"; then
+                    APP_CONTEXT_INVALID="${APP_CONTEXT_INVALID}${APP_CONTEXT_INVALID:+, }${CTX}"
+                  fi
+                done <<< "$APP_CONTEXT_LINE"
+                if [ -z "$APP_CONTEXT_INVALID" ]; then
+                  REPORT="${REPORT}- [x] APPHUB.yaml app_context values are valid\n"
+                else
+                  REPORT="${REPORT}- [ ] APPHUB.yaml app_context valid — *Each value must be one of: space, in_meeting, call, device, contact_center, sidebar, mcp, a2a*\n"
+                  FOLDER_FAILED=1
+                fi
               fi
             fi
 
@@ -169,11 +216,11 @@ jobs:
               FOLDER_FAILED=1
             fi
 
-            # /scaffold/ folder exists
-            if [ -d "${FOLDER}/scaffold" ]; then
-              REPORT="${REPORT}- [x] /scaffold/ folder exists\n"
+            # /src/ folder exists
+            if [ -d "${FOLDER}/src" ]; then
+              REPORT="${REPORT}- [x] /src/ folder exists\n"
             else
-              REPORT="${REPORT}- [ ] /scaffold/ folder exists — *Create scaffold/ with working code*\n"
+              REPORT="${REPORT}- [ ] /src/ folder exists — *Create src/ with working code*\n"
               FOLDER_FAILED=1
             fi
 

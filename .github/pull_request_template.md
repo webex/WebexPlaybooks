@@ -6,7 +6,7 @@ Before submitting, confirm:
 
 - [ ] All 6 required sections present in README.md (Use Case Overview, Architecture, Prerequisites, Code Scaffold, Deployment Guide, Known Limitations)
 - [ ] APPHUB.yaml complete with all required fields
-- [ ] Code scaffold connects to a real, documented Webex API endpoint
+- [ ] Code in src/ connects to a real, documented Webex API endpoint
 - [ ] Deployment guide tested end-to-end
 - [ ] No competitor tools (Genesys, NICE, Five9, Talkdesk) as primary integration targets
 
@@ -22,7 +22,7 @@ Before submitting, confirm:
 
 ## Reviewer: 15-Minute Spot-Check
 
-- [ ] Does the scaffold connect to a real Webex API?
+- [ ] Does the code in src/ connect to a real Webex API?
 - [ ] Is the deployment guide followable by a competent developer?
 - [ ] Does this duplicate an existing Playbook?
 

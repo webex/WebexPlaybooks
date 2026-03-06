@@ -39,11 +39,11 @@ exact headers below (case-insensitive matching is used in validation):
     - Visual representation of the playbook's workflow or system architecture.
     - Illustrates components, integrations, and data flow relevant to the playbook.
 
-3. **Prerequisites** — What must be in place before starting? (WxCC org, API access, third-party accounts, etc.)
+3. **Prerequisites** — What must be in place before starting? (Webex org, API access, third-party accounts, etc.)
     - List of required tools, APIs (Generally Available + publicly documented APIs, SDKs, developer tools ONLY, unless implemented internal to the project), environment setup, permissions, and any dependencies needed before deploying or running the playbook.
     - Include version requirements and configuration notes.
 
-4. **Code Scaffold** — Describe the scaffold structure and what it demonstrates. Point to the `/scaffold/` folder.
+4. **Code Scaffold** — Describe the source code structure and what it demonstrates. Point to the `/src/` folder.
     - Sample code that demonstrates the core functionality of the playbook.
     - Code should be modular, reusable, and clearly commented to aid understanding.
     - Mark clearly as sample code, not production-ready, with guidance on security and best practices for production use.
@@ -92,15 +92,13 @@ required fields must be present and non-empty for App Hub submission.
 
 ```yaml
 # App Hub submission
-friendly_id: ""              # URL-safe unique ID (e.g. epic-ehr-wxcc, my-crm)
+friendly_id: ""              # {folder-slug}-playbook (e.g. epic-ehr-playbook, my-crm-playbook)
 name: ""                     # Display name for the Playbook
 tag_line: ""                 # Short tagline for App Hub listing
 description: ""              # 1–2 sentences, used as App Hub listing copy
 
-product_type: "contact_center"
-app_context:
-  - "contact_center"
-  - "sidebar"
+product_type: ""             # teams | meetings | calling | rooms | contact_center
+app_context: []             # space | in_meeting | call | device | contact_center | sidebar | mcp | a2a
 
 categories:
   - "Productivity"
@@ -117,7 +115,7 @@ vertical: ""                 # Primary: healthcare | financial-services | retail
 vertical_tags: []            # Additional verticals if the Playbook spans more than one
 use_case: ""                 # e.g. "CRM screen pop", "ticket creation", "workforce analytics"
 target_persona: ""           # admin | developer | architect
-webex_component: ""          # Agent Desktop | Flow Builder | AI Agent Studio | Reporting
+webex_component: ""          # Agent Desktop | Flow Builder | AI Agent Studio | Reporting | Messaging | Meetings | Calling | Bots | Webhooks | Device SDK | Embed SDK | Control Hub
 third_party_tool: ""         # The tool being integrated (e.g. Salesforce, Epic)
 estimated_implementation_time: ""   # e.g. "2-4 hours"
 author: ""                   # Webex team member name
@@ -130,8 +128,17 @@ submission_date: ""          # ISO date (e.g. 2025-03-01)
 
 ### Field Rules
 
-- **friendly_id** — URL-safe slug matching the Playbook folder name
-  (e.g. `epic-ehr`, `my-crm`).
+- **friendly_id** — Must end with `-playbook`. Format: `{folder-slug}-playbook`
+  (e.g. `epic-ehr-playbook`, `my-crm-playbook`). Reduces App Hub name collisions
+  with actual integrations.
+
+- **product_type** — Must be one of: `teams`, `meetings`, `calling`, `rooms`,
+  `contact_center`. Matches the Webex product this Playbook integrates with.
+
+- **app_context** — Array of one or more values. Each must be one of: `space`,
+  `in_meeting`, `call`, `device`, `contact_center`, `sidebar`, `mcp`, `a2a`.
+  Matches where the integration runs (e.g. Contact Center: `["contact_center",
+  "sidebar"]`; Teams: `["space"]`).
 
 - **product_url** — Link to the Playbook in the repo
   (e.g. `https://github.com/webex/webexplaybooks/tree/main/playbooks/epic-ehr`).
@@ -147,7 +154,8 @@ submission_date: ""          # ISO date (e.g. 2025-03-01)
   here (e.g. `[financial-services, retail-ecommerce]`).
 
 - **webex_component** — Must be one of: `Agent Desktop`, `Flow Builder`,
-  `AI Agent Studio`, `Reporting`.
+  `AI Agent Studio`, `Reporting`, `Messaging`, `Meetings`, `Calling`, `Bots`,
+  `Webhooks`, `Device SDK`, `Embed SDK`, `Control Hub`.
 
 - **target_persona** — Must be one of: `admin`, `developer`, `architect`.
 
@@ -171,7 +179,7 @@ sections and additional considerations). Each Playbook folder must include an
 3. **Copy template and add content** — Copy the `PLAYBOOK_TEMPLATE` folder to
    `playbooks/<tool-slug>/` (e.g. `playbooks/epic-ehr`). The folder name must be
    kebab-case and match the third-party tool slug. Then:
-   - Fill in the README with all six required sections per the [Quality floor](#quality-floor); add an architecture diagram under `diagrams/` and working code under `scaffold/`.
+   - Fill in the README with all six required sections per the [Quality floor](#quality-floor); add an architecture diagram under `diagrams/` and working code under `src/`.
    - Fill in `APPHUB.yaml` with all required fields per the [APPHUB.yaml metadata](#apphubyaml-metadata) schema.
 
 4. **Open a pull request** — Push your branch and open a Pull Request against
@@ -219,7 +227,7 @@ template includes self-attestation and reviewer questions. Ensure your
 
 - All six required sections present in README.md
 - APPHUB.yaml complete and valid
-- Code scaffold connects to a real, documented Webex API endpoint
+- Code in src/ connects to a real, documented Webex API endpoint
 - Deployment guide is followable by a competent developer
 - No competitor tools as primary integration targets (see below)
 
@@ -234,14 +242,14 @@ When you open a PR, the **Validate Playbook** workflow runs (see
 
 - **README.md** — Exists and contains all six required section headers (Use Case Overview, Architecture, Prerequisites, Code Scaffold, Deployment Guide, Known Limitations); matching is case-insensitive.
 - **APPHUB.yaml** — Exists; all required fields are present and non-empty; `vertical` is one of `healthcare`, `financial-services`, `retail-ecommerce`; `webex_component` is one of `Agent Desktop`, `Flow Builder`, `AI Agent Studio`, `Reporting`; `target_persona` is one of `admin`, `developer`, `architect`; `status` is not `published` (authors must use `draft` or `review`).
-- **Folders** — `diagrams/` and `scaffold/` exist.
+- **Folders** — `diagrams/` and `src/` exist.
 - **Folder name** — Playbook folder name is kebab-case (lowercase, hyphens only; e.g. `epic-ehr`, `servicenow`).
 
 If any check fails, the workflow fails and the PR cannot merge. Fix the issues reported in the bot comment, push again, and the workflow will re-run. The comment is updated with the latest results.
 
 ### Human review
 
-After automated validation passes, a human reviewer performs a ~15-minute spot-check using the [Review criteria](#review-criteria) in the PR Process section. They confirm that the scaffold connects to a real Webex API, the deployment guide is followable, and there are no duplicate or disallowed integration targets. You may receive change requests; respond by pushing commits to the same branch. Human review complements (and is not replaced by) any automated checks.
+After automated validation passes, a human reviewer performs a ~15-minute spot-check using the [Review criteria](#review-criteria) in the PR Process section. They confirm that the code in src/ connects to a real Webex API, the deployment guide is followable, and there are no duplicate or disallowed integration targets. You may receive change requests; respond by pushing commits to the same branch. Human review complements (and is not replaced by) any automated checks.
 
 ### AI review pipeline
 
@@ -270,7 +278,7 @@ Webex developer documentation. Do not reference unsupported or internal APIs.
 ## What NOT to Do
 
 - **No competitor tools as primary targets** — Do not build Playbooks where
-  Genesys, NICE, Five9, or Talkdesk are the primary integration target. WxCC
+  Genesys, NICE, Five9, or Talkdesk are the primary integration target. Webex
   integrations only.
 
 - **No production-hardening claims** — Playbooks are implementation guides. Do

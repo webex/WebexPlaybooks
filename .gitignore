@@ -28,3 +28,6 @@ build/
 *.tmp
 *.temp
 .cache/
+
+# Import playbook cache (cloned source repos)
+.import-playbook-cache/
