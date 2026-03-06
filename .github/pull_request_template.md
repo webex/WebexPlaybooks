@@ -12,7 +12,7 @@ Before submitting, confirm your Playbook folder under `playbooks/<tool-slug>/` i
 - [ ] **README.md** with all 6 required sections: Use Case Overview, Architecture, Prerequisites, Code Scaffold, Deployment Guide, Known Limitations
 - [ ] **APPHUB.yaml** present and correctly formatted (see below)
 - [ ] **diagrams/** folder present (e.g. with an architecture diagram)
-- [ ] **scaffold/** folder present with sample code
+- [ ] **src/** folder present with sample code
 
 ### APPHUB.yaml format
 
