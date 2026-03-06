@@ -16,7 +16,7 @@
 
 ## Code Scaffold
 
-<!-- REQUIRED: Describe the structure of the /scaffold/ folder. What does each file do? What does the scaffold demonstrate (e.g. webhook handling, OAuth flow, REST API calls)? Point developers to the main entry point. -->
+<!-- REQUIRED: Describe the structure of the /src/ folder. What does each file do? What does the code demonstrate (e.g. webhook handling, OAuth flow, REST API calls)? Point developers to the main entry point. -->
 
 ## Deployment Guide
 

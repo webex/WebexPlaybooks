@@ -1,7 +1,7 @@
 # Playbooks
 
 Each subdirectory in this folder is one self-contained Playbook. Playbooks are
-implementation guides and code scaffolds for integrating third-party tools with
+implementation guides and source code for integrating third-party tools with
 Webex Contact Center (WxCC).
 
 ## Folder Naming
