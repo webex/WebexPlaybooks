@@ -1,0 +1,95 @@
+# APPHUB.yaml — Playbook metadata for Webex App Hub
+# meetings-exporter: Export Webex meeting data to Google Drive or local storage
+
+# -----------------------------------------------------------------------------
+# friendly_id — Unique identifier. Must end with -playbook
+# -----------------------------------------------------------------------------
+friendly_id: "meetings-exporter-playbook"
+
+# -----------------------------------------------------------------------------
+# title — Display name for the Playbook
+# -----------------------------------------------------------------------------
+title: "Meeting Data Exporter + Webex Meetings Integration"
+
+# -----------------------------------------------------------------------------
+# tag_line — Short tagline for App Hub listing
+# -----------------------------------------------------------------------------
+tag_line: "Export Webex meeting recordings, transcripts, and AI summaries to Google Drive or local storage"
+
+# -----------------------------------------------------------------------------
+# description — 1–2 sentences, used as App Hub listing copy
+# -----------------------------------------------------------------------------
+description: |
+  This Playbook demonstrates how to export Webex meeting data (recordings, transcripts,
+  summaries, and action items) to Google Drive or local folders for use with AI tools
+  like Gemini, analytics, or archival workflows.
+
+# -----------------------------------------------------------------------------
+# product_types — Where this Playbook appears
+# -----------------------------------------------------------------------------
+product_types:
+  - "meetings"
+
+# -----------------------------------------------------------------------------
+# app_context — Where the integration runs
+# -----------------------------------------------------------------------------
+app_context:
+  - "in_meeting"
+
+# -----------------------------------------------------------------------------
+# categories — App Hub category slugs
+# -----------------------------------------------------------------------------
+categories:
+  - "productivity"
+  - "developer-tools"
+  - "recording-transcriptions"
+
+# -----------------------------------------------------------------------------
+# company_name — Your company or team name
+# -----------------------------------------------------------------------------
+company_name: "Webex for Developers"
+
+# -----------------------------------------------------------------------------
+# company_url — Your company or project URL
+# -----------------------------------------------------------------------------
+company_url: "https://developer.webex.com"
+
+# -----------------------------------------------------------------------------
+# support_url — Issues or support link
+# -----------------------------------------------------------------------------
+support_url: "https://github.com/webex/webexplaybooks/issues"
+
+# -----------------------------------------------------------------------------
+# product_url — Link to this Playbook in the repo (required)
+# -----------------------------------------------------------------------------
+product_url: "https://github.com/webex/webexplaybooks/tree/main/playbooks/meetings-exporter"
+
+# -----------------------------------------------------------------------------
+# logo — URL to your logo image
+# -----------------------------------------------------------------------------
+logo: "https://developer.webex.com/images/webex-logo.svg"
+
+# -----------------------------------------------------------------------------
+# target_persona — Primary audience
+# -----------------------------------------------------------------------------
+target_persona: "developer"
+
+# -----------------------------------------------------------------------------
+# estimated_implementation_time
+# -----------------------------------------------------------------------------
+estimated_implementation_time: "2-4 hours"
+
+# -----------------------------------------------------------------------------
+# third_party_tool — The tool being integrated
+# -----------------------------------------------------------------------------
+third_party_tool: "Google Drive"
+
+# -----------------------------------------------------------------------------
+# privacy_url — Privacy policy URL (required)
+# -----------------------------------------------------------------------------
+privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"
+
+# -----------------------------------------------------------------------------
+# submission_date — (Optional) ISO date
+# -----------------------------------------------------------------------------
+submission_date: "2025-03-09"
