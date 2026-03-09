@@ -93,36 +93,29 @@ required fields must be present and non-empty for App Hub submission.
 ```yaml
 # App Hub submission
 friendly_id: ""              # {folder-slug}-playbook (e.g. epic-ehr-playbook, my-crm-playbook)
-name: ""                     # Display name for the Playbook
+title: ""                    # Display name for the Playbook (matches ContentStack field)
 tag_line: ""                 # Short tagline for App Hub listing
 description: ""              # 1–2 sentences, used as App Hub listing copy
 
-product_type: ""             # teams | meetings | calling | rooms | contact_center
+product_types: []            # Array: one or more of teams | meetings | calling | rooms | contact_center
 app_context: []             # space | in_meeting | call | device | contact_center | sidebar | mcp | a2a
 
-categories:
-  - "Productivity"
-  - "Integrations"
+# categories: verticals (healthcare, financial-services, retail-ecommerce) AND app categories (developer-tools, productivity, etc.)
+categories: []               # Array of App Hub category slugs; include verticals and app categories as appropriate
 
 company_name: "Webex for Developers"
 company_url: "https://developer.webex.com"
 support_url: "https://github.com/webex/webexplaybooks/issues"
-product_url: "https://github.com/webex/webexplaybooks"
+product_url: ""              # Link to playbook in repo (e.g. https://github.com/webex/webexplaybooks/tree/main/playbooks/epic-ehr)
+privacy_url: ""              # Privacy policy URL (App Hub displays this link; use Cisco default for Webex-authored playbooks)
 logo: "https://developer.webex.com/images/webex-logo.svg"
 
 # Playbook metadata (for filtering and validation)
-vertical: ""                 # Primary: healthcare | financial-services | retail-ecommerce
-vertical_tags: []            # Additional verticals if the Playbook spans more than one
-use_case: ""                 # e.g. "CRM screen pop", "ticket creation", "workforce analytics"
 target_persona: ""           # admin | developer | architect
-webex_component: ""          # Agent Desktop | Flow Builder | AI Agent Studio | Reporting | Messaging | Meetings | Calling | Bots | Webhooks | Device SDK | Embed SDK | Control Hub
-third_party_tool: ""         # The tool being integrated (e.g. Salesforce, Epic)
 estimated_implementation_time: ""   # e.g. "2-4 hours"
-author: ""                   # Webex team member name
-status: ""                   # draft | review | published (do NOT set to published — reviewer does this)
 
 # Optional
-privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"
+third_party_tool: ""         # The tool being integrated (e.g. Salesforce, Epic); omit for generic playbooks (e.g. "any CMS")
 submission_date: ""          # ISO date (e.g. 2025-03-01)
 ```
 
@@ -132,8 +125,12 @@ submission_date: ""          # ISO date (e.g. 2025-03-01)
   (e.g. `epic-ehr-playbook`, `my-crm-playbook`). Reduces App Hub name collisions
   with actual integrations.
 
-- **product_type** — Must be one of: `teams`, `meetings`, `calling`, `rooms`,
-  `contact_center`. Matches the Webex product this Playbook integrates with.
+- **title** — Display name for the Playbook. Matches the ContentStack field used
+  by other app types.
+
+- **product_types** — Array of one or more of: `teams`, `meetings`, `calling`,
+  `rooms`, `contact_center`. Playbooks can span multiple products (e.g.
+  `["meetings", "teams"]` appears on both /meetings and /messaging).
 
 - **app_context** — Array of one or more values. Each must be one of: `space`,
   `in_meeting`, `call`, `device`, `contact_center`, `sidebar`, `mcp`, `a2a`.
@@ -146,21 +143,16 @@ submission_date: ""          # ISO date (e.g. 2025-03-01)
 - **support_url** — Issues link for the repo
   (`https://github.com/webex/webexplaybooks/issues`).
 
-- **vertical** — Must be one of: `healthcare`, `financial-services`,
-  `retail-ecommerce`. This is the primary industry for the Playbook.
-
-- **vertical_tags** — Optional. Use when a Playbook applies to multiple
-  verticals. Set `vertical` to the primary one and list additional verticals
-  here (e.g. `[financial-services, retail-ecommerce]`).
-
-- **webex_component** — Must be one of: `Agent Desktop`, `Flow Builder`,
-  `AI Agent Studio`, `Reporting`, `Messaging`, `Meetings`, `Calling`, `Bots`,
-  `Webhooks`, `Device SDK`, `Embed SDK`, `Control Hub`.
+- **categories** — Array of App Hub category slugs. Include both verticals
+  (e.g. `healthcare`, `financial-services`, `retail-ecommerce`) and app
+  categories (e.g. `developer-tools`, `productivity`) as appropriate. Example:
+  a developer tool in the healthcare vertical → `categories: ["developer-tools",
+  "healthcare"]`. Values must match App Hub category slugs.
 
 - **target_persona** — Must be one of: `admin`, `developer`, `architect`.
 
-- **status** — Authors must use `draft` or `review`. Only a reviewer may set
-  `published`. Self-publishing will fail validation.
+- **third_party_tool** — Optional. The tool being integrated (e.g. Salesforce,
+  Epic). Omit for generic playbooks (e.g. "how to integrate with any CMS").
 
 ## Full submission process
 
@@ -192,9 +184,9 @@ sections and additional considerations). Each Playbook folder must include an
 6. **Human review** — After validation passes, a human reviewer performs a
    ~15-minute spot-check using the [review criteria](#review-criteria) below. You may receive change requests; respond by pushing additional commits to the same branch.
 
-7. **After merge** — Only a reviewer may set `status: published` in
-   `APPHUB.yaml`. Once merged and published, the Playbook is featured on the
-   Webex App Hub per the program process.
+7. **After merge** — All playbooks in the repo are published at merge time via
+   CI sync to ContentStack. The Playbook is featured on the Webex App Hub per
+   the program process.
 
 ## PR Process
 
@@ -241,7 +233,7 @@ When you open a PR, the **Validate Playbook** workflow runs (see
 [.github/workflows/validate-playbook.yml](.github/workflows/validate-playbook.yml)). It runs only on the Playbook folders you changed and posts a **comment** on your PR with a checklist of results. The workflow checks:
 
 - **README.md** — Exists and contains all six required section headers (Use Case Overview, Architecture, Prerequisites, Code Scaffold, Deployment Guide, Known Limitations); matching is case-insensitive.
-- **APPHUB.yaml** — Exists; all required fields are present and non-empty; `vertical` is one of `healthcare`, `financial-services`, `retail-ecommerce`; `webex_component` is one of `Agent Desktop`, `Flow Builder`, `AI Agent Studio`, `Reporting`; `target_persona` is one of `admin`, `developer`, `architect`; `status` is not `published` (authors must use `draft` or `review`).
+- **APPHUB.yaml** — Exists; all required fields are present and non-empty; `product_types` is an array with at least one of `teams`, `meetings`, `calling`, `rooms`, `contact_center`; `categories` has at least one value; `target_persona` is one of `admin`, `developer`, `architect`.
 - **Folders** — `diagrams/` and `src/` exist.
 - **Folder name** — Playbook folder name is kebab-case (lowercase, hyphens only; e.g. `epic-ehr`, `servicenow`).
 
