@@ -1,4 +1,4 @@
-# Meeting Data Exporter + Webex Meetings Integration
+# Webex Meeting Data Cloud Exporter
 
 This Playbook is adapted from the [Webex Meeting Data Exporter](https://github.com/WebexSamples/meetings-exporter) sample on GitHub.
 

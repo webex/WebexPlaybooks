@@ -9,7 +9,7 @@ friendly_id: "meetings-exporter-playbook"
 # -----------------------------------------------------------------------------
 # title — Display name for the Playbook
 # -----------------------------------------------------------------------------
-title: "Meeting Data Exporter + Webex Meetings Integration"
+title: "Webex Meeting Data Cloud Exporter"
 
 # -----------------------------------------------------------------------------
 # tag_line — Short tagline for App Hub listing
@@ -23,18 +23,6 @@ description: |
   This Playbook demonstrates how to export Webex meeting data (recordings, transcripts,
   summaries, and action items) to Google Drive or local folders for use with AI tools
   like Gemini, analytics, or archival workflows.
-
-# -----------------------------------------------------------------------------
-# product_types — Where this Playbook appears
-# -----------------------------------------------------------------------------
-product_types:
-  - "meetings"
-
-# -----------------------------------------------------------------------------
-# app_context — Where the integration runs
-# -----------------------------------------------------------------------------
-app_context:
-  - "in_meeting"
 
 # -----------------------------------------------------------------------------
 # categories — App Hub category slugs
@@ -57,17 +45,17 @@ company_url: "https://developer.webex.com"
 # -----------------------------------------------------------------------------
 # support_url — Issues or support link
 # -----------------------------------------------------------------------------
-support_url: "https://github.com/webex/webexplaybooks/issues"
+support_url: "https://github.com/webex/WebexPlaybooks/issues"
 
 # -----------------------------------------------------------------------------
 # product_url — Link to this Playbook in the repo (required)
 # -----------------------------------------------------------------------------
-product_url: "https://github.com/webex/webexplaybooks/tree/main/playbooks/meetings-exporter"
+product_url: "https://github.com/webex/WebexPlaybooks/tree/main/playbooks/meetings-exporter"
 
 # -----------------------------------------------------------------------------
 # logo — URL to your logo image
 # -----------------------------------------------------------------------------
-logo: "https://developer.webex.com/images/webex-logo.svg"
+logo: "https://images.contentstack.io/v3/assets/bltd14fd2a03236233f/blta2de9daa773c6604/60f71f81e2de935fc7e35dbe/download"
 
 # -----------------------------------------------------------------------------
 # target_persona — Primary audience
@@ -90,6 +78,30 @@ third_party_tool: "Google Drive"
 privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"
 
 # -----------------------------------------------------------------------------
+# product_types — Where this Playbook appears
+# -----------------------------------------------------------------------------
+product_types:
+  - "meetings"
+
+# (spacing ensures validation parses product_types and app_context separately)
+
+
+
+
+
+
+
+
+
+
+# -----------------------------------------------------------------------------
+# app_context — Where the integration runs
+# -----------------------------------------------------------------------------
+app_context:
+  - "in_meeting"
+
+# -----------------------------------------------------------------------------
 # submission_date — (Optional) ISO date
 # -----------------------------------------------------------------------------
 submission_date: "2025-03-09"
+
