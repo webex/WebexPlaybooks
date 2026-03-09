@@ -42,20 +42,19 @@ Use these exact headers (case-insensitive validation):
 ### Required Fields (all non-empty)
 
 - `friendly_id` — **Must end with `-playbook`** (e.g. `meetings-exporter-playbook`)
-- `name`, `description`, `vertical`, `use_case`, `target_persona`, `webex_component`
-- `third_party_tool`, `estimated_implementation_time`, `author`, `status`, `product_type`
+- `title`, `description`, `target_persona`, `estimated_implementation_time`
+- `product_types` — Array, required; at least one value
+- `categories` — Array, required; at least one value
+- `product_url`, `privacy_url` — required
 - `app_context` — Array, required; at least one value
 
 ### Valid Values (enforced by CI)
 
 | Field | Allowed Values |
 | ----- | -------------- |
-| `vertical` | `healthcare`, `financial-services`, `retail-ecommerce` |
 | `target_persona` | `admin`, `developer`, `architect` |
-| `product_type` | `teams`, `meetings`, `calling`, `rooms`, `contact_center` |
+| `product_types` | `teams`, `meetings`, `calling`, `rooms`, `contact_center` |
 | `app_context` | `space`, `in_meeting`, `call`, `device`, `contact_center`, `sidebar`, `mcp`, `a2a` |
-| `webex_component` | `Agent Desktop`, `Flow Builder`, `AI Agent Studio`, `Reporting`, `Messaging`, `Meetings`, `Calling`, `Bots`, `Webhooks`, `Device SDK`, `Embed SDK`, `Control Hub` |
-| `status` | `draft`, `review` (never `published` — reviewers set that) |
 
 ### Folder Naming
 

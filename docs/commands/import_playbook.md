@@ -79,15 +79,9 @@ Make your best determination of:
   primary fit based on the tool's typical buyers. If genuinely cross-vertical, default
   to the one most represented in the tool's own marketing/docs.
 - `vertical_tags` — any additional verticals that apply
-- `use_case` — the specific integration pattern (e.g. "CRM screen pop on incoming
-  call", "Auto-create support ticket from WxCC interaction", "Bot in space for
-  notifications")
 - `target_persona` — `admin`, `developer`, or `architect` based on implementation
   complexity
-- `webex_component` — one of: `Agent Desktop`, `Flow Builder`, `AI Agent Studio`,
-  `Reporting`, `Messaging`, `Meetings`, `Calling`, `Bots`, `Webhooks`, `Device SDK`,
-  `Embed SDK`, `Control Hub`
-- `product_type` — derive from integration type (see mapping below). Valid values:
+- `product_types` — derive from integration type (see mapping below). Valid values:
   `teams`, `meetings`, `calling`, `rooms`, `contact_center`
 - `app_context` — derive from integration type (see mapping below). Valid values:
   `space`, `in_meeting`, `call`, `device`, `contact_center`, `sidebar`, `mcp`, `a2a`
@@ -96,15 +90,13 @@ Make your best determination of:
 
 **Integration type mapping:**
 
-| Integration type       | product_type     | app_context                                       |
+| Integration type       | product_types    | app_context                                       |
 | ---------------------- | ---------------- | ------------------------------------------------- |
 | Contact Center (WxCC)  | `contact_center` | `["contact_center", "sidebar"]`                   |
 | Teams (Messaging)      | `teams`          | `["space"]` (add `mcp` or `a2a` if applicable)    |
 | Meetings               | `meetings`       | `["in_meeting"]`                                  |
 | Calling                | `calling`        | `["call"]`                                        |
 | Rooms / Devices        | `rooms`          | `["device"]`                                      |
-
-Set `status: draft` and `author: ""` (leave blank for the human to fill in).
 
 ---
 
@@ -192,10 +184,9 @@ Use the full schema from PLAYBOOK_TEMPLATE/APPHUB.yaml. Derive from the source r
 - `product_type` — from integration type mapping (Step 2)
 - `app_context` — from integration type mapping (Step 2)
 - `categories` — default `["Productivity", "Integrations"]`
-- `company_name`, `company_url`, `support_url`, `product_url`, `logo` — use defaults
-  from template
-- `vertical`, `vertical_tags`, `use_case`, `target_persona`, `webex_component`,
-  `third_party_tool`, `estimated_implementation_time`, `author`, `status` — from Step 2
+- `company_name`, `company_url`, `support_url`, `product_url`, `privacy_url`, `logo` — use
+  defaults from template
+- `target_persona`, `third_party_tool` (optional), `estimated_implementation_time` — from Step 2
 
 ### diagrams/architecture-diagram.md
 
@@ -249,8 +240,8 @@ for section in "Use Case Overview" "Architecture" "Prerequisites" "Code Scaffold
     || echo "✗ MISSING: $section"
 done
 
-# Check APPHUB.yaml has no empty required fields (author is intentionally blank)
-grep -v "^author:" "playbooks/<slug>/APPHUB.yaml" | grep ': ""' \
+# Check APPHUB.yaml has no empty required fields
+grep -v -E "^(third_party_tool|submission_date):" "playbooks/<slug>/APPHUB.yaml" | grep ': ""' \
   && echo "✗ Empty APPHUB.yaml fields found above" \
   || echo "✓ All required APPHUB.yaml fields populated"
 
@@ -279,9 +270,9 @@ Output a summary covering:
    - Low: TODOs left because information was not available
 3. **TODOs requiring human input** — numbered list of every `<!-- TODO -->` comment,
    extracted and listed for easy action
-4. **Fields to complete in APPHUB.yaml** — remind the author to set `author:` and review
-   `vertical` / `use_case` determinations
-5. **Suggested next steps** — fill in author, review architecture diagram for accuracy,
+4. **Fields to complete in APPHUB.yaml** — remind the author to review
+   `vertical` and `categories` determinations
+5. **Suggested next steps** — review architecture diagram for accuracy,
    run the code against a real Webex sandbox, then open a PR using the branch naming
    convention: `playbook/<slug>`
 
