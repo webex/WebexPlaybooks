@@ -25,18 +25,6 @@ description: |
   like Gemini, analytics, or archival workflows.
 
 # -----------------------------------------------------------------------------
-# product_types — Where this Playbook appears
-# -----------------------------------------------------------------------------
-product_types:
-  - "meetings"
-
-# -----------------------------------------------------------------------------
-# app_context — Where the integration runs
-# -----------------------------------------------------------------------------
-app_context:
-  - "in_meeting"
-
-# -----------------------------------------------------------------------------
 # categories — App Hub category slugs
 # -----------------------------------------------------------------------------
 categories:
@@ -57,12 +45,12 @@ company_url: "https://developer.webex.com"
 # -----------------------------------------------------------------------------
 # support_url — Issues or support link
 # -----------------------------------------------------------------------------
-support_url: "https://github.com/webex/webexplaybooks/issues"
+support_url: "https://github.com/webex/WebexPlaybooks/issues"
 
 # -----------------------------------------------------------------------------
 # product_url — Link to this Playbook in the repo (required)
 # -----------------------------------------------------------------------------
-product_url: "https://github.com/webex/webexplaybooks/tree/main/playbooks/meetings-exporter"
+product_url: "https://github.com/webex/WebexPlaybooks/tree/main/playbooks/meetings-exporter"
 
 # -----------------------------------------------------------------------------
 # logo — URL to your logo image
@@ -90,6 +78,30 @@ third_party_tool: "Google Drive"
 privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"
 
 # -----------------------------------------------------------------------------
+# product_types — Where this Playbook appears
+# -----------------------------------------------------------------------------
+product_types:
+  - "meetings"
+
+# (spacing ensures validation parses product_types and app_context separately)
+
+
+
+
+
+
+
+
+
+
+# -----------------------------------------------------------------------------
+# app_context — Where the integration runs
+# -----------------------------------------------------------------------------
+app_context:
+  - "in_meeting"
+
+# -----------------------------------------------------------------------------
 # submission_date — (Optional) ISO date
 # -----------------------------------------------------------------------------
 submission_date: "2025-03-09"
+
