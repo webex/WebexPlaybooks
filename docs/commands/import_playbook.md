@@ -75,10 +75,9 @@ or "cisco-" prefixes (this is a third-party tool).
 
 Make your best determination of:
 
-- `vertical` — which of `healthcare`, `financial-services`, `retail-ecommerce` is the
-  primary fit based on the tool's typical buyers. If genuinely cross-vertical, default
-  to the one most represented in the tool's own marketing/docs.
-- `vertical_tags` — any additional verticals that apply
+- `categories` — App Hub category slugs. Include verticals (e.g. `healthcare`,
+  `financial-services`, `retail-ecommerce`) and app categories (e.g. `developer-tools`,
+  `productivity`, `recording-transcriptions`) as appropriate. At least one required.
 - `target_persona` — `admin`, `developer`, or `architect` based on implementation
   complexity
 - `product_types` — derive from integration type (see mapping below). Valid values:
@@ -112,7 +111,7 @@ playbooks/<slug>/
 │   └── architecture-diagram.md
 └── src/
     ├── main.<ext>
-    └── .env.example
+    └── env.template
 ```
 
 ### README.md
@@ -129,6 +128,9 @@ Describe what this integration does for a Webex user or admin. Lead with the bus
 outcome, not the technical mechanism. Include who this is for (target persona) and a
 realistic estimated implementation time. Make it concrete — describe the moment in a
 workflow where this tool adds value.
+
+**Source attribution:** Add a line at the top of the README (after the title) crediting
+the original repo, e.g. "This Playbook is adapted from the [Project Name](https://github.com/owner/repo) sample on GitHub."
 
 #### ## Architecture
 
@@ -167,7 +169,9 @@ Based on source repo docs:
 - Any rate limits from the third-party API
 - Authentication token expiry / refresh requirements
 - Any deprecated endpoints noticed
-- License constraints (note the open source license type and commercial use implications)
+- License constraints (note the open source license type and commercial use implications).
+  Reference the playbook repo's LICENSE (e.g. `[LICENSE](../../LICENSE)`) rather than the
+  source repo's license.
 - Standard Webex disclaimer: "This Playbook is provided as a starting point. Webex does
   not guarantee the functional accuracy of the source code. Test thoroughly before use
   in a production environment."
@@ -178,15 +182,22 @@ Use the full schema from PLAYBOOK_TEMPLATE/APPHUB.yaml. Derive from the source r
 
 - `friendly_id` — slug + `-playbook` (e.g. folder `meetings-exporter` →
   `meetings-exporter-playbook`) to reduce App Hub name collisions with actual integrations
-- `name` — `{ThirdPartyTool} + Webex {Product} Integration`
+- `title` — `{ThirdPartyTool} + Webex {Product} Integration`
 - `tag_line` — one-line value proposition
 - `description` — 1–2 sentences for App Hub listing
-- `product_type` — from integration type mapping (Step 2)
+- `product_types` — from integration type mapping (Step 2)
 - `app_context` — from integration type mapping (Step 2)
-- `categories` — default `["Productivity", "Integrations"]`
+- `categories` — default `["productivity", "developer-tools"]`; include verticals
+  (healthcare, financial-services, retail-ecommerce) and app categories as appropriate
 - `company_name`, `company_url`, `support_url`, `product_url`, `privacy_url`, `logo` — use
   defaults from template
 - `target_persona`, `third_party_tool` (optional), `estimated_implementation_time` — from Step 2
+
+**APPHUB.yaml ordering for validation:** The CI validation uses `grep -A 10` and `grep -A 20`
+to parse `product_types` and `app_context`. If these sections are adjacent to other list
+sections (e.g. `categories`), the grep can capture items from the wrong section and fail
+validation. Add 8+ blank lines between `product_types` and `app_context`, or place them
+so that no other `  - ` list items appear within the next 10–20 lines after each key.
 
 ### diagrams/architecture-diagram.md
 
@@ -224,7 +235,8 @@ The source code must:
 Use the tool's existing SDK or client library if one exists — do not use raw HTTP calls
 when an SDK is available.
 
-Include .env.example listing all required environment variables with descriptive comments.
+Include `.env.example` or `env.template` listing all required environment variables with
+descriptive comments. (Some orgs prefer `env.template` to avoid dotfile limitations.)
 
 ---
 
@@ -271,7 +283,7 @@ Output a summary covering:
 3. **TODOs requiring human input** — numbered list of every `<!-- TODO -->` comment,
    extracted and listed for easy action
 4. **Fields to complete in APPHUB.yaml** — remind the author to review
-   `vertical` and `categories` determinations
+   `categories` determinations
 5. **Suggested next steps** — review architecture diagram for accuracy,
    run the code against a real Webex sandbox, then open a PR using the branch naming
    convention: `playbook/<slug>`
