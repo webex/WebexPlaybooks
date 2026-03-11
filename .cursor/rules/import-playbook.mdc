@@ -29,15 +29,18 @@ Follow the full instructions in `docs/commands/import_playbook.md`.
   `.import-playbook-cache/` (gitignored) so files stay local to the project.
 
 - **Step 1:** Read files from `.import-playbook-cache/<slug>/` using the Read tool.
-  Do not fetch via raw URLs unless the clone failed.
+  Do not fetch via raw URLs unless the clone failed. If the source repo is primarily
+  for Genesys, NICE, Five9, or Talkdesk, stop and explain the competitor-tools
+  restriction — do not proceed.
+
+- **Step 4:** Do not run validation automatically. Output the validation command
+  (`./scripts/validate-playbook-local.sh playbooks/<slug>`) in a code block and prompt
+  the author to run it in the integrated terminal.
 
 - **Step 6:** Run `rm -rf .import-playbook-cache/<slug>` to remove the clone after
   the playbook is created.
 
-- Create all output files directly in the workspace using the editor. Do not attempt
-  to run bash validation commands via terminal automatically — instead, after creating
-  all files, output the validation commands in a code block and prompt the author to
-  run them in the integrated terminal.
+- Create all output files directly in the workspace using the editor.
 
 - Replace every instance of `<slug>` in the instructions with the slug derived from
   the repo name in Step 0. Replace every instance of `<ext>` with the appropriate
