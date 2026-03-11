@@ -12,7 +12,7 @@ what to expect from automated validation and review, and style expectations.
 - [APPHUB.yaml metadata (APPHUB schema)](#apphubyaml-metadata) — Required metadata for App Hub submission
 - [Full submission process](#full-submission-process) — Step-by-step from clone to merge
 - [What to expect from automated validation and review](#what-to-expect-from-automated-validation-and-review) — CI checks, human review, and AI review pipeline
-- [Style guide](#style-guide) — How to write for your target persona
+- [Style guide](#style-guide) — Implementation time and writing conventions
 - [What NOT to do](#what-not-to-do) — Rules and restrictions
 
 ## Before you start
@@ -111,7 +111,6 @@ privacy_url: ""              # Privacy policy URL (App Hub displays this link; u
 logo: "https://developer.webex.com/images/webex-logo.svg"
 
 # Playbook metadata (for filtering and validation)
-target_persona: ""           # admin | developer | architect
 estimated_implementation_time: ""   # e.g. "2-4 hours"
 
 # Optional
@@ -148,8 +147,6 @@ submission_date: ""          # ISO date (e.g. 2025-03-01)
   categories (e.g. `developer-tools`, `productivity`) as appropriate. Example:
   a developer tool in the healthcare vertical → `categories: ["developer-tools",
   "healthcare"]`. Values must match App Hub category slugs.
-
-- **target_persona** — Must be one of: `admin`, `developer`, `architect`.
 
 - **third_party_tool** — Optional. The tool being integrated (e.g. Salesforce,
   Epic). Omit for generic playbooks (e.g. "how to integrate with any CMS").
@@ -233,7 +230,7 @@ When you open a PR, the **Validate Playbook** workflow runs (see
 [.github/workflows/validate-playbook.yml](.github/workflows/validate-playbook.yml)). It runs only on the Playbook folders you changed and posts a **comment** on your PR with a checklist of results. The workflow checks:
 
 - **README.md** — Exists and contains all six required section headers (Use Case Overview, Architecture, Prerequisites, Code Scaffold, Deployment Guide, Known Limitations); matching is case-insensitive.
-- **APPHUB.yaml** — Exists; all required fields are present and non-empty; `product_types` is an array with at least one of `teams`, `meetings`, `calling`, `rooms`, `contact_center`; `categories` has at least one value; `target_persona` is one of `admin`, `developer`, `architect`.
+- **APPHUB.yaml** — Exists; all required fields are present and non-empty; `product_types` is an array with at least one of `teams`, `meetings`, `calling`, `rooms`, `contact_center`; `categories` has at least one value.
 - **Folders** — `diagrams/` and `src/` exist.
 - **Folder name** — Playbook folder name is kebab-case (lowercase, hyphens only; e.g. `epic-ehr`, `servicenow`).
 
@@ -248,14 +245,6 @@ After automated validation passes, a human reviewer performs a ~15-minute spot-c
 An AI review pipeline may be added in the future to provide additional feedback on quality floor adherence, API usage, or style. Any such checks will be documented here. Today, the Validate Playbook workflow and human spot-check are the only reviews that run on your PR.
 
 ## Style Guide
-
-### Target Persona
-
-Write for the stated `target_persona`:
-
-- **admin** — Configuration-focused, less code, more UI and settings
-- **developer** — Code and API details, environment setup, debugging
-- **architect** — High-level flows, data models, integration patterns
 
 ### Implementation Time
 

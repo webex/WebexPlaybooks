@@ -52,7 +52,6 @@ jobs:
           fi
 
           VALID_VERTICALS="healthcare|financial-services|retail-ecommerce"
-          VALID_PERSONAS="admin|developer|architect"
           FAILED=0
           REPORT=""
 
@@ -97,7 +96,7 @@ jobs:
 
             # All required APPHUB.yaml fields present and non-empty
             if [ -f "${FOLDER}/APPHUB.yaml" ]; then
-              REQUIRED_FIELDS="friendly_id title description target_persona estimated_implementation_time product_types categories product_url privacy_url"
+              REQUIRED_FIELDS="friendly_id title description estimated_implementation_time product_types categories product_url privacy_url"
               FIELDS_MISSING=""
               for FIELD in $REQUIRED_FIELDS; do
                 if [ "$FIELD" = "product_types" ] || [ "$FIELD" = "categories" ]; then
@@ -203,17 +202,6 @@ jobs:
                   REPORT="${REPORT}- [ ] APPHUB.yaml app_context valid — *Each value must be one of: space, in_meeting, call, device, contact_center, sidebar, mcp, a2a*\n"
                   FOLDER_FAILED=1
                 fi
-              fi
-            fi
-
-            # APPHUB.yaml target_persona is allowed value
-            if [ -f "${FOLDER}/APPHUB.yaml" ]; then
-              PERSONA=$(grep -E "^target_persona:" "${FOLDER}/APPHUB.yaml" | sed 's/target_persona:\s*["'\'']\?\([^"'\'']*\)["'\'']\?.*/\1/' | tr -d ' ')
-              if echo "$PERSONA" | grep -qE "^(admin|developer|architect)$"; then
-                REPORT="${REPORT}- [x] APPHUB.yaml target_persona is valid\n"
-              else
-                REPORT="${REPORT}- [ ] APPHUB.yaml target_persona valid — *Use one of: admin, developer, architect*\n"
-                FOLDER_FAILED=1
               fi
             fi
 

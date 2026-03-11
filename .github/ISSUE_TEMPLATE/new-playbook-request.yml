@@ -41,18 +41,6 @@ body:
     validations:
       required: true
 
-  - type: dropdown
-    id: target_persona
-    attributes:
-      label: Target persona
-      description: Who will use this Playbook?
-      options:
-        - admin
-        - developer
-        - architect
-    validations:
-      required: true
-
   - type: input
     id: linked_story
     attributes:

@@ -78,8 +78,6 @@ Make your best determination of:
 - `categories` — App Hub category slugs. Include verticals (e.g. `healthcare`,
   `financial-services`, `retail-ecommerce`) and app categories (e.g. `developer-tools`,
   `productivity`, `recording-transcriptions`) as appropriate. At least one required.
-- `target_persona` — `admin`, `developer`, or `architect` based on implementation
-  complexity
 - `product_types` — derive from integration type (see mapping below). Valid values:
   `teams`, `meetings`, `calling`, `rooms`, `contact_center`
 - `app_context` — derive from integration type (see mapping below). Valid values:
@@ -191,7 +189,7 @@ Use the full schema from PLAYBOOK_TEMPLATE/APPHUB.yaml. Derive from the source r
   (healthcare, financial-services, retail-ecommerce) and app categories as appropriate
 - `company_name`, `company_url`, `support_url`, `product_url`, `privacy_url`, `logo` — use
   defaults from template
-- `target_persona`, `third_party_tool` (optional), `estimated_implementation_time` — from Step 2
+- `third_party_tool` (optional), `estimated_implementation_time` — from Step 2
 
 **APPHUB.yaml ordering for validation:** The CI validation uses `grep -A 10` and `grep -A 20`
 to parse `product_types` and `app_context`. If these sections are adjacent to other list

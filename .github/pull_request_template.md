@@ -16,7 +16,7 @@ Before submitting, confirm your Playbook folder under `playbooks/<tool-slug>/` i
 
 ### APPHUB.yaml format
 
-Ensure **APPHUB.yaml** is correctly formatted per the [APPHUB schema in CONTRIBUTING.md](CONTRIBUTING.md#apphubyaml-metadata): all required fields filled, valid values for `vertical`, `webex_component`, `target_persona`, and `status` = `draft` or `review` (do not set `published`). The Validate Playbook workflow will fail if required fields are missing or invalid.
+Ensure **APPHUB.yaml** is correctly formatted per the [APPHUB schema in CONTRIBUTING.md](CONTRIBUTING.md#apphubyaml-metadata): all required fields filled, valid values for `vertical` and `webex_component`; `status` = `draft` or `review` (do not set `published`). The Validate Playbook workflow will fail if required fields are missing or invalid.
 
 ---
 
