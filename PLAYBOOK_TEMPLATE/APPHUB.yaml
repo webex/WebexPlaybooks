@@ -13,7 +13,7 @@ friendly_id: "my-crm-playbook"
 title: "MyCRM + Webex Contact Center Integration"
 
 # -----------------------------------------------------------------------------
-# tag_line — Short tagline for App Hub listing
+# tag_line — Short tagline for App Hub detail page (required, max 128 chars)
 # -----------------------------------------------------------------------------
 tag_line: "Connect MyCRM to Webex Contact Center for screen pop and customer context"
 

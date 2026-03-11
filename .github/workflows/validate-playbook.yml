@@ -96,7 +96,7 @@ jobs:
 
             # All required APPHUB.yaml fields present and non-empty
             if [ -f "${FOLDER}/APPHUB.yaml" ]; then
-              REQUIRED_FIELDS="friendly_id title description estimated_implementation_time product_types categories product_url privacy_url"
+              REQUIRED_FIELDS="friendly_id title description tag_line estimated_implementation_time product_types categories product_url privacy_url"
               FIELDS_MISSING=""
               for FIELD in $REQUIRED_FIELDS; do
                 if [ "$FIELD" = "product_types" ] || [ "$FIELD" = "categories" ]; then
@@ -148,6 +148,21 @@ jobs:
               else
                 REPORT="${REPORT}- [ ] APPHUB.yaml friendly_id — *Must end with -playbook (e.g. meetings-exporter-playbook)*\n"
                 FOLDER_FAILED=1
+              fi
+            fi
+
+            # APPHUB.yaml tag_line max 128 characters
+            if [ -f "${FOLDER}/APPHUB.yaml" ]; then
+              TAG_LINE_LINE=$(grep -E "^tag_line:" "${FOLDER}/APPHUB.yaml" 2>/dev/null)
+              if [ -n "$TAG_LINE_LINE" ]; then
+                TAG_LINE_VALUE=$(echo "$TAG_LINE_LINE" | sed 's/^tag_line:[[:space:]]*//' | sed 's/^["'\'']//;s/["'\'']$//')
+                TAG_LINE_LEN=${#TAG_LINE_VALUE}
+                if [ "$TAG_LINE_LEN" -gt 128 ]; then
+                  REPORT="${REPORT}- [ ] APPHUB.yaml tag_line — *Max 128 characters (current: ${TAG_LINE_LEN})*\n"
+                  FOLDER_FAILED=1
+                else
+                  REPORT="${REPORT}- [x] APPHUB.yaml tag_line is valid (${TAG_LINE_LEN}/128 chars)\n"
+                fi
               fi
             fi
 

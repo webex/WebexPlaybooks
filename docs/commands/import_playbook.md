@@ -181,7 +181,7 @@ Use the full schema from PLAYBOOK_TEMPLATE/APPHUB.yaml. Derive from the source r
 - `friendly_id` — slug + `-playbook` (e.g. folder `meetings-exporter` →
   `meetings-exporter-playbook`) to reduce App Hub name collisions with actual integrations
 - `title` — `{ThirdPartyTool} + Webex {Product} Integration`
-- `tag_line` — one-line value proposition
+- `tag_line` — one-line value proposition (required, max 128 chars)
 - `description` — 1–2 sentences for App Hub listing
 - `product_types` — from integration type mapping (Step 2)
 - `app_context` — from integration type mapping (Step 2)

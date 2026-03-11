@@ -94,7 +94,7 @@ required fields must be present and non-empty for App Hub submission.
 # App Hub submission
 friendly_id: ""              # {folder-slug}-playbook (e.g. epic-ehr-playbook, my-crm-playbook)
 title: ""                    # Display name for the Playbook (matches ContentStack field)
-tag_line: ""                 # Short tagline for App Hub listing
+tag_line: ""                 # Short tagline for App Hub detail page (required, max 128 chars)
 description: ""              # 1–2 sentences, used as App Hub listing copy
 
 product_types: []            # Array: one or more of teams | meetings | calling | rooms | contact_center
@@ -126,6 +126,9 @@ submission_date: ""          # ISO date (e.g. 2025-03-01)
 
 - **title** — Display name for the Playbook. Matches the ContentStack field used
   by other app types.
+
+- **tag_line** — Short tagline displayed on the App Hub detail page. Required.
+  Max 128 characters.
 
 - **product_types** — Array of one or more of: `teams`, `meetings`, `calling`,
   `rooms`, `contact_center`. Playbooks can span multiple products (e.g.
