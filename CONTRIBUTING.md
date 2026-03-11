@@ -108,7 +108,7 @@ company_url: "https://developer.webex.com"
 support_url: "https://github.com/webex/webexplaybooks/issues"
 product_url: ""              # Link to playbook in repo (e.g. https://github.com/webex/webexplaybooks/tree/main/playbooks/epic-ehr)
 privacy_url: ""              # Privacy policy URL (App Hub displays this link; use Cisco default for Webex-authored playbooks)
-logo: "https://developer.webex.com/images/webex-logo.svg"
+logo: ""                     # Optional. URL to your logo. Omit or leave empty to use the standard Webex Playbook logo.
 
 # Playbook metadata (for filtering and validation)
 estimated_implementation_time: ""   # e.g. "2-4 hours"
@@ -144,6 +144,9 @@ submission_date: ""          # ISO date (e.g. 2025-03-01)
 
 - **support_url** — Issues link for the repo
   (`https://github.com/webex/webexplaybooks/issues`).
+
+- **logo** — Optional. URL to your logo image. If not provided, defaults to the
+  standard Webex Playbook logo.
 
 - **categories** — Array of App Hub category slugs. Include both verticals
   (e.g. `healthcare`, `financial-services`, `retail-ecommerce`) and app
