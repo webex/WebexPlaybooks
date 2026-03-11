@@ -7,12 +7,12 @@
 friendly_id: "meetings-exporter-playbook"
 
 # -----------------------------------------------------------------------------
-# title — Display name for the Playbook
+# title — Display name for the Playbook (matches ContentStack field)
 # -----------------------------------------------------------------------------
 title: "Webex Meeting Data Cloud Exporter"
 
 # -----------------------------------------------------------------------------
-# tag_line — Short tagline for App Hub listing
+# tag_line — Short tagline for App Hub detail page (required, max 128 chars)
 # -----------------------------------------------------------------------------
 tag_line: "Export Webex meeting recordings, transcripts, and AI summaries to Google Drive or local storage"
 
@@ -25,7 +25,23 @@ description: |
   like Gemini, analytics, or archival workflows.
 
 # -----------------------------------------------------------------------------
-# categories — App Hub category slugs
+# product_types — Where this Playbook appears. Pick one or more.
+# Valid: teams | meetings | calling | rooms | contact_center
+# -----------------------------------------------------------------------------
+product_types:
+  - "meetings"
+
+# -----------------------------------------------------------------------------
+# app_context — Where the integration runs. Pick one or more.
+# Valid: space | in_meeting | call | device | contact_center | sidebar | mcp | a2a
+# -----------------------------------------------------------------------------
+app_context:
+  - "in_meeting"
+
+# -----------------------------------------------------------------------------
+# categories — App Hub category slugs. Pick one or more.
+# Verticals: healthcare | financial-services | retail-ecommerce
+# App categories: developer-tools | productivity | recording-transcriptions | etc.
 # -----------------------------------------------------------------------------
 categories:
   - "productivity"
@@ -43,7 +59,7 @@ company_name: "Webex for Developers"
 company_url: "https://developer.webex.com"
 
 # -----------------------------------------------------------------------------
-# support_url — Issues or support link
+# support_url — Issues or support link (e.g. GitHub issues)
 # -----------------------------------------------------------------------------
 support_url: "https://github.com/webex/WebexPlaybooks/issues"
 
@@ -53,55 +69,29 @@ support_url: "https://github.com/webex/WebexPlaybooks/issues"
 product_url: "https://github.com/webex/WebexPlaybooks/tree/main/playbooks/meetings-exporter"
 
 # -----------------------------------------------------------------------------
-# logo — URL to your logo image
+# logo — (Optional) URL to your logo image. If not provided, defaults to the
+# standard Webex Playbook logo.
 # -----------------------------------------------------------------------------
 logo: "https://images.contentstack.io/v3/assets/bltd14fd2a03236233f/blta2de9daa773c6604/60f71f81e2de935fc7e35dbe/download"
 
 # -----------------------------------------------------------------------------
-# target_persona — Primary audience
-# -----------------------------------------------------------------------------
-target_persona: "developer"
-
-# -----------------------------------------------------------------------------
-# estimated_implementation_time
+# estimated_implementation_time — e.g. "2-4 hours", "1 day"
 # -----------------------------------------------------------------------------
 estimated_implementation_time: "2-4 hours"
 
 # -----------------------------------------------------------------------------
-# third_party_tool — The tool being integrated
+# third_party_tool — (Optional) The tool being integrated (e.g. Salesforce, Epic)
+# Omit for generic playbooks (e.g. "any CMS")
 # -----------------------------------------------------------------------------
 third_party_tool: "Google Drive"
 
 # -----------------------------------------------------------------------------
-# privacy_url — Privacy policy URL (required)
+# privacy_url — Privacy policy URL (required; use Cisco default for Webex-authored)
 # -----------------------------------------------------------------------------
 privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"
 
 # -----------------------------------------------------------------------------
-# product_types — Where this Playbook appears
-# -----------------------------------------------------------------------------
-product_types:
-  - "meetings"
-
-# (spacing ensures validation parses product_types and app_context separately)
-
-
-
-
-
-
-
-
-
-
-# -----------------------------------------------------------------------------
-# app_context — Where the integration runs
-# -----------------------------------------------------------------------------
-app_context:
-  - "in_meeting"
-
-# -----------------------------------------------------------------------------
-# submission_date — (Optional) ISO date
+# submission_date — (Optional) ISO date (e.g. 2025-03-01)
 # -----------------------------------------------------------------------------
 submission_date: "2025-03-09"
 
