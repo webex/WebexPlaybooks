@@ -83,12 +83,6 @@ product_url: "https://github.com/webex/webexplaybooks/tree/main/playbooks/my-crm
 logo: "https://developer.webex.com/images/webex-logo.svg"
 
 # -----------------------------------------------------------------------------
-# target_persona — Primary audience. Pick one.
-# Valid: admin | developer | architect
-# -----------------------------------------------------------------------------
-target_persona: "developer"
-
-# -----------------------------------------------------------------------------
 # estimated_implementation_time — e.g. "2-4 hours", "1 day"
 # -----------------------------------------------------------------------------
 estimated_implementation_time: "2-4 hours"
