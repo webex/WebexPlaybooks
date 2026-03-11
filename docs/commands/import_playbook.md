@@ -191,12 +191,6 @@ Use the full schema from PLAYBOOK_TEMPLATE/APPHUB.yaml. Derive from the source r
   defaults from template
 - `third_party_tool` (optional), `estimated_implementation_time` — from Step 2
 
-**APPHUB.yaml ordering for validation:** The CI validation uses `grep -A 10` and `grep -A 20`
-to parse `product_types` and `app_context`. If these sections are adjacent to other list
-sections (e.g. `categories`), the grep can capture items from the wrong section and fail
-validation. Add 8+ blank lines between `product_types` and `app_context`, or place them
-so that no other `  - ` list items appear within the next 10–20 lines after each key.
-
 ### diagrams/architecture-diagram.md
 
 Write a Mermaid sequence or flowchart diagram showing the integration data flow. Use
