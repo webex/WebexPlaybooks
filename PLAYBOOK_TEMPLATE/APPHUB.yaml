@@ -13,7 +13,7 @@ friendly_id: "my-crm-playbook"
 title: "MyCRM + Webex Contact Center Integration"
 
 # -----------------------------------------------------------------------------
-# tag_line — Short tagline for App Hub listing
+# tag_line — Short tagline for App Hub detail page (required, max 128 chars)
 # -----------------------------------------------------------------------------
 tag_line: "Connect MyCRM to Webex Contact Center for screen pop and customer context"
 
@@ -78,9 +78,10 @@ support_url: "https://github.com/webex/webexplaybooks/issues"
 product_url: "https://github.com/webex/webexplaybooks/tree/main/playbooks/my-crm"
 
 # -----------------------------------------------------------------------------
-# logo — URL to your logo image
+# logo — (Optional) URL to your logo image. If not provided, defaults to the
+# standard Webex Playbook logo.
 # -----------------------------------------------------------------------------
-logo: "https://developer.webex.com/images/webex-logo.svg"
+logo: "https://images.contentstack.io/v3/assets/bltd14fd2a03236233f/blta2de9daa773c6604/60f71f81e2de935fc7e35dbe/download"
 
 # -----------------------------------------------------------------------------
 # estimated_implementation_time — e.g. "2-4 hours", "1 day"

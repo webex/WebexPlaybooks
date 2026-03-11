@@ -42,7 +42,8 @@ Use these exact headers (case-insensitive validation):
 ### Required Fields (all non-empty)
 
 - `friendly_id` — **Must end with `-playbook`** (e.g. `meetings-exporter-playbook`)
-- `title`, `description`, `estimated_implementation_time`
+- `title`, `description`, `tag_line`, `estimated_implementation_time`
+- `tag_line` — Short tagline for App Hub detail page; **max 128 characters**
 - `product_types` — Array, required; at least one value
 - `categories` — Array, required; at least one value
 - `product_url`, `privacy_url` — required

@@ -94,7 +94,7 @@ required fields must be present and non-empty for App Hub submission.
 # App Hub submission
 friendly_id: ""              # {folder-slug}-playbook (e.g. epic-ehr-playbook, my-crm-playbook)
 title: ""                    # Display name for the Playbook (matches ContentStack field)
-tag_line: ""                 # Short tagline for App Hub listing
+tag_line: ""                 # Short tagline for App Hub detail page (required, max 128 chars)
 description: ""              # 1–2 sentences, used as App Hub listing copy
 
 product_types: []            # Array: one or more of teams | meetings | calling | rooms | contact_center
@@ -108,7 +108,7 @@ company_url: "https://developer.webex.com"
 support_url: "https://github.com/webex/webexplaybooks/issues"
 product_url: ""              # Link to playbook in repo (e.g. https://github.com/webex/webexplaybooks/tree/main/playbooks/epic-ehr)
 privacy_url: ""              # Privacy policy URL (App Hub displays this link; use Cisco default for Webex-authored playbooks)
-logo: "https://developer.webex.com/images/webex-logo.svg"
+logo: ""                     # Optional. URL to your logo. Omit or leave empty to use the standard Webex Playbook logo.
 
 # Playbook metadata (for filtering and validation)
 estimated_implementation_time: ""   # e.g. "2-4 hours"
@@ -127,6 +127,9 @@ submission_date: ""          # ISO date (e.g. 2025-03-01)
 - **title** — Display name for the Playbook. Matches the ContentStack field used
   by other app types.
 
+- **tag_line** — Short tagline displayed on the App Hub detail page. Required.
+  Max 128 characters.
+
 - **product_types** — Array of one or more of: `teams`, `meetings`, `calling`,
   `rooms`, `contact_center`. Playbooks can span multiple products (e.g.
   `["meetings", "teams"]` appears on both /meetings and /messaging).
@@ -141,6 +144,9 @@ submission_date: ""          # ISO date (e.g. 2025-03-01)
 
 - **support_url** — Issues link for the repo
   (`https://github.com/webex/webexplaybooks/issues`).
+
+- **logo** — Optional. URL to your logo image. If not provided, defaults to the
+  standard Webex Playbook logo.
 
 - **categories** — Array of App Hub category slugs. Include both verticals
   (e.g. `healthcare`, `financial-services`, `retail-ecommerce`) and app
