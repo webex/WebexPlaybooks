@@ -64,6 +64,10 @@ From this reading, extract:
 - Any rate limits, known limitations, or deprecation notices in the docs
 - The license type (important for the Known Limitations section)
 
+**Competitor tools:** If the source repo is primarily for Genesys, NICE, Five9, or
+Talkdesk (contact center competitors), stop and explain that these are not allowed as
+primary targets per project policy. Do not proceed with the import.
+
 If a file cannot be read, note it and continue — do not stop.
 
 ---
@@ -94,6 +98,9 @@ Make your best determination of:
 | Meetings               | `meetings`       | `["in_meeting"]`                                  |
 | Calling                | `calling`        | `["call"]`                                        |
 | Rooms / Devices        | `rooms`          | `["device"]`                                      |
+
+If the integration spans multiple products (e.g. Meetings + Teams), include multiple
+`product_types` and `app_context` values.
 
 ---
 
@@ -187,15 +194,10 @@ Use the full schema from PLAYBOOK_TEMPLATE/APPHUB.yaml. Derive from the source r
 - `app_context` — from integration type mapping (Step 2)
 - `categories` — default `["productivity", "developer-tools"]`; include verticals
   (healthcare, financial-services, retail-ecommerce) and app categories as appropriate
-- `company_name`, `company_url`, `support_url`, `product_url`, `privacy_url`, `logo` — use
-  defaults from template
+- `company_name`, `company_url`, `support_url`, `privacy_url`, `logo` — use defaults
+  from template
+- `product_url` — `https://github.com/webex/WebexPlaybooks/tree/main/playbooks/<slug>`
 - `third_party_tool` (optional), `estimated_implementation_time` — from Step 2
-
-**APPHUB.yaml ordering for validation:** The CI validation uses `grep -A 10` and `grep -A 20`
-to parse `product_types` and `app_context`. If these sections are adjacent to other list
-sections (e.g. `categories`), the grep can capture items from the wrong section and fail
-validation. Add 8+ blank lines between `product_types` and `app_context`, or place them
-so that no other `  - ` list items appear within the next 10–20 lines after each key.
 
 ### diagrams/architecture-diagram.md
 
@@ -233,39 +235,24 @@ The source code must:
 Use the tool's existing SDK or client library if one exists — do not use raw HTTP calls
 when an SDK is available.
 
-Include `.env.example` or `env.template` listing all required environment variables with
-descriptive comments. (Some orgs prefer `env.template` to avoid dotfile limitations.)
+Include `env.template` listing all required environment variables with descriptive
+comments. (Use `env.template` rather than `.env.example` to avoid dotfile limitations
+in some orgs.)
 
 ---
 
 ## Step 4 — Run validation checks
 
-After creating all files, verify the Playbook would pass the repo's automated checks:
+After creating all files, output the validation command for the author to run (do not
+run it automatically). The local script runs the same checks as CI:
 
 ```bash
-# Check all 6 required README section headers exist
-for section in "Use Case Overview" "Architecture" "Prerequisites" "Code Scaffold" "Deployment Guide" "Known Limitations"; do
-  grep -qi "## $section" "playbooks/<slug>/README.md" \
-    && echo "✓ $section" \
-    || echo "✗ MISSING: $section"
-done
-
-# Check APPHUB.yaml has no empty required fields
-grep -v -E "^(third_party_tool|submission_date):" "playbooks/<slug>/APPHUB.yaml" | grep ': ""' \
-  && echo "✗ Empty APPHUB.yaml fields found above" \
-  || echo "✓ All required APPHUB.yaml fields populated"
-
-# Check friendly_id ends with -playbook
-grep -E "^friendly_id:" "playbooks/<slug>/APPHUB.yaml" | grep -q '\-playbook"$' \
-  && echo "✓ friendly_id ends with -playbook" \
-  || echo "✗ friendly_id must end with -playbook"
-
-# Check diagrams and src folders exist
-[ -d "playbooks/<slug>/diagrams" ] && echo "✓ diagrams/ exists" || echo "✗ diagrams/ missing"
-[ -d "playbooks/<slug>/src" ] && echo "✓ src/ exists" || echo "✗ src/ missing"
+./scripts/validate-playbook-local.sh playbooks/<slug>
 ```
 
-Fix any failures before finishing.
+Prompt the author to run this and fix any failures before finishing. The script
+validates README sections, APPHUB.yaml fields (including product_types, app_context,
+categories), friendly_id, tag_line length, and folder structure.
 
 ---
 
@@ -280,8 +267,9 @@ Output a summary covering:
    - Low: TODOs left because information was not available
 3. **TODOs requiring human input** — numbered list of every `<!-- TODO -->` comment,
    extracted and listed for easy action
-4. **Fields to complete in APPHUB.yaml** — remind the author to review
-   `categories` determinations
+4. **APPHUB.yaml review** — remind the author to review all fields (categories,
+   third_party_tool, estimated_implementation_time) and re-run validation if they
+   change anything
 5. **Suggested next steps** — review architecture diagram for accuracy,
    run the code against a real Webex sandbox, then open a PR using the branch naming
    convention: `playbook/<slug>`

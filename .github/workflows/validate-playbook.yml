@@ -94,6 +94,9 @@ jobs:
               FOLDER_FAILED=1
             fi
 
+            # Helper: extract YAML array items for a key (stops at next top-level key)
+            yaml_array_items() { awk -v key="$1" '$0 ~ "^" key ":"{f=1;next} f{if($0~/^[a-zA-Z_][a-zA-Z0-9_]*:/)exit; if($0~/^[[:space:]]+-[[:space:]]/)print}' "$2"; }
+
             # All required APPHUB.yaml fields present and non-empty
             if [ -f "${FOLDER}/APPHUB.yaml" ]; then
               REQUIRED_FIELDS="friendly_id title description tag_line estimated_implementation_time product_types categories product_url privacy_url"
@@ -104,7 +107,7 @@ jobs:
                   if [ -z "$LINE" ]; then
                     FIELDS_MISSING="${FIELDS_MISSING}${FIELDS_MISSING:+, }${FIELD}"
                   else
-                    ITEMS=$(grep -E "^${FIELD}:" -A 20 "${FOLDER}/APPHUB.yaml" | grep -E "^\s+-\s+" | wc -l)
+                    ITEMS=$(yaml_array_items "$FIELD" "${FOLDER}/APPHUB.yaml" | wc -l)
                     if [ "$ITEMS" -lt 1 ]; then
                       FIELDS_MISSING="${FIELDS_MISSING}${FIELDS_MISSING:+, }${FIELD}"
                     fi
@@ -130,7 +133,7 @@ jobs:
 
             # APPHUB.yaml categories exists and has at least one value
             if [ -f "${FOLDER}/APPHUB.yaml" ]; then
-              CATEGORIES_LINE=$(grep -E "^categories:" -A 20 "${FOLDER}/APPHUB.yaml" | grep -E "^\s+-\s+" | head -20)
+              CATEGORIES_LINE=$(yaml_array_items "categories" "${FOLDER}/APPHUB.yaml")
               CAT_COUNT=$(echo "$CATEGORIES_LINE" | grep -c . 2>/dev/null || echo 0)
               if [ "${CAT_COUNT:-0}" -ge 1 ]; then
                 REPORT="${REPORT}- [x] APPHUB.yaml categories has at least one value\n"
@@ -172,7 +175,7 @@ jobs:
                 REPORT="${REPORT}- [ ] APPHUB.yaml product_types — *Add product_types array with at least one of: teams, meetings, calling, rooms, contact_center*\n"
                 FOLDER_FAILED=1
               else
-                PRODUCT_TYPES_LINE=$(grep -E "^product_types:" -A 10 "${FOLDER}/APPHUB.yaml" | grep -E "^\s+-\s+" | head -10)
+                PRODUCT_TYPES_LINE=$(yaml_array_items "product_types" "${FOLDER}/APPHUB.yaml")
                 PRODUCT_TYPES_INVALID=""
                 PRODUCT_TYPES_COUNT=0
                 VALID_PRODUCT_TYPES="teams|meetings|calling|rooms|contact_center"
@@ -201,7 +204,7 @@ jobs:
                 REPORT="${REPORT}- [ ] APPHUB.yaml app_context — *Add app_context with at least one value*\n"
                 FOLDER_FAILED=1
               else
-                APP_CONTEXT_LINE=$(grep -E "^app_context:" -A 20 "${FOLDER}/APPHUB.yaml" | grep -E "^\s+-\s+" | head -20)
+                APP_CONTEXT_LINE=$(yaml_array_items "app_context" "${FOLDER}/APPHUB.yaml")
                 APP_CONTEXT_INVALID=""
                 VALID_APP_CONTEXTS="space|in_meeting|call|device|contact_center|sidebar|mcp|a2a"
                 while IFS= read -r line; do

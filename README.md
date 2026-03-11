@@ -50,3 +50,9 @@ Each Playbook is self-contained. You do not need to install the entire repo.
 Are you a Webex team member authoring a new Playbook? See
 [CONTRIBUTING.md](CONTRIBUTING.md) for the authoring guide, quality requirements,
 and PR process.
+
+**Local validation:** Run the same checks used by CI before opening a PR:
+
+```bash
+./scripts/validate-playbook-local.sh playbooks/<your-playbook-slug>
+```
