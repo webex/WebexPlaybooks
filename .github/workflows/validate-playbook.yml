@@ -41,6 +41,16 @@ jobs:
             core.setOutput('folders', [...playbookFolders].join('\n'));
             core.setOutput('count', playbookFolders.size.toString());
 
+      - name: Enforce single playbook per PR
+        if: steps.changed.outputs.count != '0'
+        run: |
+          COUNT="${{ steps.changed.outputs.count }}"
+          if [ "$COUNT" -gt 1 ]; then
+            echo "::error::PRs must touch only one playbook folder. This PR changes $COUNT playbooks. Split into separate PRs."
+            echo "Changed: ${{ steps.changed.outputs.folders }}"
+            exit 1
+          fi
+
       - name: Validate Playbooks
         id: validate
         run: |
