@@ -1,0 +1,102 @@
+# Publishes changed playbooks to Contentstack production environment on merge to main.
+# Requires GitHub Secrets: CONTENTSTACK_MANAGEMENT_TOKEN, CMS_API_KEY
+name: Publish Playbook to Production
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'playbooks/**'
+
+permissions:
+  contents: read
+
+jobs:
+  publish-production:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get changed Playbook folders
+        id: changed
+        run: |
+          BEFORE="${{ github.event.before }}"
+          # Skip if before is all zeros (new branch or tag)
+          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            echo "Initial push, no previous commit. Skipping."
+            echo "folders=" >> $GITHUB_OUTPUT
+            echo "count=0" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          FILES=$(git diff --name-only "$BEFORE" "${{ github.sha }}" 2>/dev/null || true)
+          FOLDERS=$(echo "$FILES" | sed -n 's|^playbooks/\([^/]*\)/.*|playbooks/\1|p' | sort -u)
+          COUNT=$(echo "$FOLDERS" | grep -c . 2>/dev/null || echo 0)
+
+          echo "folders<<DELIM" >> $GITHUB_OUTPUT
+          echo "$FOLDERS" >> $GITHUB_OUTPUT
+          echo "DELIM" >> $GITHUB_OUTPUT
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+
+      - name: Check for friendly_id changes
+        if: steps.changed.outputs.count != '0'
+        run: |
+          BEFORE="${{ github.event.before }}"
+          [ "$BEFORE" = "0000000000000000000000000000000000000000" ] && exit 0
+
+          FOLDERS="${{ steps.changed.outputs.folders }}"
+          while IFS= read -r FOLDER; do
+            [ -z "$FOLDER" ] && continue
+            [ ! -f "${FOLDER}/APPHUB.yaml" ] && continue
+
+            OLD_YAML=$(git show "${BEFORE}:${FOLDER}/APPHUB.yaml" 2>/dev/null) || true
+            [ -z "$OLD_YAML" ] && continue
+
+            OLD_ID=$(echo "$OLD_YAML" | grep -E "^friendly_id:" | sed -E "s/^friendly_id:[[:space:]]*['\"]?([^'\"]*)['\"]?.*/\1/" | tr -d ' ')
+            NEW_ID=$(grep -E "^friendly_id:" "${FOLDER}/APPHUB.yaml" | sed -E "s/^friendly_id:[[:space:]]*['\"]?([^'\"]*)['\"]?.*/\1/" | tr -d ' ')
+
+            if [ -n "$OLD_ID" ] && [ -n "$NEW_ID" ] && [ "$OLD_ID" != "$NEW_ID" ]; then
+              echo "::warning::friendly_id changed in ${FOLDER}: ${OLD_ID} → ${NEW_ID}. Old Contentstack entry may be orphaned."
+            fi
+          done <<< "$FOLDERS"
+
+      - name: Publish playbooks to Production
+        env:
+          CONTENTSTACK_MANAGEMENT_TOKEN: ${{ secrets.CONTENTSTACK_MANAGEMENT_TOKEN }}
+          CMS_API_KEY: ${{ secrets.CMS_API_KEY }}
+        run: |
+          FOLDERS="${{ steps.changed.outputs.folders }}"
+          if [ -z "$FOLDERS" ] || [ "${{ steps.changed.outputs.count }}" = "0" ]; then
+            echo "No Playbook folders changed. Skipping publish."
+            exit 0
+          fi
+
+          PUBLISHED=0
+          while IFS= read -r FOLDER; do
+            [ -z "$FOLDER" ] && continue
+            if [ ! -f "${FOLDER}/APPHUB.yaml" ]; then
+              echo "Skipping ${FOLDER}: no APPHUB.yaml"
+              continue
+            fi
+            echo "Publishing ${FOLDER} to production..."
+            node scripts/publish-playbook.js "${FOLDER}" --env production
+            PUBLISHED=$((PUBLISHED + 1))
+          done <<< "$FOLDERS"
+
+          if [ $PUBLISHED -eq 0 ]; then
+            echo "No playbooks with APPHUB.yaml were changed."
+          else
+            echo "Published ${PUBLISHED} playbook(s) to production."
+          fi

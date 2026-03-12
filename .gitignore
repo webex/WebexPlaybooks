@@ -34,6 +34,10 @@ build/
 # Import playbook cache (cloned source repos)
 .import-playbook-cache/
 
+# Contentstack discovery output (contains internal UIDs)
+scripts/output/
+published.jsonl
+
 # --- JavaScript / Node.js (playbooks) ---
 .npm/
 .pnpm-store/
