@@ -1,4 +1,4 @@
-name: Validate Playbook
+name: Validate then Publish to Integration
 
 on:
   pull_request:
