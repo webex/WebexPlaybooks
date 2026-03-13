@@ -4,7 +4,7 @@
   "private": true,
   "description": "Webex Integration Playbooks",
   "engines": {
-    "node": ">=18"
+    "node": ">=24"
   },
   "scripts": {
     "fetch-contentstack": "node scripts/fetch-contentstack-data.js",
