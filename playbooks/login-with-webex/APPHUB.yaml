@@ -16,6 +16,7 @@ product_types:
   - "teams"
 
 app_context:
+  - "meetings"
   
 categories:
   - "developer-tools"
