@@ -1,13 +1,12 @@
-# Publishes changed playbooks to Contentstack integration environment on PR.
+# Publishes changed playbooks to Contentstack integration environment.
+# DISABLED: Publish on PR is now handled by validate-playbook.yml (validate-then-publish).
+# This workflow is kept for manual runs only.
 # Requires GitHub Secrets: CONTENTSTACK_MANAGEMENT_TOKEN, CMS_API_KEY
 # Optional: CMS_STACK_UID (default: bltd14fd2a03236233f) for Contentstack entry links in PR comment
 name: Publish Playbook to Integration
 
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'playbooks/**'
+  workflow_dispatch:
 
 permissions:
   contents: read
