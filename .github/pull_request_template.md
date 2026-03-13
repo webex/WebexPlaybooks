@@ -24,6 +24,7 @@ Ensure **APPHUB.yaml** is correctly formatted per the [APPHUB schema in CONTRIBU
 
 Before submitting, confirm:
 
+- [ ] This PR touches only one playbook folder (see [CONTRIBUTING.md](CONTRIBUTING.md#what-not-to-do))
 - [ ] All 6 required sections present in README.md (Use Case Overview, Architecture, Prerequisites, Code Scaffold, Deployment Guide, Known Limitations)
 - [ ] APPHUB.yaml complete with all required fields
 - [ ] Branch name follows `playbook/<tool-slug>`

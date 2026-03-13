@@ -1,0 +1,16 @@
+{
+  "name": "webex-playbooks",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Webex Integration Playbooks",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "fetch-contentstack": "node scripts/fetch-contentstack-data.js",
+    "publish-playbook": "node scripts/publish-playbook.js"
+  },
+  "devDependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}

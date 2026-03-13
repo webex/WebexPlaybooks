@@ -235,6 +235,7 @@ A human reviewer performs a ~15-minute spot-check before merge.
 When you open a PR, the **Validate Playbook** workflow runs (see
 [.github/workflows/validate-playbook.yml](.github/workflows/validate-playbook.yml)). It runs only on the Playbook folders you changed and posts a **comment** on your PR with a checklist of results. The workflow checks:
 
+- **Single playbook per PR** — PRs must touch only one playbook folder. If you change multiple playbooks, split into separate PRs.
 - **README.md** — Exists and contains all six required section headers (Use Case Overview, Architecture, Prerequisites, Code Scaffold, Deployment Guide, Known Limitations); matching is case-insensitive.
 - **APPHUB.yaml** — Exists; all required fields are present and non-empty; `product_types` is an array with at least one of `teams`, `meetings`, `calling`, `rooms`, `contact_center`; `categories` has at least one value.
 - **Folders** — `diagrams/` and `src/` exist.
@@ -263,6 +264,10 @@ Webex API endpoint references must be **real and documented**. Link to official
 Webex developer documentation. Do not reference unsupported or internal APIs.
 
 ## What NOT to Do
+
+- **No multiple playbooks per PR** — Each PR must touch only one playbook
+  folder. If you need to change multiple playbooks, open separate PRs. This
+  keeps reviews focused and rollbacks clean.
 
 - **No competitor tools as primary targets** — Do not build Playbooks where
   Genesys, NICE, Five9, or Talkdesk are the primary integration target. Webex
