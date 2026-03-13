@@ -16,7 +16,7 @@ Before submitting, confirm your Playbook folder under `playbooks/<tool-slug>/` i
 
 ### APPHUB.yaml format
 
-Ensure **APPHUB.yaml** is correctly formatted per the [APPHUB schema in CONTRIBUTING.md](CONTRIBUTING.md#apphubyaml-metadata): all required fields filled, valid values for `vertical` and `webex_component`; `status` = `draft` or `review` (do not set `published`). The Validate Playbook workflow will fail if required fields are missing or invalid.
+Ensure **APPHUB.yaml** is correctly formatted per the [APPHUB schema in CONTRIBUTING.md](CONTRIBUTING.md#apphubyaml-metadata): all required fields filled, valid values for `vertical` and `webex_component`; `status` = `draft` or `review` (do not set `published`). The Validate then Publish to Integration workflow will fail if required fields are missing or invalid.
 
 ---
 
@@ -34,21 +34,9 @@ Before submitting, confirm:
 
 ---
 
-## Playbook Details
-
-| Field | Value |
-|-------|-------|
-| Playbook title | |
-| Third-party tool | |
-| Primary vertical | healthcare / financial-services / retail-ecommerce |
-| Target persona | admin / developer / architect |
-| Estimated implementation time | |
-
----
-
 ## Review Process and Turnaround
 
-- **Automated validation:** When you open or update this PR, the **Validate Playbook** workflow runs and posts a comment with results. The PR cannot merge until all checks pass. Fix any failures and push to re-run.
+- **Automated validation:** When you open or update this PR, the **Validate then Publish to Integration** workflow runs and posts a comment with results. The PR cannot merge until all checks pass. Fix any failures and push to re-run.
 - **Human review:** After validation passes, a reviewer performs a ~15-minute spot-check using the [review criteria](CONTRIBUTING.md#review-criteria) in CONTRIBUTING.md. You may receive change requests; push commits to this branch to address them.
 - **Turnaround:** Reviewers aim to complete the initial spot-check within **3 business days**; you will be notified of any change requests in the PR.
 

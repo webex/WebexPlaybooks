@@ -307,6 +307,82 @@ jobs:
               });
             }
 
+      - name: Extract Playbook Details from APPHUB.yaml
+        id: playbook_details
+        if: steps.changed.outputs.count != '0'
+        run: |
+          FOLDERS="${{ steps.changed.outputs.folders }}"
+          yaml_array_items() { awk -v key="$1" '$0 ~ "^" key ":"{f=1;next} f{if($0~/^[a-zA-Z_][a-zA-Z0-9_]*:/)exit; if($0~/^[[:space:]]+-[[:space:]]/)print}' "$2"; }
+          yaml_scalar() { grep -E "^${2}:" "$1" | head -1 | sed -E "s/^${2}:[[:space:]]*['\"]?([^'\"]*)['\"]?[[:space:]]*(#.*)?$/\1/" | tr -d '\r'; }
+
+          FOLDER=$(echo "$FOLDERS" | head -1)
+          [ -z "$FOLDER" ] || [ ! -f "${FOLDER}/APPHUB.yaml" ] && exit 0
+
+          TITLE=$(yaml_scalar "${FOLDER}/APPHUB.yaml" "title" || echo "—")
+          TOOL=$(yaml_scalar "${FOLDER}/APPHUB.yaml" "third_party_tool" || echo "—")
+          TIME=$(yaml_scalar "${FOLDER}/APPHUB.yaml" "estimated_implementation_time" || echo "—")
+
+          CATS=""
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            C=$(echo "$line" | sed -E "s/^[[:space:]]*-[[:space:]]*['\"]?([^'\"]*)['\"]?.*/\1/" | tr -d ' ')
+            [ -n "$C" ] && CATS="${CATS}${CATS:+, }${C}"
+          done <<< "$(yaml_array_items "categories" "${FOLDER}/APPHUB.yaml")"
+          [ -z "$CATS" ] && CATS="—"
+
+          {
+            echo "# Playbook Details (from APPHUB.yaml)"
+            echo ""
+            echo "| Field | Value |"
+            echo "|-------|-------|"
+            echo "| **Playbook title** | ${TITLE} |"
+            echo "| **Third-party tool** | ${TOOL} |"
+            echo "| **Categories** | ${CATS} |"
+            echo "| **Estimated implementation time** | ${TIME} |"
+          } > playbook-details.md
+
+      - name: Post Playbook Details comment
+        if: steps.changed.outputs.count != '0' && steps.playbook_details.outcome == 'success'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let body;
+            try {
+              body = fs.readFileSync('playbook-details.md', 'utf8');
+            } catch (e) {
+              body = null;
+            }
+            if (!body || body.trim().length === 0) return;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number
+            });
+
+            const botComment = comments.find(c =>
+              c.user.type === 'Bot' && c.body.includes('Playbook Details (from APPHUB.yaml)')
+            );
+
+            const commentBody = body + '\n\n---\n*Auto-generated from APPHUB.yaml.*';
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: commentBody
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: commentBody
+              });
+            }
+
       - name: Fail if validation failed
         if: steps.changed.outputs.count != '0'
         run: |

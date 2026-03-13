@@ -9,7 +9,7 @@ Reference: [CONTRIBUTING.md](../CONTRIBUTING.md) for full quality floor and sche
 
 ## Before You Start
 
-- [ ] **Automated validation has passed.** Do not proceed if the Validate Playbook
+- [ ] **Automated validation has passed.** Do not proceed if the Validate then Publish to Integration
   workflow failed. The author must fix CI failures first.
 - [ ] **Identify changed playbook(s).** The workflow comment lists validated
   folders. Review only those folders (or all if unsure).
@@ -109,8 +109,7 @@ Automated validation checks structure; you verify correctness and appropriatenes
 ## 8. Branch and PR Hygiene
 
 - [ ] **Branch name** — Follows `playbook/<tool-slug>` (e.g. `playbook/epic-ehr`).
-- [ ] **PR template completed** — Author filled in Playbook Details and
-  checklists.
+- [ ] **PR template completed** — Author completed checklists.
 - [ ] **Self-attestation** — Author confirmed deployment guide accuracy.
 
 ---
