@@ -183,7 +183,7 @@ Based on source repo docs:
 
 ### APPHUB.yaml
 
-Use the full schema from PLAYBOOK_TEMPLATE/APPHUB.yaml. Derive from the source repo:
+Use the full schema from PLAYBOOK_TEMPLATE/APPHUB.yaml. **Preserve the section comments** (the `# ---` separator lines and `# field_name — description` lines) from the template — do not strip them when generating APPHUB.yaml. Copy the comment structure from PLAYBOOK_TEMPLATE/APPHUB.yaml and substitute only the values. Derive from the source repo:
 
 - `friendly_id` — slug + `-playbook` (e.g. folder `meetings-exporter` →
   `meetings-exporter-playbook`) to reduce App Hub name collisions with actual integrations
