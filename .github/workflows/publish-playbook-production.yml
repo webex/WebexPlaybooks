@@ -91,7 +91,7 @@ jobs:
               continue
             fi
             echo "Publishing ${FOLDER} to production..."
-            node scripts/publish-playbook.js "${FOLDER}" --env production
+            node scripts/publish-playbook.js "${FOLDER}" --env production --promote-only
             PUBLISHED=$((PUBLISHED + 1))
           done <<< "$FOLDERS"
 

@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 /**
  * Publish APPHUB.yaml to Contentstack.
- * Usage: node scripts/publish-playbook.js <playbook-path> [--env integration|production] [--no-publish] [--output <file>]
+ * Usage: node scripts/publish-playbook.js <playbook-path> [--env integration|production] [--no-publish] [--promote-only] [--output <file>]
  *
  * Example: node scripts/publish-playbook.js playbooks/meetings-exporter --env integration
- * Example: node scripts/publish-playbook.js playbooks/meetings-exporter --env integration --output published.jsonl
+ * Example: node scripts/publish-playbook.js playbooks/meetings-exporter --env production --promote-only
+ *
+ * --promote-only: Publish the existing entry version to the target env without creating/updating.
+ *   Use for production to promote the same version from integration (avoids creating a new version).
  */
 
 const fs = require('fs');
@@ -25,11 +28,12 @@ async function main() {
   const envArg = args.find((a) => a.startsWith('--env='));
   const envName = envArg ? envArg.split('=')[1] : args[args.indexOf('--env') + 1];
   const noPublish = args.includes('--no-publish');
+  const promoteOnly = args.includes('--promote-only');
   const outputIdx = args.indexOf('--output');
   const outputFile = outputIdx >= 0 ? args[outputIdx + 1] : null;
 
   if (!playbookPath) {
-    console.error('Usage: node scripts/publish-playbook.js <playbook-path> [--env integration|production] [--no-publish]');
+    console.error('Usage: node scripts/publish-playbook.js <playbook-path> [--env integration|production] [--no-publish] [--promote-only]');
     process.exit(1);
   }
 
@@ -40,27 +44,35 @@ async function main() {
     const apphub = loadApphub(resolvedPath);
     console.log(`Loaded APPHUB.yaml: ${apphub.friendly_id}`);
 
-    const refs = await getReferences();
-    console.log(`References: ${refs.productTypes.length} product_types, ${refs.categories.length} categories, ${refs.workstreams.length} workstreams`);
-
-    const entryPayload = apphubToEntry(apphub, refs);
-    console.log('Built entry payload');
-
     const existing = await findEntryByFriendlyId(apphub.friendly_id);
     let entry;
     let version;
 
-    if (existing) {
-      console.log(`Updating existing entry ${existing.uid}`);
-      entry = await updateEntry(existing.uid, entryPayload);
-      version = entry._version;
+    if (promoteOnly) {
+      if (!existing) {
+        throw new Error(`Entry not found for ${apphub.friendly_id}. Publish to integration first.`);
+      }
+      entry = existing;
+      version = existing._version;
+      console.log(`Promoting existing entry ${entry.uid} (version ${version}) to ${envName}`);
     } else {
-      console.log('Creating new entry');
-      entry = await createEntry(entryPayload);
-      version = entry._version;
-    }
+      const refs = await getReferences();
+      console.log(`References: ${refs.productTypes.length} product_types, ${refs.categories.length} categories, ${refs.workstreams.length} workstreams`);
 
-    console.log(`Entry ${entry.uid} (version ${version})`);
+      const entryPayload = apphubToEntry(apphub, refs);
+      console.log('Built entry payload');
+
+      if (existing) {
+        console.log(`Updating existing entry ${existing.uid}`);
+        entry = await updateEntry(existing.uid, entryPayload);
+        version = entry._version;
+      } else {
+        console.log('Creating new entry');
+        entry = await createEntry(entryPayload);
+        version = entry._version;
+      }
+      console.log(`Entry ${entry.uid} (version ${version})`);
+    }
 
     if (!noPublish && envName) {
       const envUid = await getEnvironmentUid(envName);
