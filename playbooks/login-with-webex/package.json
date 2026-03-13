@@ -1,0 +1,13 @@
+{
+  "name": "login-with-webex-playbook",
+  "version": "1.0.0",
+  "description": "Login with Webex — OpenID Connect demo (ID Token + PKCE flows)",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.17.3"
+  }
+}

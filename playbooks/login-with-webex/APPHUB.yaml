@@ -1,0 +1,38 @@
+# APPHUB.yaml — Playbook metadata for Webex App Hub
+# Login with Webex — OpenID Connect authentication for Webex-integrated apps
+
+friendly_id: "login-with-webex-playbook"
+
+title: "Login with Webex Integration"
+
+tag_line: "Add 'Login in with Webex' to your app using OpenID Connect and PKCE"
+
+description: |
+  This Playbook demonstrates how to implement Login with Webex using the Authorization
+  Code flow with PKCE. Developers learn to authenticate users via their Webex
+  account and obtain ID tokens and user claims for Webex-integrated applications.
+
+product_types:
+  - "teams"
+
+app_context:
+  
+categories:
+  - "developer-tools"
+  - "productivity"
+
+company_name: "Webex for Developers"
+
+company_url: "https://developer.webex.com"
+
+support_url: "https://github.com/webex/webexplaybooks/issues"
+
+product_url: "https://github.com/webex/webexplaybooks/tree/main/playbooks/login-with-webex"
+
+logo: "https://images.contentstack.io/v3/assets/bltd14fd2a03236233f/blta2de9daa773c6604/60f71f81e2de935fc7e35dbe/download"
+
+estimated_implementation_time: "1-2 hours"
+
+third_party_tool: "Login with Webex"
+
+privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"

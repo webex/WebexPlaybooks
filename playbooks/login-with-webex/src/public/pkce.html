@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login with Webex (Auth Code + PKCE)</title>
+    <link type="text/css" href="main.css" media="all" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+</head>
+<body onload="init()">
+    <div id="content">
+        <div id="info">
+            <h1>Login with Webex</h1>
+            <h2><a href="https://developer.webex.com/docs/login-with-webex#authorization-code-flow-with-proof-key-for-code-exchange">Auth Code with PKCE</a> Demo</h2>
+            <h3>How to use this demo</h3>
+            <p>
+                <ul>
+                    <li><a href="https://developer.webex.com/docs/login-with-webex#getting-started">Setup a Webex Integration following the getting started guide.</a></li>
+                    <li>Make sure to add the current address as a redirect URI</li>
+                    <li>Enter client and secret of integration below</li>
+                    <li>Generate PKCE Code Challenge & Verifier</li>
+                    <li>Request an Auth Code via OAuth Grant Flow</li>
+                    <li>Exchange Auth Code for Access Token</li>
+                    <li>Fetch <a href="https://developer.webex.com/docs/login-with-webex#userinfo-endpoint">UserInfo</a> with Access Token</li>
+                </ul>
+            </p>
+        </div>
+        <div id="status">
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="2">App Client Settings</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>Client ID</td>
+                        <td><input id="client_id" type="text" placeholder="App Client ID"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button id="btnClientID">Save Client ID (Local)</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Client Secret</td>
+                        <td><input id="client_secret" placeholder="App Client Secret"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button id="btnClientSecret">Save Client Secret (Local)</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <p>Note: Client Secret should not be available to the end user. This app is for demonstration purposes only!</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="2">Generate PKCE Code</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td colspan="2"><strong>PKCE Code Generator</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Code Verifier</td>
+                        <td id="codeVerifier"><textarea id="code_verifier" type="text" placeholder="OAuth PKCE Code Verifier" rows="2"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button id="btnCodeVerifier">Generate Code Verifier</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Code Challenge</td>
+                        <td id="codeChallenge"><input id="code_challenge" value="(To be generated)" readonly></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button id="btnCodeChallenge">Generate Code Challenge</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="2">Auth Code Grant Flow</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>Auth Code</td>
+                        <td><input id="auth_code" value="(To be generated)" readonly></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button id="btnAuth">Get Auth Code</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="2">Access Token</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>Access Token</td>
+                        <td><textarea id="access_token" type="text" placeholder="Access Token" rows="10" readonly></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>Access Token Response</td>
+                        <td><textarea id="access_token_response" type="text" placeholder="Access Token Full Response" rows="10" readonly></textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button id="btnToken">Get Access Token</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="2">UserInfo</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        <td>UserInfo</td>
+                        <td><textarea id="user_info" type="text" placeholder="UserInfo Details" rows="10" readonly></textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button id="btnUserInfo">Get UserInfo</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="docs">
+        <a href="https://darutk.medium.com/diagrams-of-all-the-openid-connect-flows-6968e3990660#:~:text=3.%20response_type%3Did_token" target="_blank">
+            <img src="https://miro.medium.com/max/1400/1*quwFs1fFCvTvLT80e_QHVA.png" width="50%">
+        </a>
+    </div>
+    <script src="pkce.js"></script>
+</body>
+</html>
