@@ -115,7 +115,7 @@ playbooks/<slug>/
 ├── diagrams/
 │   └── architecture-diagram.md
 └── src/
-    ├── main.<ext>
+    ├── (copy source files here — preserve original paths and filenames)
     └── env.template
 ```
 
