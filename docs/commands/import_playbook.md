@@ -115,8 +115,8 @@ playbooks/<slug>/
 ├── diagrams/
 │   └── architecture-diagram.md
 └── src/
-    ├── main.<ext>
-    └── env.template
+    ├── (original structure — e.g. client/, server/, package.json)
+    └── env.template (if similar file is not present already, else do not create this file.)
 ```
 
 ### README.md
