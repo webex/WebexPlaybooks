@@ -37,7 +37,6 @@ product_types:
 # -----------------------------------------------------------------------------
 app_context:
   - "contact_center"
-  - "sidebar"
 
 # -----------------------------------------------------------------------------
 # categories — App Hub category slugs. Pick one or more.
