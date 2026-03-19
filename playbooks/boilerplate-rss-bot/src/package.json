@@ -1,0 +1,42 @@
+{
+  "name": "rss-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prod": "nodemon app.js",
+    "format": "prettier --write ."
+  },
+  "author": "Jeremy Willans",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.7",
+    "axios-rate-limit": "^1.3.0",
+    "axios-retry": "3.1.9",
+    "dotenv": "^16.0.3",
+    "envalid": "^8.0.0",
+    "events": "^3.3.0",
+    "feedparser": "^2.2.10",
+    "global-agent": "^3.0.0",
+    "ms": "^2.1.3",
+    "postman-request": "^2.88.1-postman.33",
+    "winston": "^3.11.0",
+    "winston-loki": "^6.0.8",
+    "winston-syslog": "^2.7.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.34.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "husky": "^9.1.5",
+    "lint-staged": "^15.2.2",
+    "markdownlint": "^0.27.0",
+    "prettier": "^3.2.5"
+  },
+  "overrides": {
+    "tough-cookie": "4.1.3",
+    "request": "npm:postman-request@2.88.1-postman.33"
+  }
+}
