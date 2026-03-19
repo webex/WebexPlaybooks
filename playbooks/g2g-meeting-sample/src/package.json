@@ -1,0 +1,12 @@
+{
+  "name": "g2g-meeting-sample-playbook-src",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "check-preferences": "node check-meeting-preferences.js",
+    "chrome-tab": "node runChromeTab.js"
+  }
+}

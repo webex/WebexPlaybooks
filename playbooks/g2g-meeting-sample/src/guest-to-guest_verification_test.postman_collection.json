@@ -1,0 +1,1316 @@
+{
+  "info": {
+    "_postman_id": "499461ff-b62a-47de-bd78-abc84059e2e6",
+    "name": "guest-to-guest verification tests Copy",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "557488"
+  },
+  "item": [
+    {
+      "name": "Service App meeting preferences",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const respJson = pm.response.json()",
+              "",
+              "pm.test(\"The response has all high-level properties\", () => {",
+              "    pm.expect(respJson.audio).to.not.be.null",
+              "    pm.expect(respJson.audio.defaultAudioType).to.equal(\"voipOnly\")",
+              "    pm.expect(respJson.schedulingOptions).to.not.be.null",
+              "    pm.expect(respJson.sites).to.not.be.null",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [""],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://webexapis.com/v1/meetingPreferences",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "meetingPreferences"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Scheduling options jbh=true",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const respJson = pm.response.json()",
+              "",
+              "pm.test(\"join before host is true\", () => {",
+              "    pm.expect(respJson.enabledJoinBeforeHost).to.equal(true)",
+              "})",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"enabledJoinBeforeHost\": true,\n    \"joinBeforeHostMinutes\": 15,\n    \"enabledAutoShareRecording\": false,\n    \"enabledWebexAssistantByDefault\": false\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://webexapis.com/v1/meetingPreferences/schedulingOptions",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "meetingPreferences", "schedulingOptions"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Service App creates guest-to-guest meeting",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const respJson = pm.response.json();",
+              "",
+              "pm.test(\"The response has all properties\", () => {",
+              "    pm.expect(respJson.title.startsWith(\"g2g Meeting\")).to.be.true",
+              "    pm.expect(respJson.id).length.to.be.above(31)",
+              "",
+              "    // strip the Z",
+              "    let start = respJson.start.substring(0,respJson.start.length-1)",
+              "    let end = respJson.end.substring(0,respJson.endlength-1)",
+              "    pm.expect(utils.mStartISO).to.include(start)",
+              "    pm.expect(utils.mEndISO).to.include(end)",
+              "    ",
+              "    pm.expect(respJson.state).to.equal(\"active\")",
+              "    pm.expect(respJson.timezone).to.equal(\"UTC\")",
+              "})",
+              "",
+              "pm.test(\"The Service App is the host\", () => {",
+              "    pm.expect(respJson.hostUserId).to.equal(pm.environment.get(\"SAPersonId\"))",
+              "    pm.expect(respJson.hostDisplayName).to.equal(pm.environment.get(\"SADisplayName\"))",
+              "    pm.expect(respJson.hostEmail).to.equal(pm.environment.get(\"SAEmail\"))",
+              "})",
+              "",
+              "pm.environment.set(\"meetingPassword\", respJson.password)",
+              "pm.environment.set(\"meetingId\", respJson.id)",
+              "pm.environment.set(\"meetingPassword\", respJson.password)",
+              "pm.environment.set(\"meetingSipAddress\", respJson.sipAddress)",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "utils.calculateMeetingTimes()",
+              "",
+              "pm.variables.set(\"startISO\", utils.mStartISO)",
+              "pm.variables.set(\"endISO\", utils.mEndISO)",
+              "",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"g2g Meeting {{$randomColor}}\",\n    \"start\": \"{{startISO}}\",\n    \"end\": \"{{endISO}}\",\n    \"enabledJoinBeforeHost\" : true,\n    \"joinBeforeHostMinutes\" : 15,\n    \"unlockedMeetingJoinSecurity\" : \"allowJoin\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://webexapis.com/v1/meetings/",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "meetings", ""]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create guest 1 join link and join as attendee",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [""],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const respJson = pm.response.json();",
+              "",
+              "pm.test(\"The response has all properties\", () => {",
+              "    pm.expect(respJson.startLink.startsWith(\"https://\")).to.be.true",
+              "    pm.expect(respJson.joinLink.startsWith(\"https://\")).to.be.true",
+              "    pm.expect(respJson.expiration).to.be.not.null",
+              "})",
+              "",
+              "",
+              "pm.collectionVariables.set(\"Guest 1 start link\", respJson.startLink)",
+              "console.log(\"Guest 1 start link\", respJson.startLink)",
+              "pm.collectionVariables.set(\"Guest 1 join link\", respJson.joinLink)",
+              "console.log(\"Guest 1 join link\", respJson.joinLink)",
+              "",
+              "// calls a standalone server to launch the webpage in Google Chrome",
+              "let launchPage = \"http://localhost:3000/myConf?conf=\" + respJson.joinLink",
+              "console.log(launchPage)",
+              "pm.sendRequest(launchPage, (err, response) => {",
+              "    // This will have the output of your batch file",
+              "    console.log(response.text());",
+              "})",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"meetingId\": \"{{meetingId}}\",\n    \"password\" : \"{{meetingPassword}}\",\n    \"joinDirectly\" : false,\n    \"email\":\"{{$randomEmail}}\",\n    \"displayName\":\"Patient {{$randomFullName}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://webexapis.com/v1/meetings/join",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "meetings", "join"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create guest 2 join link and join as attendee",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [""],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const respJson = pm.response.json();",
+              "",
+              "pm.test(\"The response has all properties\", () => {",
+              "    pm.expect(respJson.startLink.startsWith(\"https://\")).to.be.true",
+              "    pm.expect(respJson.joinLink.startsWith(\"https://\")).to.be.true",
+              "    pm.expect(respJson.expiration).to.be.not.null",
+              "})",
+              "",
+              "",
+              "pm.collectionVariables.set(\"Guest 2 start link\", respJson.startLink)",
+              "console.log(\"Guest 2 start link\", respJson.startLink)",
+              "pm.collectionVariables.set(\"Guest 2 join link\", respJson.joinLink)",
+              "console.log(\"Guest 2 join link\", respJson.joinLink)",
+              "",
+              "// calls a standalone server to launch the webpage in Google Chrome",
+              "let launchPage = \"http://localhost:3000/myConf?conf=\" + respJson.joinLink",
+              "pm.sendRequest(launchPage, (err, response) => {",
+              "    // This will have the output of your batch file",
+              "    console.log(response.text());",
+              "})",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"meetingId\": \"{{meetingId}}\",\n    \"password\" : \"{{meetingPassword}}\",\n    \"joinDirectly\" : false,\n    \"email\":\"{{$randomEmail}}\",\n    \"displayName\":\"Patient {{$randomFullName}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://webexapis.com/v1/meetings/join",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "meetings", "join"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Service App creates guest 1",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [""],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});",
+              "",
+              "let respJson = pm.response.json()",
+              "",
+              "pm.test(\"The response has all properties\", () => {",
+              "    pm.expect(respJson.id).to.be.not.null",
+              "    pm.expect(respJson.email).to.not.be.null",
+              "    pm.expect(respJson.accessToken).to.not.be.null",
+              "    pm.expect(respJson.displayName).to.not.be.null",
+              "})",
+              "",
+              "pm.environment.set(\"guest1Id\",respJson.id)",
+              "pm.environment.set(\"guest1Email\", respJson.email)",
+              "pm.environment.set(\"guest1AccessToken\", respJson.accessToken)",
+              "pm.environment.set(\"guest1DisplayName\", respJson.displayName)"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"subject\": \"Hospital A Patient 1\",\n  \"displayName\": \"{{$randomFullName}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://webexapis.com/v1/guests/token",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "guests", "token"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Service App creates guest 2",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [""],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});",
+              "",
+              "let respJson = pm.response.json()",
+              "",
+              "pm.test(\"The response has all properties\", () => {",
+              "    pm.expect(respJson.id).to.be.not.null",
+              "    pm.expect(respJson.email).to.not.be.null",
+              "    pm.expect(respJson.accessToken).to.not.be.null",
+              "    pm.expect(respJson.displayName).to.not.be.null",
+              "})",
+              "",
+              "pm.environment.set(\"guest2Id\",respJson.id)",
+              "pm.environment.set(\"guest2Email\", respJson.email)",
+              "pm.environment.set(\"guest2AccessToken\", respJson.accessToken)",
+              "pm.environment.set(\"guest2DisplayName\", respJson.displayName)"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"subject\": \"Hospital A Patient 2\",\n  \"displayName\": \"{{$randomFullName}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://webexapis.com/v1/guests/token",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "guests", "token"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create host start link and join as host",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [""],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const respJson = pm.response.json();",
+              "",
+              "pm.test(\"The response has all properties\", () => {",
+              "    pm.expect(respJson.startLink.startsWith(\"https://\")).to.be.true",
+              "    pm.expect(respJson.joinLink.startsWith(\"https://\")).to.be.true",
+              "    pm.expect(respJson.expiration).to.be.not.null",
+              "})",
+              "",
+              "",
+              "pm.collectionVariables.set(\"Host start link\", respJson.startLink)",
+              "console.log(\"Host start link\", respJson.startLink)",
+              "pm.collectionVariables.set(\"Host join link\", respJson.joinLink)",
+              "console.log(\"Host join link\", respJson.joinLink)",
+              "",
+              "// calls a standalone server to launch the webpage in Google Chrome",
+              "let launchPage = \"http://localhost:3000/myConf?conf=\" + respJson.startLink",
+              "pm.sendRequest(launchPage, (err, response) => {",
+              "    // This will have the output of your batch file",
+              "    console.log(response.text());",
+              "})",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"meetingId\": \"{{meetingId}}\",\n    \"password\" : \"{{meetingPassword}}\",\n    \"joinDirectly\" : false,\n    \"email\":\"{{$randomEmail}}\",\n    \"displayName\":\"Dr. {{$randomFullName}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://webexapis.com/v1/meetings/join",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "meetings", "join"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "guest 1 creates join link and join as attendee",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [""],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const respJson = pm.response.json();",
+              "",
+              "pm.test(\"The response has all properties\", () => {",
+              "    pm.expect(respJson.startLink.startsWith(\"https://\")).to.be.true",
+              "    pm.expect(respJson.joinLink.startsWith(\"https://\")).to.be.true",
+              "    pm.expect(respJson.expiration).to.be.not.null",
+              "})",
+              "",
+              "",
+              "pm.collectionVariables.set(\"Guest 1 start link\", respJson.startLink)",
+              "console.log(\"Guest 1 start link\", respJson.startLink)",
+              "pm.collectionVariables.set(\"Guest 1 join link\", respJson.joinLink)",
+              "console.log(\"Guest 1 join link\", respJson.joinLink)",
+              "",
+              "// calls a standalone server to launch the webpage in Google Chrome",
+              "let launchPage = \"http://localhost:3000/myConf?conf=\" + respJson.joinLink",
+              "console.log(launchPage)",
+              "pm.sendRequest(launchPage, (err, response) => {",
+              "    // This will have the output of your batch file",
+              "    console.log(response.text());",
+              "})",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{guest1AccessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"meetingId\": \"{{meetingId}}\",\n    \"password\" : \"{{meetingPassword}}\",\n    \"joinDirectly\" : false,\n    \"email\":\"{{guest1Email}}\",\n    \"displayName\":\"Patient {{guest1DisplayName}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://webexapis.com/v1/meetings/join",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "meetings", "join"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "guest 2 creates join link and join as attendee",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [""],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const respJson = pm.response.json();",
+              "",
+              "pm.test(\"The response has all properties\", () => {",
+              "    pm.expect(respJson.startLink.startsWith(\"https://\")).to.be.true",
+              "    pm.expect(respJson.joinLink.startsWith(\"https://\")).to.be.true",
+              "    pm.expect(respJson.expiration).to.be.not.null",
+              "})",
+              "",
+              "",
+              "pm.collectionVariables.set(\"Guest 1 start link\", respJson.startLink)",
+              "console.log(\"Guest 1 start link\", respJson.startLink)",
+              "pm.collectionVariables.set(\"Guest 1 join link\", respJson.joinLink)",
+              "console.log(\"Guest 1 join link\", respJson.joinLink)",
+              "",
+              "// calls a standalone server to launch the webpage in Google Chrome",
+              "let launchPage = \"http://localhost:3000/myConf?conf=\" + respJson.joinLink",
+              "console.log(launchPage)",
+              "pm.sendRequest(launchPage, (err, response) => {",
+              "    // This will have the output of your batch file",
+              "    console.log(response.text());",
+              "})",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{guest2AccessToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"meetingId\": \"{{meetingId}}\",\n    \"password\" : \"{{meetingPassword}}\",\n    \"joinDirectly\" : false,\n    \"email\":\"{{guest2Email}}\",\n    \"displayName\":\"Patient {{guest2DisplayName}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://webexapis.com/v1/meetings/join",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "meetings", "join"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Retrieve Service App person details",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const respJson = pm.response.json()",
+              "",
+              "pm.environment.set(\"SAPersonId\",respJson.id)",
+              "pm.environment.set(\"SADisplayName\",respJson.displayName)",
+              "pm.environment.set(\"SAEmail\",respJson.emails[0])"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://webexapis.com/v1/people/me",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "people", "me"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Service App creates space",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const respJson = pm.response.json()",
+              "",
+              "",
+              "pm.test(\"The response has all properties\", () => {",
+              "    pm.expect(respJson.id).to.be.not.null",
+              "    pm.expect(respJson.title).to.equal(title)",
+              "    pm.expect(respJson.type).to.equal(\"group\")",
+              "    pm.expect(\"respJson.creatorId\").to.equal.pm.environment.get(\"SAPersonId\")",
+              "})",
+              "",
+              "pm.environment.set(\"meetingRoomId\", respJson.id)"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": ["let title = pm.environment.get(\"meetingRoomTitle\")"],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\" : \"{{meetingRoomTitle}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://webexapis.com/v1/rooms",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "rooms"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Service App adds a monitor to room",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [""],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});",
+              "",
+              "let respJson = pm.response.json()",
+              "",
+              "pm.test(\"The response has all properties\", () => {",
+              "    pm.expect(respJson.id).to.be.not.null",
+              "    pm.expect(respJson.roomId).to.equal.pm.environment.get(\"meetingRoomId\")",
+              "    pm.expect(respJson.personId).to.equal.pm.environment.get(\"guest1Id\")",
+              "})",
+              "",
+              "pm.environment.set(\"monitorRoomMembership\",respJson.id)"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"roomId\": \"{{meetingRoomId}}\",\n  \"personEmail\" : \"{{monitorEmail}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://webexapis.com/v1/memberships",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "memberships"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Service App adds guests 1 to room by email",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [""],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});",
+              "",
+              "let respJson = pm.response.json()",
+              "",
+              "pm.test(\"The response has all properties\", () => {",
+              "    pm.expect(respJson.id).to.be.not.null",
+              "    pm.expect(respJson.roomId).to.equal.pm.environment.get(\"meetingRoomId\")",
+              "    pm.expect(respJson.personId).to.equal.pm.environment.get(\"guest1Id\")",
+              "})",
+              "",
+              "pm.environment.set(\"guest1RoomMembership\",respJson.id)"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"roomId\": \"{{meetingRoomId}}\",\n  \"personEmail\" : \"{{guest1Email}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://webexapis.com/v1/memberships",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "memberships"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Service App adds guests 2 to room by personId",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [""],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});",
+              "",
+              "let respJson = pm.response.json()",
+              "",
+              "pm.test(\"The response has all properties\", () => {",
+              "    pm.expect(respJson.id).to.be.not.null",
+              "    pm.expect(respJson.roomId).to.equal.pm.environment.get(\"meetingRoomId\")",
+              "    pm.expect(respJson.personId).to.equal.pm.environment.get(\"guest1Id\")",
+              "})",
+              "",
+              "pm.environment.set(\"guest2RoomMembership\",respJson.id)"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"roomId\": \"{{meetingRoomId}}\",\n  \"personId\" : \"{{guest2Id}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://webexapis.com/v1/memberships",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "memberships"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Service App lists space memberships",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [""],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", () => {",
+              "  pm.expect(pm.response.code).to.eql(200);",
+              "});",
+              "",
+              "let respJson = pm.response.json()",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://webexapis.com/v1/memberships?roomId={{meetingRoomId}}",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "memberships"],
+          "query": [
+            {
+              "key": "roomId",
+              "value": "{{meetingRoomId}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Service App creates a meeting associated with a space",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const respJson = pm.response.json();",
+              "",
+              "pm.test(\"The response has all properties\", () => {",
+              "    pm.expect(respJson.title.startsWith(\"g2g Meeting\")).to.be.true",
+              "    pm.expect(respJson.id).length.to.be.above(31)",
+              "",
+              "    // strip the Z",
+              "    let start = respJson.start.substring(0,respJson.start.length-1)",
+              "    let end = respJson.end.substring(0,respJson.endlength-1)",
+              "    pm.expect(utils.mStartISO).to.include(start)",
+              "    pm.expect(utils.mEndISO).to.include(end)",
+              "    ",
+              "    pm.expect(respJson.state).to.equal(\"active\")",
+              "    pm.expect(respJson.timezone).to.equal(\"UTC\")",
+              "})",
+              "",
+              "pm.test(\"The Service App is the host\", () => {",
+              "    pm.expect(respJson.hostUserId).to.equal(pm.environment.get(\"SAPersonId\"))",
+              "    pm.expect(respJson.hostDisplayName).to.equal(pm.environment.get(\"SADisplayName\"))",
+              "    pm.expect(respJson.hostEmail).to.equal(pm.environment.get(\"SAEmail\"))",
+              "})",
+              "",
+              "pm.environment.set(\"meetingPassword\", respJson.password)",
+              "pm.environment.set(\"meetingId\", respJson.id)",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "utils.calculateMeetingTimes()",
+              "",
+              "pm.variables.set(\"startISO\", utils.mStartISO)",
+              "pm.variables.set(\"endISO\", utils.mEndISO)",
+              "",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"g2g Meeting in space {{meetingRoomTitle}}\",\n    \"start\": \"{{startISO}}\",\n    \"end\": \"{{endISO}}\",\n    \"roomId\" : \"{{meetingRoomId}}\",\n     \"enabledJoinBeforeHost\" : true,\n    \"joinBeforeHostMinutes\" : 15,\n    \"unlockedMeetingJoinSecurity\" : \"allowJoin\",\n    \"adHoc\":true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://webexapis.com/v1/meetings/",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "meetings", ""]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create guest join link WITHOUT password and join as attendee",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [""],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "",
+              "const respJson = pm.response.json();",
+              "",
+              "pm.test(\"The response has all properties\", () => {",
+              "    pm.expect(respJson.startLink.startsWith(\"https://\")).to.be.true",
+              "    pm.expect(respJson.joinLink.startsWith(\"https://\")).to.be.true",
+              "    pm.expect(respJson.expiration).to.be.not.null",
+              "})",
+              "",
+              "",
+              "//pm.collectionVariables.set(\"Guest 2 start link\", respJson.startLink)",
+              "//console.log(\"Guest 2 start link\", respJson.startLink)",
+              "//pm.collectionVariables.set(\"Guest 2 join link\", respJson.joinLink)",
+              "//console.log(\"Guest 2 join link\", respJson.joinLink)",
+              "",
+              "// calls a standalone server to launch the webpage in Google Chrome",
+              "let launchPage = \"http://localhost:3000/myConf?conf=\" + respJson.joinLink",
+              "pm.sendRequest(launchPage, (err, response) => {",
+              "    // This will have the output of your batch file",
+              "    console.log(response.text());",
+              "})",
+              ""
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"meetingId\": \"{{meetingId}}\",\n    \"joinDirectly\" : false,\n    \"email\":\"{{$randomEmail}}\",\n    \"displayName\":\"Patient {{$randomFullName}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://webexapis.com/v1/meetings/join",
+          "protocol": "https",
+          "host": ["webexapis", "com"],
+          "path": ["v1", "meetings", "join"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "ZDhkMzYxY2YtZjcwNy00NzUzLTk2ZGItNDM4OGJiNmFlNzdjM2Q4ZTkzZGUtZDY0_P0A1_8cbb430e-1846-4da9-ba9f-e86c9b0877db",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [
+          "// console.log (\"collection script\")",
+          "",
+          "utils = {",
+          "    mStartISO: null,",
+          "    mEndISO : null,",
+          "    calculateMeetingTimes : function () {",
+          "        dateObject = new Date()",
+          "        dateObject.setUTCSeconds(0)",
+          "        dateObject.setUTCMilliseconds(0)",
+          "",
+          "        let nextFifteenMinutes = 15 * (Math.floor(dateObject.getUTCMinutes()/15)+1)",
+          "",
+          "        if ( nextFifteenMinutes < 60 ) {",
+          "            dateObject.setUTCMinutes(nextFifteenMinutes)",
+          "        } else {",
+          "            dateObject.setUTCHours(dateObject.getUTCHours()+1)",
+          "            dateObject.setUTCMinutes(0) ",
+          "        }",
+          "",
+          "        this.mStartISO = dateObject.toISOString()",
+          "        this.mEndISO = new Date(dateObject.getTime()+30*60000).toISOString()",
+          "    }",
+          "}",
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "exec": [""]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "meetingStart",
+      "value": ""
+    },
+    {
+      "key": "meetingPassword",
+      "value": ""
+    },
+    {
+      "key": "meetingId",
+      "value": ""
+    },
+    {
+      "key": "Guest 1 start link",
+      "value": ""
+    },
+    {
+      "key": "Guest 1 join link",
+      "value": ""
+    },
+    {
+      "key": "Guest 2 start link",
+      "value": ""
+    },
+    {
+      "key": "Guest 2 join link",
+      "value": ""
+    },
+    {
+      "key": "Host start link",
+      "value": ""
+    },
+    {
+      "key": "Host join link",
+      "value": ""
+    },
+    {
+      "key": "firstUserEmail",
+      "value": ""
+    },
+    {
+      "key": "firstUserDisplayName",
+      "value": ""
+    },
+    {
+      "key": "secondUserEmail",
+      "value": ""
+    },
+    {
+      "key": "secondUserDisplayName",
+      "value": ""
+    }
+  ]
+}
