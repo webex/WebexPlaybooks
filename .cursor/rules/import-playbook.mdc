@@ -33,11 +33,11 @@ Follow the full instructions in `docs/commands/import_playbook.md`.
   for Genesys, NICE, Five9, or Talkdesk, stop and explain the competitor-tools
   restriction — do not proceed.
 
-- **Step 4:** Do not run validation automatically. Output the validation command
+- **Step 2:** Do not run validation automatically. Output the validation command
   (`./scripts/validate-playbook-local.sh playbooks/<slug>`) in a code block and prompt
   the author to run it in the integrated terminal.
 
-- **Step 6:** Run `rm -rf .import-playbook-cache/<slug>` to remove the clone after
+- **Step 3:** Run `rm -rf .import-playbook-cache/<slug>` to remove the clone after
   the playbook is created.
 
 - Create all output files directly in the workspace using the editor.

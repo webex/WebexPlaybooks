@@ -115,6 +115,8 @@ playbooks/<slug>/
 ├── diagrams/
 │   └── architecture-diagram.md
 └── src/
+    ├── (copy source files here — preserve original paths and filenames)
+    └── env.template
     ├── (original structure — e.g. client/, server/, package.json)
     └── env.template (if similar file is not present already, else do not create this file.)
 ```
