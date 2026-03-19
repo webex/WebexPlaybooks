@@ -1,0 +1,34 @@
+# APPHUB.yaml — Playbook metadata for Webex App Hub
+# See CONTRIBUTING.md for field rules.
+
+friendly_id: "service-app-token-getter-playbook"
+
+title: "Webex Service App Token Getter"
+
+tag_line: "OAuth, token exchange and refresh, and webhook registration for Webex Service Apps"
+
+description: |
+  This sample demonstrates OAuth flows and token management for Webex Service Apps.
+  A companion Node.js server handles authorization, token exchange and refresh, and
+  webhook registration for Service App authorized and deauthorized events.
+
+product_types:
+  - "teams"
+
+app_context:
+  - "in_meeting"
+
+categories:
+  - "developer-tools"
+
+company_name: "Webex for Developers"
+company_url: "https://developer.webex.com"
+support_url: "https://github.com/webex/webexplaybooks/issues"
+
+product_url: "https://github.com/webex/webexplaybooks/tree/main/playbooks/service-app-token-getter"
+
+privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"
+
+estimated_implementation_time: "2-4 hours"
+
+third_party_tool: "Webex Integration"
