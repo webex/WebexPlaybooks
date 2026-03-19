@@ -36,6 +36,7 @@ product_types:
 # Valid: space | in_meeting | call | device | contact_center | sidebar | mcp | a2a
 # -----------------------------------------------------------------------------
 app_context:
+  - "call"
   - "sidebar"
 
 # -----------------------------------------------------------------------------
