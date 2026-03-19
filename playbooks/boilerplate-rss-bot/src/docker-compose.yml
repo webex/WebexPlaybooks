@@ -1,0 +1,13 @@
+# Example: run from this directory with a .env file (copy from env.template).
+# Optional: uncomment build and comment image to build locally instead of a public image.
+
+services:
+  rss-service:
+    image: jeremywillans/rss-service:latest
+    # build: .
+    container_name: rss-service
+    env_file:
+      - .env
+    environment:
+      CONSOLE_LEVEL: info
+    restart: unless-stopped
