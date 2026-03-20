@@ -1,0 +1,88 @@
+# APPHUB.yaml — wxc_sdk (Python) reference Playbook for Webex APIs / Calling
+
+# -----------------------------------------------------------------------------
+# friendly_id — Unique identifier. Must end with -playbook
+# -----------------------------------------------------------------------------
+friendly_id: "wxc-sdk-playbook"
+
+# -----------------------------------------------------------------------------
+# title — Display name for the Playbook
+# -----------------------------------------------------------------------------
+title: "wxc_sdk (Python) + Webex APIs"
+
+# -----------------------------------------------------------------------------
+# tag_line — Short tagline for App Hub detail page (required, max 128 chars)
+# -----------------------------------------------------------------------------
+tag_line: "Guide to the wxc_sdk PyPI package for Webex REST APIs with a Calling-focused client library"
+
+# -----------------------------------------------------------------------------
+# description — 1–2 sentences, used as App Hub listing copy
+# -----------------------------------------------------------------------------
+description: |
+  This Playbook points developers to the wxc_sdk open source Python SDK on GitHub and PyPI for
+  automating documented Webex REST APIs, with emphasis on Webex Calling. It does not vendor the SDK;
+  install upstream or use wxc-sdk from PyPI at the pinned version in src/README.md.
+
+# -----------------------------------------------------------------------------
+# product_types — Valid: teams | meetings | calling | rooms | contact_center
+# -----------------------------------------------------------------------------
+product_types:
+  - "calling"
+
+# -----------------------------------------------------------------------------
+# app_context — Valid: space | in_meeting | call | device | contact_center | sidebar | mcp | a2a
+# -----------------------------------------------------------------------------
+app_context:
+  - "call"
+
+# -----------------------------------------------------------------------------
+# categories — App Hub category slugs (at least one)
+# -----------------------------------------------------------------------------
+categories:
+  - "developer-tools"
+  - "platform"
+
+# -----------------------------------------------------------------------------
+# company_name
+# -----------------------------------------------------------------------------
+company_name: "Webex for Developers"
+
+# -----------------------------------------------------------------------------
+# company_url
+# -----------------------------------------------------------------------------
+company_url: "https://developer.webex.com"
+
+# -----------------------------------------------------------------------------
+# support_url
+# -----------------------------------------------------------------------------
+support_url: "https://github.com/webex/WebexPlaybooks/issues"
+
+# -----------------------------------------------------------------------------
+# product_url — Link to this Playbook in the repo (required)
+# -----------------------------------------------------------------------------
+product_url: "https://github.com/webex/WebexPlaybooks/tree/main/playbooks/wxc-sdk"
+
+# -----------------------------------------------------------------------------
+# logo — (Optional) defaults to standard Webex Playbook logo if omitted
+# -----------------------------------------------------------------------------
+logo: "https://images.contentstack.io/v3/assets/bltd14fd2a03236233f/blta2de9daa773c6604/60f71f81e2de935fc7e35dbe/download"
+
+# -----------------------------------------------------------------------------
+# estimated_implementation_time
+# -----------------------------------------------------------------------------
+estimated_implementation_time: "1-3 hours"
+
+# -----------------------------------------------------------------------------
+# third_party_tool — Upstream SDK name
+# -----------------------------------------------------------------------------
+third_party_tool: "wxc_sdk"
+
+# -----------------------------------------------------------------------------
+# privacy_url — Required
+# -----------------------------------------------------------------------------
+privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"
+
+# -----------------------------------------------------------------------------
+# submission_date — (Optional)
+# -----------------------------------------------------------------------------
+submission_date: "2026-03-20"
