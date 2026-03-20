@@ -1,0 +1,51 @@
+---
+description: Import a Webex Playbook that references an upstream repo (SDK/sample) without vendoring sources into playbooks/<slug>/src/
+globs:
+alwaysApply: false
+---
+
+# Import Playbook — Reference upstream (Cursor)
+
+Create a Webex Integration Playbook that **documents** integration with a
+**canonical upstream** open source repository (for example a Webex Calling SDK)
+**without** copying SDK sources or full sample trees into this repository.
+
+**How to invoke:** Type `/import-playbook-reference` in Cursor chat and include the
+GitHub repo URL in your message. Example:
+> `/import-playbook-reference — please process https://github.com/example/calling-sdk`
+
+The GitHub repo URL will be provided by the user in the chat message that invokes
+this rule. Extract it from their message before proceeding.
+
+---
+
+Follow the full instructions in `docs/commands/import_playbook_reference.md`.
+
+**Cursor-specific notes:**
+
+- **Step 0:** Run `git clone --depth 1 https://github.com/<owner>/<repo>.git
+  .import-playbook-cache/<slug>` in the workspace. Parse the repo URL from the
+  user's message to get owner and repo; derive slug from repo name (lowercase,
+  kebab-case, strip webex-/cisco- prefixes). The clone lives under
+  `.import-playbook-cache/` (gitignored).
+
+- **Step 1:** Read files from `.import-playbook-cache/<slug>/` using the Read tool.
+  Do not fetch via raw URLs unless the clone failed. If the source repo is
+  primarily for Genesys, NICE, Five9, or Talkdesk, stop and explain the
+  competitor-tools restriction — do not proceed.
+
+- **Step 3:** Do **not** copy upstream SDK packages, vendor trees, or full apps
+  into `playbooks/<slug>/src/`. Create `src/README.md` (required pointer to
+  upstream + pinned ref) and optional `env.template` per the doc.
+
+- **Step 4:** Do not run validation automatically. Output the validation command
+  (`./scripts/validate-playbook-local.sh playbooks/<slug>`) in a code block and
+  prompt the author to run it in the integrated terminal.
+
+- **Step 6:** Run `rm -rf .import-playbook-cache/<slug>` to remove the clone after
+  the playbook is created.
+
+- Create all output files directly in the workspace using the editor.
+
+- Replace every instance of `<slug>` in the instructions with the slug derived from
+  the repo name in Step 0.

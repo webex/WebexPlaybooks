@@ -26,6 +26,14 @@ playbooks/<slug>/
     └── .env.example
 ```
 
+**Reference-upstream playbooks** (SDK or sample whose canonical home is another
+GitHub repo): the same folder layout applies, but `src/` may contain only
+**documentation that points to upstream** — typically `src/README.md` (required:
+URL, pinned ref, install path, license link) and optionally `env.template` for
+Webex-side or integration-only variables. Do **not** vendor upstream SDK sources
+or full sample trees. See `docs/commands/import_playbook_reference.md` and the
+`/import-playbook-reference` command.
+
 ## README.md — Six Required Sections
 
 Use these exact headers (case-insensitive validation):
@@ -65,8 +73,14 @@ Use these exact headers (case-insensitive validation):
 
 - Connect to a **real, documented Webex API endpoint** — no internal or experimental APIs
 - Use environment variables for **all** secrets — never hardcode credentials
-- Include `.env.example` with required variables and comments
+- Include `.env.example` (or `env.template`) with required variables and comments
+  when sample code lives in this repo
 - Match source repo language when possible; default to Node.js for Webex SDK compatibility
+
+For **reference-upstream** playbooks, the runnable integration code lives **upstream**;
+reviewers and authors still require a **followable path** to documented Webex APIs
+(via upstream samples or SDK usage described in README and Deployment Guide). See
+`docs/commands/import_playbook_reference.md`.
 
 ## Prohibited
 
@@ -76,13 +90,16 @@ Use these exact headers (case-insensitive validation):
 
 ## Import Playbook Command
 
-When converting an open source repo into a Playbook, use the instructions in
-`docs/commands/import_playbook.md`. The `/import-playbook` command (Claude/Cursor)
-follows that document.
+Two workflows:
 
-**Clone flow:** Clone the source repo to `.import-playbook-cache/<slug>/` in the
-workspace (gitignored), read from there, then remove the clone when done. Keeps
-everything local to the project.
+| Workflow | Document | Command (Claude/Cursor) |
+| -------- | -------- | ------------------------ |
+| **Standard** — copy minimal integration code into `playbooks/<slug>/src/` | [docs/commands/import_playbook.md](docs/commands/import_playbook.md) | `/import-playbook` |
+| **Reference upstream** — guide only; canonical SDK/sample stays in its repo | [docs/commands/import_playbook_reference.md](docs/commands/import_playbook_reference.md) | `/import-playbook-reference` |
+
+**Clone flow (both):** Clone the source repo to `.import-playbook-cache/<slug>/`
+in the workspace (gitignored), read from there, then remove the clone when done.
+Keeps everything local to the project.
 
 ## References
 

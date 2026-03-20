@@ -5,6 +5,9 @@ It is referenced by both `.claude/commands/import-playbook.md` (Claude Code) and
 `.cursor/rules/import-playbook.mdc` (Cursor). Do not duplicate content between those
 files — edit here and both adapters pick up the change.
 
+To produce a Playbook that **references** a canonical upstream repo without copying
+SDK or sample sources into `src/`, use [import_playbook_reference.md](import_playbook_reference.md).
+
 ---
 
 ## Purpose
