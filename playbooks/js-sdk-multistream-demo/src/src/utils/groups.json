@@ -1,0 +1,24 @@
+{
+  "group": [
+    {
+      "groupName": "Medical Service",
+      "users": []
+    },
+    {
+      "groupName": "Police Department",
+      "users": []
+    },
+    {
+      "groupName": "Disaster Management",
+      "users": []
+    },
+    {
+      "groupName": "Food and Supplies",
+      "users": []
+    },
+    {
+      "groupName": "Local Govt. Officials",
+      "users": []
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+.figure {
+  margin: 0;
+  margin-left: 2rem;
+  border: 1px #cccccc solid;
+  border-radius: 50%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.figure:hover .figcaption {
+  display: block;
+}
+
+.figcaption {
+  color: white;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  display: none;
+}
+
+.participant-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.participant-video {
+  border-radius: inherit;
+}
+
+.host {
+  width: 10rem !important;
+  height: 10rem !important;
+}
