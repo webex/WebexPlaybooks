@@ -87,7 +87,7 @@ exact headers below (case-insensitive matching is used in validation):
   variables. The **Code Scaffold** and **Deployment Guide** must still make it
   clear how a developer obtains upstream code and reaches a **documented Webex API**
   via that artifact. Human review checks that path rather than expecting a full
-  duplicate implementation under `src/`.
+  duplicate implementation under `src/`. The App Hub Team will determine if a submission qualifies to keep the canonical reference at time of submission.
 
 This structured quality floor balances the need for clear, useful sample code
 with the understanding that production security controls are outside the scope
