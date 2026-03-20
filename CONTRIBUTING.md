@@ -79,6 +79,16 @@ exact headers below (case-insensitive matching is used in validation):
   canonical reference for contributors, reviewers, and AI agent rulesets to
   enforce consistency and security compliance.
 
+- **Reference-upstream playbooks** — When the canonical SDK or sample application
+  lives in another GitHub repository (see
+  [docs/commands/import_playbook_reference.md](docs/commands/import_playbook_reference.md)),
+  `src/` may contain only `src/README.md` (pointer to upstream, pinned ref, install
+  instructions, license link) and optionally `env.template` for Webex-side
+  variables. The **Code Scaffold** and **Deployment Guide** must still make it
+  clear how a developer obtains upstream code and reaches a **documented Webex API**
+  via that artifact. Human review checks that path rather than expecting a full
+  duplicate implementation under `src/`. The App Hub Team will determine if a submission qualifies to keep the canonical reference at time of submission.
+
 This structured quality floor balances the need for clear, useful sample code
 with the understanding that production security controls are outside the scope
 of the playbook itself but must be implemented by users deploying production
@@ -222,7 +232,10 @@ template includes self-attestation and reviewer questions. Ensure your
 
 - All six required sections present in README.md
 - APPHUB.yaml complete and valid
-- Code in src/ connects to a real, documented Webex API endpoint
+- **Standard playbooks:** Code in `src/` connects to a real, documented Webex API endpoint
+- **Reference-upstream playbooks:** `src/README.md` points to the canonical repo;
+  README + Deployment Guide describe a followable path to documented Webex APIs
+  using upstream (SDK or sample) at a pinned version
 - Deployment guide is followable by a competent developer
 - No competitor tools as primary integration targets (see below)
 
@@ -245,7 +258,7 @@ If any check fails, the workflow fails and the PR cannot merge. Fix the issues r
 
 ### Human review
 
-After automated validation passes, a human reviewer performs a ~15-minute spot-check using the [Review criteria](#review-criteria) in the PR Process section. They confirm that the code in src/ connects to a real Webex API, the deployment guide is followable, and there are no duplicate or disallowed integration targets. You may receive change requests; respond by pushing commits to the same branch. Human review complements (and is not replaced by) any automated checks.
+After automated validation passes, a human reviewer performs a ~15-minute spot-check using the [Review criteria](#review-criteria) in the PR Process section. For standard playbooks they confirm that code in `src/` connects to a real Webex API. For **reference-upstream** playbooks they confirm the documented path to upstream plus Webex usage is accurate and followable. They also verify the deployment guide and that there are no duplicate or disallowed integration targets. You may receive change requests; respond by pushing commits to the same branch. Human review complements (and is not replaced by) any automated checks.
 
 ### AI review pipeline
 
