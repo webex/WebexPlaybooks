@@ -1,0 +1,58 @@
+---
+description: Import Webex Contact Center Flow Designer sample assets from a GitHub repo subdirectory into playbooks/<slug>/src/
+globs:
+alwaysApply: false
+---
+
+# Import Playbook — Flow Designer samples (Cursor)
+
+Create a Webex Integration Playbook by copying a **user-chosen top-level directory**
+from a flows sample repository into `playbooks/<slug>/src/`, with full playbook
+scaffolding (README, APPHUB.yaml, diagrams).
+
+**How to invoke:** Type `/import-playbook-flow-designer` in Cursor chat. The message
+**must** include the **source directory name** under the repo root (e.g.
+`ai-agent-autonomous`). Optional: full GitHub clone URL (default
+`https://github.com/WebexSamples/webex-contact-center-flows.git`), optional explicit
+playbook folder name `<slug>` if it should differ from the directory name.
+
+Example:
+
+> `/import-playbook-flow-designer — source directory ai-agent-autonomous`
+
+---
+
+Follow the full instructions in `docs/commands/import_playbook_flow_designer.md`.
+
+**Cursor-specific notes:**
+
+- **Parameters:** Parse `<source-directory>` from the user message (required). Parse
+  optional GitHub URL; default clone:
+  `https://github.com/WebexSamples/webex-contact-center-flows.git`. Derive `<repo-slug>`
+  from the repo name in the URL (lowercase, kebab-case). Derive `<slug>` from
+  `<source-directory>` unless the user specifies a different playbook folder name.
+
+- **Step 0:** Run `git clone --depth 1 <url> .import-playbook-cache/<repo-slug>` after
+  `mkdir -p .import-playbook-cache`. The clone is gitignored under
+  `.import-playbook-cache/`.
+
+- **Step 1:** Read files from
+  `.import-playbook-cache/<repo-slug>/<source-directory>/` using the Read tool (and list
+  the directory if needed). If that path does not exist, stop and explain.
+
+- **Copy:** Recursively copy everything under
+  `.import-playbook-cache/<repo-slug>/<source-directory>/` into
+  `playbooks/<slug>/src/`, preserving relative paths and filenames.
+
+- **Validation:** Do not run validation automatically. Output the validation command
+  (`./scripts/validate-playbook-local.sh playbooks/<slug>`) in a code block and prompt
+  the author to run it in the integrated terminal.
+
+- **Cleanup:** Run `rm -rf .import-playbook-cache/<repo-slug>` after the playbook is
+  created.
+
+- Create all playbook output files directly in the workspace using the editor.
+
+- Replace every instance of `<slug>` in the instructions with the chosen playbook folder
+  name; use `<repo-slug>` and `<source-directory>` as resolved from the user message and
+  URL.
