@@ -27,5 +27,15 @@ jobs:
       - name: Run tests
         run: npm test
 
+      # rhysd/actionlint is not on the webex org allowlist; run pinned binary from releases instead.
       - name: Lint GitHub Actions workflows
-        uses: rhysd/actionlint@v1
+        env:
+          ACTIONLINT_VERSION: 1.7.11
+        run: |
+          set -euo pipefail
+          curl -sSL \
+            "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" \
+            -o actionlint.tgz
+          tar xzf actionlint.tgz actionlint
+          rm -f actionlint.tgz
+          ./actionlint -color
