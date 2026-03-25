@@ -32,9 +32,19 @@ jobs:
             });
 
             const playbookFolders = new Set();
+            let needsNodeTests = false;
 
             for (const file of files.data) {
               const path = file.filename;
+              if (
+                path.startsWith('scripts/') ||
+                path.startsWith('test/') ||
+                path.startsWith('.github/workflows/') ||
+                path === 'package.json' ||
+                path === 'package-lock.json'
+              ) {
+                needsNodeTests = true;
+              }
               const match = path.match(/^playbooks\/([^/]+)\//);
               if (match) {
                 playbookFolders.add(`playbooks/${match[1]}`);
@@ -43,6 +53,7 @@ jobs:
 
             core.setOutput('folders', [...playbookFolders].join('\n'));
             core.setOutput('count', playbookFolders.size.toString());
+            core.setOutput('needs_node_tests', needsNodeTests ? 'true' : 'false');
 
       - name: Enforce single playbook per PR
         if: steps.changed.outputs.count != '0'
@@ -55,18 +66,18 @@ jobs:
           fi
 
       - name: Setup Node.js for validation scripts
-        if: steps.changed.outputs.count != '0'
+        if: steps.changed.outputs.count != '0' || steps.changed.outputs.needs_node_tests == 'true'
         uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: 'npm'
 
       - name: Install npm dependencies
-        if: steps.changed.outputs.count != '0'
+        if: steps.changed.outputs.count != '0' || steps.changed.outputs.needs_node_tests == 'true'
         run: npm ci
 
       - name: Run CI script tests
-        if: steps.changed.outputs.count != '0'
+        if: steps.changed.outputs.count != '0' || steps.changed.outputs.needs_node_tests == 'true'
         run: npm test
 
       - name: Validate Playbooks

@@ -8,6 +8,8 @@ on:
       - 'scripts/**'
       - 'test/**'
       - '.github/workflows/**'
+      - 'package.json'
+      - 'package-lock.json'
 
 permissions:
   contents: read
