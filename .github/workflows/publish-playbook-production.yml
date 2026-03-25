@@ -36,8 +36,8 @@ jobs:
           # Skip if before is all zeros (new branch or tag)
           if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
             echo "Initial push, no previous commit. Skipping."
-            echo "folders=" >> $GITHUB_OUTPUT
-            echo "count=0" >> $GITHUB_OUTPUT
+            echo "folders=" >> "$GITHUB_OUTPUT"
+            echo "count=0" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -45,10 +45,10 @@ jobs:
           FOLDERS=$(echo "$FILES" | sed -n 's|^playbooks/\([^/]*\)/.*|playbooks/\1|p' | sort -u)
           COUNT=$(echo "$FOLDERS" | grep -c . 2>/dev/null || echo 0)
 
-          echo "folders<<DELIM" >> $GITHUB_OUTPUT
-          echo "$FOLDERS" >> $GITHUB_OUTPUT
-          echo "DELIM" >> $GITHUB_OUTPUT
-          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "folders<<DELIM" >> "$GITHUB_OUTPUT"
+          echo "$FOLDERS" >> "$GITHUB_OUTPUT"
+          echo "DELIM" >> "$GITHUB_OUTPUT"
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
 
       - name: Check for friendly_id changes
         if: steps.changed.outputs.count != '0'
@@ -95,7 +95,7 @@ jobs:
             PUBLISHED=$((PUBLISHED + 1))
           done <<< "$FOLDERS"
 
-          if [ $PUBLISHED -eq 0 ]; then
+          if [ "$PUBLISHED" -eq 0 ]; then
             echo "No playbooks with APPHUB.yaml were changed."
           else
             echo "Published ${PUBLISHED} playbook(s) to production."
