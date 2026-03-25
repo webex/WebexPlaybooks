@@ -1,21 +1,15 @@
-# Runs when CI tooling changes: Node tests, workflow YAML lint.
-name: CI scripts and workflows
+# Separate from validate-playbook: unit tests + actionlint on every PR (no playbook publish).
+name: Unit tests and workflow lint
 
 on:
   pull_request:
     branches: [main]
-    paths:
-      - 'scripts/**'
-      - 'test/**'
-      - '.github/workflows/**'
-      - 'package.json'
-      - 'package-lock.json'
 
 permissions:
   contents: read
 
 jobs:
-  ci-scripts:
+  unit-tests-and-lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
