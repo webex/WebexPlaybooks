@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Local validation script matching .github/workflows/validate-playbook.yml
 # Usage: ./scripts/validate-playbook-local.sh playbooks/meetings-exporter
+# Run `npm ci` once from the repo root so the competitor check (Node) can load js-yaml.
 
 # Helper: extract YAML array items for a key (stops at next top-level key)
 yaml_array_items() { awk -v key="$1" '$0 ~ "^" key ":"{f=1;next} f{if($0~/^[a-zA-Z_][a-zA-Z0-9_]*:/)exit; if($0~/^[[:space:]]+-[[:space:]]/)print}' "$2"; }
@@ -41,6 +42,24 @@ if [ -f "${FOLDER}/APPHUB.yaml" ]; then
 else
   REPORT="${REPORT}- [ ] APPHUB.yaml exists — *Add APPHUB.yaml with all required metadata fields*\n"
   FOLDER_FAILED=1
+fi
+
+# No prohibited competitors in APPHUB metadata (Genesys, NICE, Five9, Talkdesk / CXone)
+# Script exit: 0 = ok, 1 = violations, 2+ = script/YAML/module error (do not label as competitor)
+if [ -f "${FOLDER}/APPHUB.yaml" ]; then
+  node scripts/check-competitor-tools.js "$FOLDER" 2>competitor-check.err
+  comp_ec=$?
+  COMP_MSG=$(tr '\n' ' ' < competitor-check.err | sed 's/[[:space:]]\{2,\}/ /g')
+  if [ "$comp_ec" -eq 0 ]; then
+    REPORT="${REPORT}- [x] No prohibited competitor as primary integration target (APPHUB metadata)\n"
+  elif [ "$comp_ec" -eq 1 ]; then
+    REPORT="${REPORT}- [ ] Prohibited competitor in APPHUB metadata — *${COMP_MSG}*\n"
+    FOLDER_FAILED=1
+  else
+    REPORT="${REPORT}- [ ] Competitor check failed (script or APPHUB.yaml) — *${COMP_MSG}*\n"
+    FOLDER_FAILED=1
+  fi
+  rm -f competitor-check.err
 fi
 
 # All required APPHUB.yaml fields present and non-empty

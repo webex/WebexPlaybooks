@@ -92,6 +92,8 @@ Automated validation checks structure; you verify correctness and appropriatenes
 
 - [ ] **No competitor tools as primary targets** — Playbook does not integrate
   Genesys, NICE, Five9, or Talkdesk as the main integration target. Webex only.
+  CI enforces a blocklist on `title`, `description`, `tag_line`, and `third_party_tool`
+  in `APPHUB.yaml`; edge cases may still need human review.
 - [ ] **No production-hardening claims** — Does not claim the playbook is
   production-ready without additional hardening.
 - [ ] **No undocumented APIs** — Only uses documented, supported Webex or

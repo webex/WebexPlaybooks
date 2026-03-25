@@ -7,6 +7,7 @@
     "node": ">=24"
   },
   "scripts": {
+    "check-competitors": "node scripts/check-competitor-tools.js",
     "fetch-contentstack": "node scripts/fetch-contentstack-data.js",
     "publish-playbook": "node scripts/publish-playbook.js"
   },
