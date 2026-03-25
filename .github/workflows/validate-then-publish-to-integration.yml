@@ -1,4 +1,4 @@
-name: Validate then Publish to Integration
+name: Validate then publish to integration
 
 on:
   pull_request:

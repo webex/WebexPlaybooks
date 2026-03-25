@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Validate one playbook folder (same rules as validate-playbook.yml / validate-playbook-local.sh).
+# Validate one playbook folder (same rules as validate-then-publish-to-integration.yml / validate-playbook-local.sh).
 # Usage: from repo root — bash scripts/ci/validate-playbook-folder.sh <playbook-folder>
 # Prints markdown checklist for that folder to stdout; exit 0 = pass, 1 = fail.
 

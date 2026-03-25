@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Local validation script matching .github/workflows/validate-playbook.yml
+# Local validation script matching .github/workflows/validate-then-publish-to-integration.yml
 # Usage: ./scripts/validate-playbook-local.sh playbooks/meetings-exporter
 # Run `npm ci` once from the repo root so the competitor check (Node) can load js-yaml.
 

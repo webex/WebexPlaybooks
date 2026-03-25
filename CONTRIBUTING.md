@@ -246,7 +246,7 @@ A human reviewer performs a ~15-minute spot-check before merge.
 ### Automated validation (CI)
 
 When you open a PR, the **Validate Playbook** workflow runs (see
-[.github/workflows/validate-playbook.yml](.github/workflows/validate-playbook.yml)). It runs only on the Playbook folders you changed and posts a **comment** on your PR with a checklist of results. The workflow checks:
+[.github/workflows/validate-then-publish-to-integration.yml](.github/workflows/validate-then-publish-to-integration.yml)). It runs only on the Playbook folders you changed and posts a **comment** on your PR with a checklist of results. The workflow checks:
 
 - **Single playbook per PR** — PRs must touch only one playbook folder. If you change multiple playbooks, split into separate PRs.
 - **README.md** — Exists and contains all six required section headers (Use Case Overview, Architecture, Prerequisites, Code Scaffold, Deployment Guide, Known Limitations); matching is case-insensitive.

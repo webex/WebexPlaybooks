@@ -1,4 +1,4 @@
-# Separate from validate-playbook: unit tests + actionlint on every PR (no playbook publish).
+# Unit tests + actionlint on every PR (separate from validate-then-publish-to-integration.yml).
 name: Unit tests and workflow lint
 
 on:

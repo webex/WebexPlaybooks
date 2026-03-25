@@ -105,4 +105,5 @@ Keeps everything local to the project.
 
 - [CONTRIBUTING.md](CONTRIBUTING.md) — Full authoring guide and field rules
 - [PLAYBOOK_TEMPLATE/](PLAYBOOK_TEMPLATE/) — Copy this when creating new Playbooks
-- [.github/workflows/validate-playbook.yml](.github/workflows/validate-playbook.yml) — CI validation logic
+- [.github/workflows/validate-then-publish-to-integration.yml](.github/workflows/validate-then-publish-to-integration.yml) — PR validation, comments, publish to integration
+- [.github/workflows/unit-tests-and-workflow-lint.yml](.github/workflows/unit-tests-and-workflow-lint.yml) — `npm test` and actionlint on every PR to `main`
