@@ -15,14 +15,6 @@
 
 const path = require('path');
 
-let loadApphub;
-try {
-  ({ loadApphub } = require('./lib/apphub-to-entries'));
-} catch (e) {
-  console.error(e.message || String(e));
-  process.exit(2);
-}
-
 const FIELDS = ['title', 'description', 'tag_line', 'third_party_tool'];
 
 /** @type {{ label: string; test: (s: string) => boolean }[]} */
@@ -71,6 +63,7 @@ function findViolations(apphub) {
 }
 
 function main() {
+  const { loadApphub } = require('./lib/apphub-to-entries');
   const playbookPath = process.argv[2];
   if (!playbookPath) {
     console.error('Usage: node scripts/check-competitor-tools.js <playbook-folder>');
@@ -97,9 +90,13 @@ function main() {
   process.exit(0);
 }
 
-try {
-  main();
-} catch (err) {
-  console.error(err.message || String(err));
-  process.exit(2);
+module.exports = { findViolations, FIELDS, RULES };
+
+if (require.main === module) {
+  try {
+    main();
+  } catch (err) {
+    console.error(err.message || String(err));
+    process.exit(2);
+  }
 }

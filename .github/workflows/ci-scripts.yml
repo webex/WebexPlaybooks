@@ -1,0 +1,35 @@
+# Runs when CI tooling changes: Node tests, workflow YAML lint.
+name: CI scripts and workflows
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/**'
+      - 'test/**'
+      - '.github/workflows/**'
+
+permissions:
+  contents: read
+
+jobs:
+  ci-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Lint GitHub Actions workflows
+        uses: rhysd/actionlint@v1

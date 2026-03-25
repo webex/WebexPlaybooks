@@ -9,7 +9,8 @@
   "scripts": {
     "check-competitors": "node scripts/check-competitor-tools.js",
     "fetch-contentstack": "node scripts/fetch-contentstack-data.js",
-    "publish-playbook": "node scripts/publish-playbook.js"
+    "publish-playbook": "node scripts/publish-playbook.js",
+    "test": "node --test test/**/*.test.js"
   },
   "devDependencies": {
     "js-yaml": "^4.1.0"

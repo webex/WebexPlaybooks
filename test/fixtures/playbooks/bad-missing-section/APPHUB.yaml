@@ -1,0 +1,16 @@
+friendly_id: "bad-missing-section-playbook"
+title: "Bad Missing Section"
+tag_line: "Fixture"
+description: "Fixture."
+product_types:
+  - meetings
+app_context:
+  - space
+categories:
+  - developer-tools
+company_name: "Test"
+company_url: "https://example.com"
+support_url: "https://example.com/support"
+product_url: "https://example.com/product"
+privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"
+estimated_implementation_time: "1 hour"
