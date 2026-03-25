@@ -49,3 +49,11 @@ test('appendPreviewFooter with empty prUrl returns stripped base only', () => {
   const base = `Text\n${MARKER_BEGIN}\nold\n${MARKER_END}`;
   assert.equal(appendPreviewFooter(base, ''), 'Text');
 });
+
+test('stripPreviewFooter removes legacy HTML comment markers', () => {
+  const legacyBegin = '<!-- webex-playbooks-preview:begin -->';
+  const legacyEnd = '<!-- webex-playbooks-preview:end -->';
+  const base = 'Description line.';
+  const withLegacy = `${base}\n${legacyBegin}\nPreview text\n${legacyEnd}`;
+  assert.equal(stripPreviewFooter(withLegacy), base);
+});
