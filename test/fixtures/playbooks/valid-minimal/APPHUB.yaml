@@ -1,0 +1,17 @@
+friendly_id: "valid-minimal-playbook"
+title: "Valid Minimal Fixture"
+tag_line: "CI test fixture"
+description: "Minimal playbook for validation tests."
+product_types:
+  - meetings
+app_context:
+  - space
+categories:
+  - developer-tools
+company_name: "Test"
+company_url: "https://example.com"
+support_url: "https://example.com/support"
+product_url: "https://example.com/product"
+privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"
+estimated_implementation_time: "1 hour"
+third_party_tool: "Example"
