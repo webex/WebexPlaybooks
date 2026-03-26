@@ -32,6 +32,13 @@ product_types:
   - "meetings"
 
 # -----------------------------------------------------------------------------
+# app_context — Where the integration runs. Pick one or more.
+# Valid: space | in_meeting | call | device | contact_center | sidebar | mcp | a2a
+# -----------------------------------------------------------------------------
+app_context:
+  - "in_meeting"
+
+# -----------------------------------------------------------------------------
 # categories — App Hub category slugs. Pick one or more.
 # Verticals: healthcare | financial-services | retail-ecommerce
 # App categories (use kebab-case slugs):
