@@ -4,8 +4,6 @@ tag_line: "Should fail competitor check"
 description: "Fixture with prohibited vendor in title."
 product_types:
   - meetings
-app_context:
-  - space
 categories:
   - developer-tools
 company_name: "Test"

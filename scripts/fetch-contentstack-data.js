@@ -36,7 +36,6 @@ const CONTENT_TYPES = {
   product_types: 'product_types',
   categories: 'categories',
   app_categories: 'app_categories',
-  integration_workstreams: 'integration_workstreams',
   webex_playbook_app: 'webex_playbook_app'
 };
 
@@ -104,7 +103,7 @@ async function main() {
       JSON.stringify({ content_types: ctUids }, null, 2)
     );
     console.log('0. content_types_list.json');
-    ctUids.filter((u) => /categor|product|workstream|playbook/i.test(u)).forEach((u) => console.log(`   - ${u}`));
+    ctUids.filter((u) => /categor|product|playbook/i.test(u)).forEach((u) => console.log(`   - ${u}`));
 
     // 1. Environments
     const envs = await run('environments', () => cmaFetch('/environments'));
@@ -133,29 +132,21 @@ async function main() {
     );
     console.log(`3. categories.json (${categories.length} entries)`);
 
-    // 4. Integration workstreams (app_context)
-    const workstreams = await run('integration_workstreams', () => fetchAllEntries(CONTENT_TYPES.integration_workstreams));
-    fs.writeFileSync(
-      path.join(outputDir, 'integration_workstreams.json'),
-      JSON.stringify(workstreams, null, 2)
-    );
-    console.log(`4. integration_workstreams.json (${workstreams.length} entries)`);
-
-    // 5. webex_playbook_app entries (sample playbook)
+    // 4. webex_playbook_app entries (sample playbook)
     const playbooks = await run('webex_playbook_app entries', () => fetchAllEntries(CONTENT_TYPES.webex_playbook_app));
     fs.writeFileSync(
       path.join(outputDir, 'webex_playbook_app_entries.json'),
       JSON.stringify(playbooks, null, 2)
     );
-    console.log(`5. webex_playbook_app_entries.json (${playbooks.length} entries)`);
+    console.log(`4. webex_playbook_app_entries.json (${playbooks.length} entries)`);
 
-    // 6. Content type schema for webex_playbook_app
+    // 5. Content type schema for webex_playbook_app
     const schema = await run('webex_playbook_app schema', () => cmaFetch(`/content_types/${CONTENT_TYPES.webex_playbook_app}`));
     fs.writeFileSync(
       path.join(outputDir, 'webex_playbook_app_schema.json'),
       JSON.stringify(schema, null, 2)
     );
-    console.log('6. webex_playbook_app_schema.json');
+    console.log('5. webex_playbook_app_schema.json');
 
     console.log(`\nOutput written to ${outputDir}/`);
   } catch (err) {

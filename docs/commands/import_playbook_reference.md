@@ -69,7 +69,7 @@ Five9, or Talkdesk, stop and do not proceed.
 ## Step 2 — Determine the Playbook slug and APPHUB.yaml values
 
 Same as [import_playbook.md — Step 2](import_playbook.md#step-2--determine-the-playbook-slug-and-apphubyaml-values)
-(integration type mapping, `product_types`, `app_context`, `categories`, etc.).
+(integration type mapping, `product_types`, `categories`, etc.).
 
 Set `third_party_tool` (when applicable) to the SDK or product name as it appears
 in upstream documentation.

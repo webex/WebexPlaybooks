@@ -15,9 +15,6 @@ description: |
 product_types:
   - "teams"
 
-app_context:
-  - "in_meeting"
-  
 categories:
   - "developer-tools"
   - "productivity"

@@ -157,30 +157,6 @@ if [ -f "${FOLDER}/APPHUB.yaml" ]; then
   fi
 fi
 
-if [ -f "${FOLDER}/APPHUB.yaml" ]; then
-  if ! grep -qE "^app_context:" "${FOLDER}/APPHUB.yaml"; then
-    REPORT="${REPORT}- [ ] APPHUB.yaml app_context — *Add app_context with at least one value*\n"
-    FOLDER_FAILED=1
-  else
-    APP_CONTEXT_LINE=$(yaml_array_items "app_context" "${FOLDER}/APPHUB.yaml")
-    APP_CONTEXT_INVALID=""
-    VALID_APP_CONTEXTS="space|in_meeting|call|device|contact_center|sidebar|mcp|a2a"
-    while IFS= read -r line; do
-      [ -z "$line" ] && continue
-      CTX=$(echo "$line" | sed -E 's/^[[:space:]]*-[[:space:]]*["'\'']?([^"'\'']*)["'\'']?.*/\1/' | tr -d ' ')
-      if [ -n "$CTX" ] && ! echo "$CTX" | grep -qE "^(${VALID_APP_CONTEXTS})$"; then
-        APP_CONTEXT_INVALID="${APP_CONTEXT_INVALID}${APP_CONTEXT_INVALID:+, }${CTX}"
-      fi
-    done <<< "$APP_CONTEXT_LINE"
-    if [ -z "$APP_CONTEXT_INVALID" ]; then
-      REPORT="${REPORT}- [x] APPHUB.yaml app_context values are valid\n"
-    else
-      REPORT="${REPORT}- [ ] APPHUB.yaml app_context valid — *Each value must be one of: space, in_meeting, call, device, contact_center, sidebar, mcp, a2a*\n"
-      FOLDER_FAILED=1
-    fi
-  fi
-fi
-
 if [ -d "${FOLDER}/diagrams" ]; then
   REPORT="${REPORT}- [x] /diagrams/ folder exists\n"
 else

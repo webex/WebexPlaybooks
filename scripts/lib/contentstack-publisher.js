@@ -72,15 +72,16 @@ async function getReferences() {
 
   let productTypes = readJson('product_types.json');
   let categories = readJson('categories.json');
-  let workstreams = readJson('integration_workstreams.json');
 
-  if (!productTypes || !categories || !workstreams) {
+  if (!productTypes || !categories) {
     productTypes = productTypes || await fetchAllEntries('product_types');
     categories = categories || await fetchAllEntries('webex_apps_categories');
-    workstreams = workstreams || await fetchAllEntries('integration_workstreams');
   }
 
-  return { productTypes: Array.isArray(productTypes) ? productTypes : [], categories: Array.isArray(categories) ? categories : [], workstreams: Array.isArray(workstreams) ? workstreams : [] };
+  return {
+    productTypes: Array.isArray(productTypes) ? productTypes : [],
+    categories: Array.isArray(categories) ? categories : []
+  };
 }
 
 async function findEntryByFriendlyId(friendlyId) {

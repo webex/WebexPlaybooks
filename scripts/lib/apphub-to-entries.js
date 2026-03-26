@@ -45,20 +45,13 @@ function resolveCategories(slugs, categoriesMap) {
     .filter(Boolean);
 }
 
-function resolveAppContext(slugs, workstreamsMap) {
-  return (slugs || [])
-    .map((s) => workstreamsMap[normalizeSlug(s)])
-    .filter(Boolean)
-    .map((uid) => ({ uid, _content_type_uid: 'integration_workstreams' }));
-}
-
 function resolveLogo(url, defaultUid = DEFAULT_LOGO_UID) {
   if (!url || typeof url !== 'string') return defaultUid;
   if (url.includes('blta2de9daa773c6604')) return 'blta2de9daa773c6604';
   return defaultUid;
 }
 
-function buildReferenceMaps(productTypes, categories, workstreams) {
+function buildReferenceMaps(productTypes, categories) {
   const productTypesMap = {};
   for (const pt of productTypes || []) {
     const slug =
@@ -74,25 +67,17 @@ function buildReferenceMaps(productTypes, categories, workstreams) {
     if (slug) categoriesMap[slug] = c.uid;
   }
 
-  const workstreamsMap = {};
-  for (const w of workstreams || []) {
-    const slug = normalizeSlug(w.workstream_id || w.uid);
-    if (slug) workstreamsMap[slug] = w.uid;
-  }
-
-  return { productTypesMap, categoriesMap, workstreamsMap };
+  return { productTypesMap, categoriesMap };
 }
 
 function apphubToEntry(apphub, refs) {
-  const { productTypesMap, categoriesMap, workstreamsMap } = buildReferenceMaps(
+  const { productTypesMap, categoriesMap } = buildReferenceMaps(
     refs.productTypes,
-    refs.categories,
-    refs.workstreams
+    refs.categories
   );
 
   const productTypes = resolveProductTypes(apphub.product_types, productTypesMap);
   const categories = resolveCategories(apphub.categories, categoriesMap);
-  const appContext = resolveAppContext(apphub.app_context, workstreamsMap);
   const logoUid = resolveLogo(apphub.logo);
 
   if (productTypes.length === 0) {
@@ -101,9 +86,6 @@ function apphubToEntry(apphub, refs) {
   if (categories.length === 0) {
     throw new Error(`No categories resolved for: ${(apphub.categories || []).join(', ')}`);
   }
-  if (appContext.length === 0) {
-    throw new Error(`No app_context resolved for: ${(apphub.app_context || []).join(', ')}`);
-  }
 
   return {
     title: apphub.title,
@@ -111,7 +93,6 @@ function apphubToEntry(apphub, refs) {
     description: apphub.description || '',
     tag_line: apphub.tag_line || '',
     product_types: productTypes,
-    app_context: appContext,
     categories,
     logo: logoUid,
     company_name: apphub.company_name || '',
@@ -137,6 +118,5 @@ function loadApphub(playbookPath) {
 module.exports = {
   apphubToEntry,
   loadApphub,
-  buildReferenceMaps,
   normalizeSlug
 };

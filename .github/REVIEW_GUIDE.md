@@ -50,7 +50,6 @@ Automated validation checks structure; you verify correctness and appropriatenes
 - [ ] **product_url** — Points to the correct playbook path in the repo (e.g.
   `https://github.com/webex/WebexPlaybooks/tree/main/playbooks/<slug>`).
 - [ ] **product_types** — Matches the playbook's actual Webex product(s).
-- [ ] **app_context** — Matches where the integration runs (e.g. space, in_meeting).
 - [ ] **categories** — Appropriate for the use case (verticals and/or app categories).
 - [ ] **description / tag_line** — Accurate and not misleading.
 

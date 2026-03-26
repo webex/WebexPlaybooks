@@ -57,7 +57,7 @@ async function main() {
       console.log(`Promoting existing entry ${entry.uid} (version ${version}) to ${envName}`);
     } else {
       const refs = await getReferences();
-      console.log(`References: ${refs.productTypes.length} product_types, ${refs.categories.length} categories, ${refs.workstreams.length} workstreams`);
+      console.log(`References: ${refs.productTypes.length} product_types, ${refs.categories.length} categories`);
 
       const entryPayload = apphubToEntry(apphub, refs);
       console.log('Built entry payload');
