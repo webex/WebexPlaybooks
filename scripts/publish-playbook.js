@@ -1,18 +1,22 @@
 #!/usr/bin/env node
 /**
  * Publish APPHUB.yaml to Contentstack.
- * Usage: node scripts/publish-playbook.js <playbook-path> [--env integration|production] [--no-publish] [--promote-only] [--output <file>]
+ * Usage: node scripts/publish-playbook.js <playbook-path> [--env integration|production|integration,production] [--no-publish] [--promote-only] [--preview-pr-url <url>] [--output <file>]
  *
  * Example: node scripts/publish-playbook.js playbooks/meetings-exporter --env integration
+ * Example: node scripts/publish-playbook.js playbooks/meetings-exporter --env production,integration
  * Example: node scripts/publish-playbook.js playbooks/meetings-exporter --env production --promote-only
  *
- * --promote-only: Publish the existing entry version to the target env without creating/updating.
- *   Use for production to promote the same version from integration (avoids creating a new version).
+ * --promote-only: Publish the existing entry version to the target env(s) without creating/updating.
+ * --env: Comma-separated environment names publish the same version to each after one update.
+ *
+ * PLAYBOOK_PREVIEW_PR_URL: When set and publish list includes "integration", append preview footer to description.
  */
 
 const fs = require('fs');
 const path = require('path');
 const { loadApphub, apphubToEntry } = require('./lib/apphub-to-entries');
+const { stripPreviewFooter, appendPreviewFooter } = require('./lib/preview-description');
 const {
   getReferences,
   findEntryByFriendlyId,
@@ -22,18 +26,44 @@ const {
   getEnvironmentUid
 } = require('./lib/contentstack-publisher');
 
+function parseEnvList(raw) {
+  if (!raw || typeof raw !== 'string') return [];
+  return raw
+    .split(',')
+    .map((e) => e.trim())
+    .filter(Boolean);
+}
+
+function parsePreviewPrUrl(args) {
+  const fromEnv = (process.env.PLAYBOOK_PREVIEW_PR_URL || '').trim();
+  if (fromEnv) return fromEnv;
+
+  const eq = args.find((a) => a.startsWith('--preview-pr-url='));
+  if (eq) return eq.split('=').slice(1).join('=').trim();
+
+  const idx = args.indexOf('--preview-pr-url');
+  if (idx >= 0 && args[idx + 1] && !args[idx + 1].startsWith('--')) {
+    return args[idx + 1].trim();
+  }
+  return '';
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const playbookPath = args.find((a) => !a.startsWith('--'));
   const envArg = args.find((a) => a.startsWith('--env='));
-  const envName = envArg ? envArg.split('=')[1] : args[args.indexOf('--env') + 1];
+  const envRaw = envArg ? envArg.split('=').slice(1).join('=') : args[args.indexOf('--env') + 1];
+  const envNames = parseEnvList(envRaw);
   const noPublish = args.includes('--no-publish');
   const promoteOnly = args.includes('--promote-only');
   const outputIdx = args.indexOf('--output');
   const outputFile = outputIdx >= 0 ? args[outputIdx + 1] : null;
+  const previewPrUrl = parsePreviewPrUrl(args);
 
   if (!playbookPath) {
-    console.error('Usage: node scripts/publish-playbook.js <playbook-path> [--env integration|production] [--no-publish] [--promote-only]');
+    console.error(
+      'Usage: node scripts/publish-playbook.js <playbook-path> [--env integration|production|integration,production] [--no-publish] [--promote-only] [--preview-pr-url <url>]'
+    );
     process.exit(1);
   }
 
@@ -54,12 +84,23 @@ async function main() {
       }
       entry = existing;
       version = existing._version;
-      console.log(`Promoting existing entry ${entry.uid} (version ${version}) to ${envName}`);
+      console.log(`Promoting existing entry ${entry.uid} (version ${version}) to ${envNames.join(', ')}`);
     } else {
       const refs = await getReferences();
       console.log(`References: ${refs.productTypes.length} product_types, ${refs.categories.length} categories`);
 
-      const entryPayload = apphubToEntry(apphub, refs);
+      const apphubForEntry = {
+        ...apphub,
+        description: stripPreviewFooter(apphub.description || '')
+      };
+      const entryPayload = apphubToEntry(apphubForEntry, refs);
+
+      const publishTargetsIntegration = envNames.some((n) => n.toLowerCase() === 'integration');
+      if (publishTargetsIntegration && previewPrUrl) {
+        entryPayload.description = appendPreviewFooter(entryPayload.description, previewPrUrl);
+        console.log('Applied integration preview footer to description');
+      }
+
       console.log('Built entry payload');
 
       if (existing) {
@@ -74,10 +115,12 @@ async function main() {
       console.log(`Entry ${entry.uid} (version ${version})`);
     }
 
-    if (!noPublish && envName) {
-      const envUid = await getEnvironmentUid(envName);
-      console.log(`Publishing to ${envName} (${envUid})...`);
-      await publishEntry(entry.uid, version, envUid);
+    if (!noPublish && envNames.length > 0) {
+      for (const name of envNames) {
+        const envUid = await getEnvironmentUid(name);
+        console.log(`Publishing to ${name} (${envUid})...`);
+        await publishEntry(entry.uid, version, envUid);
+      }
       console.log('Published successfully.');
 
       if (outputFile) {
