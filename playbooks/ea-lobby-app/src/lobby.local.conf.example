@@ -1,0 +1,35 @@
+server {
+    listen 443 ssl;
+    server_name lobby.local;
+
+    # SSL Certificate and Key (adjust the path to your actual files)
+    ssl_certificate     /YOUR_PATH/ea-multiuser-lobby/lobby.local.pem;
+    ssl_certificate_key /YOUR_PATH/ea-multiuser-lobby/lobby.local-key.pem;
+
+    # Frontend static files location (adjust this to where your build output is)
+    root /YOUR_PATH/ea-multiuser-lobby/frontend/dist;
+    index index.html;
+
+    # Serve the SPA
+    location / {
+        try_files $uri /index.html;
+    }
+
+    # Proxy API requests to Flask backend
+    location /api/ {
+        proxy_pass http://127.0.0.1:5000/api/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+    }
+
+    # Proxy WebSocket requests for Socket.IO
+    location /socket.io/ {
+        proxy_pass http://127.0.0.1:5000/socket.io/;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+    }
+}
