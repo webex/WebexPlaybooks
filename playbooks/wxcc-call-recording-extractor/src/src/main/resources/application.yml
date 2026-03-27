@@ -1,0 +1,22 @@
+# Where to persist exported Webex Contact Center call recordings.
+# Set WXCC_STORAGE_TARGET to: localhost | fileSystemAWSS3 | fileSystemGCPCloudStorage
+# (see env.template). Only configure the block for the backend you enable.
+
+fileSystemInterface:
+  type: ${WXCC_STORAGE_TARGET:localhost}
+
+localhost:
+  dataDirectory: ${LOCALHOST_DATA_DIRECTORY:/tmp/wxcc-recordings}
+
+fileSystemAWSS3:
+  user: ${AWS_S3_USER_LABEL:}
+  accessKey: ${AWS_ACCESS_KEY_ID:}
+  secretKey: ${AWS_SECRET_ACCESS_KEY:}
+  bucketName: ${AWS_S3_BUCKET:}
+  region: ${AWS_REGION:}
+
+# GCP: set GOOGLE_APPLICATION_CREDENTIALS to your service account JSON path.
+fileSystemGCPCloudStorage:
+  projectId: ${GCP_PROJECT_ID:}
+  bucketName: ${GCP_STORAGE_BUCKET:}
+  region: ${GCP_STORAGE_REGION:}
