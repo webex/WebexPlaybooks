@@ -11,8 +11,7 @@ const repoRoot = path.join(__dirname, '..');
 function loadRefs() {
   const productTypes = require(path.join(repoRoot, 'scripts/output/product_types.json'));
   const categories = require(path.join(repoRoot, 'scripts/output/categories.json'));
-  const workstreams = require(path.join(repoRoot, 'scripts/output/integration_workstreams.json'));
-  return { productTypes, categories, workstreams };
+  return { productTypes, categories };
 }
 
 describe('normalizeSlug', () => {
@@ -32,7 +31,6 @@ describe('apphubToEntry', () => {
       tag_line: 'Tag',
       product_types: ['meetings'],
       categories: ['developer-tools'],
-      app_context: ['space'],
       product_url: 'https://example.com/p',
       privacy_url: 'https://example.com/privacy'
     };
@@ -44,7 +42,6 @@ describe('apphubToEntry', () => {
     assert.ok(entry.product_types[0].uid);
     assert.equal(entry.product_types[0]._content_type_uid, 'product_types');
     assert.ok(entry.categories.length >= 1);
-    assert.ok(entry.app_context.length >= 1);
     assert.equal(entry.privacy_url, 'https://example.com/privacy');
   });
 
@@ -65,7 +62,6 @@ describe('apphubToEntry', () => {
             title: 'T',
             product_types: ['nonexistent_slug_xyz'],
             categories: ['developer-tools'],
-            app_context: ['space'],
             product_url: 'https://x',
             privacy_url: 'https://p'
           },

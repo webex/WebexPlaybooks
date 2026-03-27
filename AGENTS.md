@@ -55,14 +55,12 @@ Use these exact headers (case-insensitive validation):
 - `product_types` — Array, required; at least one value
 - `categories` — Array, required; at least one value
 - `product_url`, `privacy_url` — required
-- `app_context` — Array, required; at least one value
 
 ### Valid Values (enforced by CI)
 
 | Field | Allowed Values |
 | ----- | -------------- |
 | `product_types` | `teams`, `meetings`, `calling`, `rooms`, `contact_center` |
-| `app_context` | `space`, `in_meeting`, `call`, `device`, `contact_center`, `sidebar`, `mcp`, `a2a` |
 
 ### Folder Naming
 

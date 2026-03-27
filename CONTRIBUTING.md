@@ -108,7 +108,6 @@ tag_line: ""                 # Short tagline for App Hub detail page (required, 
 description: ""              # 1–2 sentences, used as App Hub listing copy
 
 product_types: []            # Array: one or more of teams | meetings | calling | rooms | contact_center
-app_context: []             # space | in_meeting | call | device | contact_center | sidebar | mcp | a2a
 
 # categories: verticals (healthcare, financial-services, retail-ecommerce) AND app categories (developer-tools, productivity, etc.)
 categories: []               # Array of App Hub category slugs; include verticals and app categories as appropriate
@@ -143,11 +142,6 @@ submission_date: ""          # ISO date (e.g. 2025-03-01)
 - **product_types** — Array of one or more of: `teams`, `meetings`, `calling`,
   `rooms`, `contact_center`. Playbooks can span multiple products (e.g.
   `["meetings", "teams"]` appears on both /meetings and /messaging).
-
-- **app_context** — Array of one or more values. Each must be one of: `space`,
-  `in_meeting`, `call`, `device`, `contact_center`, `sidebar`, `mcp`, `a2a`.
-  Matches where the integration runs (e.g. Contact Center: `["contact_center",
-  "sidebar"]`; Teams: `["space"]`).
 
 - **product_url** — Link to the Playbook in the repo
   (e.g. `https://github.com/webex/webexplaybooks/tree/main/playbooks/epic-ehr`).

@@ -87,23 +87,21 @@ Make your best determination of:
   `productivity`, `recording-transcriptions`) as appropriate. At least one required.
 - `product_types` — derive from integration type (see mapping below). Valid values:
   `teams`, `meetings`, `calling`, `rooms`, `contact_center`
-- `app_context` — derive from integration type (see mapping below). Valid values:
-  `space`, `in_meeting`, `call`, `device`, `contact_center`, `sidebar`, `mcp`, `a2a`
 - `estimated_implementation_time` — realistic estimate based on auth flow and API
   surface complexity
 
 **Integration type mapping:**
 
-| Integration type       | product_types    | app_context                                       |
-| ---------------------- | ---------------- | ------------------------------------------------- |
-| Contact Center (WxCC)  | `contact_center` | `["contact_center", "sidebar"]`                   |
-| Teams (Messaging)      | `teams`          | `["space"]` (add `mcp` or `a2a` if applicable)    |
-| Meetings               | `meetings`       | `["in_meeting"]`                                  |
-| Calling                | `calling`        | `["call"]`                                        |
-| Rooms / Devices        | `rooms`          | `["device"]`                                      |
+| Integration type      | product_types    |
+| --------------------- | ---------------- |
+| Contact Center (WxCC) | `contact_center` |
+| Teams (Messaging)     | `teams`          |
+| Meetings              | `meetings`       |
+| Calling               | `calling`        |
+| Rooms / Devices       | `rooms`          |
 
 If the integration spans multiple products (e.g. Meetings + Teams), include multiple
-`product_types` and `app_context` values.
+`product_types` values.
 
 ---
 
@@ -196,7 +194,6 @@ Use the full schema from PLAYBOOK_TEMPLATE/APPHUB.yaml. **Preserve the section c
 - `tag_line` — one-line value proposition (required, max 128 chars)
 - `description` — 1–2 sentences for App Hub listing
 - `product_types` — from integration type mapping (Step 2)
-- `app_context` — from integration type mapping (Step 2)
 - `categories` — default `["productivity", "developer-tools"]`; include verticals
   (healthcare, financial-services, retail-ecommerce) and app categories as appropriate
 - `company_name`, `company_url`, `support_url`, `privacy_url`, `logo` — use defaults
@@ -256,7 +253,7 @@ run it automatically). The local script runs the same checks as CI:
 ```
 
 Prompt the author to run this and fix any failures before finishing. The script
-validates README sections, APPHUB.yaml fields (including product_types, app_context,
+validates README sections, APPHUB.yaml fields (including product_types,
 categories), friendly_id, tag_line length, and folder structure.
 
 ---
