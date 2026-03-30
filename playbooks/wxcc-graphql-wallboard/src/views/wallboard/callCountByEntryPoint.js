@@ -1,3 +1,5 @@
+import { wallboardRangeLegendLabelForDays } from "./wallboardConfig.js";
+
 let checkToken = async () => {
   try {
     const results = await fetch("http://localhost:3000/checkToken");
@@ -9,9 +11,7 @@ let checkToken = async () => {
 let fetchData = async () => {
   try {
     const results = await fetch("http://localhost:3000/callCountByEntryPoint");
-    const response = await results.json();
-    const data = await response.data;
-    return data;
+    return await results.json();
   } catch (error) {
     console.log(error);
   }
@@ -25,7 +25,7 @@ export const callCountByEntryPoint = new Chart(ctx, {
     // labels: [],
     datasets: [
       {
-        label: "Totals from January through Today",
+        label: "Totals over the past 7 days",
         // data: [1],
         backgroundColor: ["rgba(93,205,205,1)"],
         hoverOffset: 4,
@@ -105,9 +105,15 @@ export const callCountByEntryPoint = new Chart(ctx, {
 
 async function updateChart() {
   try {
-    const arrFromQuery = await fetchData();
+    const payload = await fetchData();
+    if (!payload?.data) {
+      return;
+    }
+    const { data: arrFromQuery, wallboard_lookback_days: lookbackDays } = payload;
+    callCountByEntryPoint.data.datasets[0].label =
+      wallboardRangeLegendLabelForDays(lookbackDays);
     const epName = arrFromQuery.map(name => {
-      return name.lastEntryPoint.name;
+      return name.lastEntryPoint?.name ?? "Unknown";
     });
     const epTotal = arrFromQuery.map(value => {
       return value.aggregation[0].value;

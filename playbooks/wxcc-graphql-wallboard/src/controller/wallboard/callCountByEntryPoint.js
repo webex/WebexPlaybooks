@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 import { decide } from "../decide.js";
-import { wxccSearchEndpoint } from "../wxccApi.js";
+import { wxccSearchEndpoint, wallboardQueryTimeRange } from "../wxccApi.js";
 
 export async function callCountByEntryPoint() {
   let info = await decide();
@@ -9,14 +9,15 @@ export async function callCountByEntryPoint() {
   // console.log(token);
 
   try {
+    const { from, to } = wallboardQueryTimeRange();
     // graphQL Query
     const query = `
 		 {
 				#TOTAL CALLS BY Entry Point
 		
 				task(
-					from: 1673729535000 #This can be set to Date.now() - (days * 24 * 60 * 60 * 1000) for look back in days
-					to: ${Date.now()} #This can be set to Date.now() in ms
+					from: ${from}
+					to: ${to}
 					timeComparator: createdTime
 					filter: {
 						and: [

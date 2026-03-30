@@ -7,19 +7,18 @@
  * DEV_TOKEN from the developer portal.
  *
  * Required env: ENVIRONMENT, ORG_ID, DEV_TOKEN (dev path), NAME, PASS (Basic auth
- * for /dev-token), URL (app base URL for internal /environment and /dev-token
- * calls), WXCC_API_BASE (optional; defaults to US1 API host). Optional: PORT,
+ * for /dev-token), URL (app base URL for token helper routes such as /dev-token),
+ * WXCC_API_BASE (optional; defaults to US1 API host). Optional: PORT,
  * MongoDB for upstream "production" token path.
  */
+import "./config-env.js";
 import express from "express";
-import "dotenv/config";
 // import { db } from "./controller/database/db.js";
 import cors from "cors";
 import { basicAuth } from "./controller/auth.js";
 
 // Routes
 import { testRoute } from "./routes/testRoute.js";
-import { environment } from "./routes/environment.js";
 import { update } from "./routes/update.js";
 import { updateTimer } from "./routes/updateTimer.js";
 import { add } from "./routes/add.js";
@@ -80,9 +79,6 @@ app.use("/update", basicAuth, update);
 
 // Update timers on MongoDB/
 app.use("/updateTimer", updateTimer);
-
-// Decide to use mongoDB or dev portal tokens
-app.use("/environment", environment);
 
 // callCountByEntryPoint Chart
 app.use("/callCountByEntryPoint", callCountByEntryPoint);

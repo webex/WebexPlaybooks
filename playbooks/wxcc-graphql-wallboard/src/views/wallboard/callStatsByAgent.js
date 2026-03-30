@@ -1,9 +1,9 @@
+import { wallboardRangeLegendLabelForDays } from "./wallboardConfig.js";
+
 let fetchData = async () => {
   try {
     const results = await fetch("http://localhost:3000/callStatsByAgent");
-    const response = await results.json();
-    const data = await response.data;
-    return data;
+    return await results.json();
   } catch (error) {
     console.log(error);
   }
@@ -17,7 +17,7 @@ export const callStatsByAgent = new Chart(ctx, {
     // labels: [],
     datasets: [
       {
-        label: "Total from January through Today",
+        label: "Totals over the past 7 days",
         // data: [1],
         backgroundColor: ["rgba(242,99,132,1)"],
         hoverOffset: 4,
@@ -97,10 +97,16 @@ export const callStatsByAgent = new Chart(ctx, {
 
 async function updateChart() {
   try {
-    const arrFromQuery = await fetchData();
+    const payload = await fetchData();
+    if (!payload?.data) {
+      return;
+    }
+    const { data: arrFromQuery, wallboard_lookback_days: lookbackDays } = payload;
+    callStatsByAgent.data.datasets[0].label =
+      wallboardRangeLegendLabelForDays(lookbackDays);
 
     const agentName = arrFromQuery.map(name => {
-      return name.owner.name;
+      return name.owner?.name ?? "Unknown";
     });
     const handleAvg = arrFromQuery.map(value => {
       // convert to seconds

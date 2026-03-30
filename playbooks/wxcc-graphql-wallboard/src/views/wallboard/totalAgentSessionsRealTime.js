@@ -1,9 +1,7 @@
 let fetchData = async () => {
   try {
     const results = await fetch("http://localhost:3000/totalAgentSessionsRealTime");
-    const response = await results.json();
-    const data = await response.data;
-    return data;
+    return await results.json();
   } catch (error) {
     console.log(error);
   }
@@ -101,7 +99,11 @@ export const totalAgentSessionsRealTime = new Chart(ctx, {
 async function updateChart() {
   try {
     const empty = [1];
-    const arrFromQuery = await fetchData();
+    const payload = await fetchData();
+    if (!payload?.data) {
+      return;
+    }
+    const arrFromQuery = payload.data;
     const agentName = arrFromQuery.map(name => {
       return name.aggregation[0].name;
     });

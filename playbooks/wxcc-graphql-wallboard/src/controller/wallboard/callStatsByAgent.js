@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 import { decide } from "../decide.js";
-import { wxccSearchEndpoint } from "../wxccApi.js";
+import { wxccSearchEndpoint, wallboardQueryTimeRange } from "../wxccApi.js";
 
 export async function callStatsByAgent() {
   let info = await decide();
@@ -8,14 +8,15 @@ export async function callStatsByAgent() {
   let token = await info.fetchToken;
 
   try {
+    const { from, to } = wallboardQueryTimeRange();
     // graphQL Query
     const query = `
   {
     #Call Statistics By Agent
   
     task(
-      from: 1673729535000 #This can be set to Date.now() - (days * 24 * 60 * 60 * 1000) for look back in days
-      to: ${Date.now()} #This can be set to Date.now() in ms
+      from: ${from}
+      to: ${to}
       timeComparator: createdTime
       filter: {
         and: [

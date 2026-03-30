@@ -1,11 +1,14 @@
 import express from "express";
 const router = express.Router();
 
+import { getWallboardLookbackDays } from "../../controller/wxccApi.js";
 import { callStatsByAgent } from "../../controller/wallboard/callStatsByAgent.js";
 
-// Decide to use mongoDB or dev portal tokens
 router.get("/", async (req, res) => {
-  res.json({ data: await callStatsByAgent() });
+  res.json({
+    data: await callStatsByAgent(),
+    wallboard_lookback_days: getWallboardLookbackDays()
+  });
 });
 
 export { router as callStatsByAgent };

@@ -1,3 +1,23 @@
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+/**
+ * Rolling window (days) for wallboard GraphQL queries.
+ * Set `WALLBOARD_LOOKBACK_DAYS` in `.env`; read at call time (same value as wallboard JSON routes).
+ */
+export function getWallboardLookbackDays() {
+  const parsed = Number.parseInt(process.env.WALLBOARD_LOOKBACK_DAYS ?? "7", 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 7;
+}
+
+/**
+ * Rolling `from` / `to` epoch milliseconds for wallboard GraphQL `task(...)` queries.
+ */
+export function wallboardQueryTimeRange() {
+  const to = Date.now();
+  const days = getWallboardLookbackDays();
+  return { from: to - days * MS_PER_DAY, to };
+}
+
 /**
  * Builds the WxCC GraphQL Search URL for the tenant org.
  * WXCC_API_BASE must match your cluster (e.g. US1, EU1).

@@ -12,7 +12,7 @@ A hosted instance may be available (free tier; cold starts can delay the first l
 
 ## GraphQL query time windows
 
-The wallboard controllers use fixed `from` epoch values inside the GraphQL query strings (for example `1673729535000`). Those ranges become stale over time. Update the `from` values in `src/controller/wallboard/*.js` to match your reporting window (for example `Date.now() - N days` in milliseconds), consistent with the [Search API](https://developer.webex.com/webex-contact-center/docs/api/v1/search) documentation.
+This Playbook’s wallboard controllers use `wallboardQueryTimeRange()` in `src/controller/wxccApi.js`, which sets GraphQL `from` / `to` to a rolling window ending at `Date.now()`. Default lookback is **7 days**; set `WALLBOARD_LOOKBACK_DAYS` in `src/.env` and restart the server. Stay within the constraints documented for the [Search API](https://developer.webex.com/webex-contact-center/docs/api/v1/search).
 
 ## Related samples
 
