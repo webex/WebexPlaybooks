@@ -241,6 +241,37 @@ original paths under `src/` where helpful, but **exclude** any `README*` files p
 **Single README.md policy** above; summarize or relocate needed upstream readme content
 to `docs/upstream-overview.md` or `docs/source-repo-notes.md`.
 
+#### Flattening upstream source directories
+
+When the upstream repo stores its runtime source code inside a directory with the same
+name as the Playbook's `src/` (most commonly `upstream/src/`, but also `app/`, `lib/`,
+`source/`), copy the **contents** of that directory directly into `playbooks/<slug>/src/`
+— do not copy the directory itself.
+
+```
+# Correct — upstream src/connectors/foo.py becomes:
+playbooks/<slug>/src/connectors/foo.py
+
+# Wrong — never produce this:
+playbooks/<slug>/src/src/connectors/foo.py
+```
+
+After copying, check all source files for import statements that referenced the now-
+dropped directory name and update them:
+
+- Python static: `from src.connectors.foo import Foo` → `from connectors.foo import Foo`
+- Python dynamic: `importlib.import_module(f"src.{module_name}")` → `importlib.import_module(module_name)`
+- Python sys.path: `sys.path.insert(0, str(Path(__file__).parent / "src"))` → `sys.path.insert(0, str(Path(__file__).parent))`
+- JavaScript/TypeScript: `require('./src/module')` → `require('./module')`
+
+Run a quick grep after copying to catch any remaining stale references before moving on:
+
+```bash
+grep -rn "from src\.\|import src\.\|require.*['\"]\.\/src\/" \
+  --include="*.py" --include="*.js" --include="*.ts" \
+  playbooks/<slug>/src/
+```
+
 The source code must:
 
 - Authenticate with the third-party tool API using the method documented in the source

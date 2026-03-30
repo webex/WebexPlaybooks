@@ -21,6 +21,13 @@ The source repo to process is: $ARGUMENTS
 - **Single README:** Only `playbooks/<slug>/README.md` — no `src/README.md` or other
   README under the playbook; see Step 3 in `docs/commands/import_playbook.md`.
 
+- **Path flattening:** If the upstream repo's runtime code lives in a top-level `src/`
+  (or `app/`, `lib/`) directory, copy the *contents* into `playbooks/<slug>/src/`
+  directly — never nest it as `src/src/`. After copying, grep for `from src\.` (Python)
+  or `require('./src/` (JS/TS) patterns and remove the stale prefix. See the
+  "Flattening upstream source directories" subsection in
+  `docs/commands/import_playbook.md`.
+
 - **Step 1:** If the source repo is primarily for Genesys, NICE, Five9, or Talkdesk,
   stop and explain the competitor-tools restriction — do not proceed.
 
