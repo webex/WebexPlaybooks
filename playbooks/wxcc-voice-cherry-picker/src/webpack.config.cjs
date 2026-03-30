@@ -4,9 +4,9 @@ const Dotenv = require('dotenv-webpack');
 
 const config = {
   mode: "production",
-  entry: "./src/widget-SDK-Voice.js",
+  entry: "./widget-SDK-Voice.js",
   output: {
-    path: path.resolve(__dirname, "src/build"),
+    path: path.resolve(__dirname, "build"),
     filename: "bundle.js",
     publicPath: "build/"
   },

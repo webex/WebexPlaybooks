@@ -78,6 +78,8 @@ src/
 
 ### 1. Configure environment variables
 
+> **Docker users:** Skip this step. Pass your values as `--build-arg` flags on the `docker build` command in Step 4a instead.
+
 Copy `src/env.template` to `src/.env`:
 
 ```bash
@@ -110,13 +112,11 @@ This bundles `src/widget-SDK-Voice.js` into `src/build/bundle.js` using webpack.
 
 ```bash
 cd src
-docker build -t wxcc-voice-cherry-picker .
-docker run -p 5000:5000 -i -t wxcc-voice-cherry-picker
+docker build --build-arg HOST_URI="https://cherry-picker.yourcompany.com" -t wxcc-voice-cherry-picker .
+docker run -p 5000:5000 wxcc-voice-cherry-picker
 ```
 
-Replace `5000` with your configured `PORT` if different.
-
-> **Note:** The `Dockerfile` contains a `COPY prod.env .env` instruction from the upstream repo. Rename your `.env` file to `prod.env` before the Docker build, or remove that line from the Dockerfile and replace with `COPY .env .env`.
+Replace `https://cherry-picker.yourcompany.com` with your actual `HOST_URI`. If you use a non-default port, also pass `--build-arg PORT=<port>` and update the `-p` flag accordingly.
 
 ### 5. Configure the WxCC Queue and Multimedia Profile for manual assignment
 
