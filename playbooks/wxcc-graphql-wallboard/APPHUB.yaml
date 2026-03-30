@@ -1,0 +1,108 @@
+# APPHUB.yaml — Playbook metadata for Webex App Hub
+# Copy this file into your Playbook folder under playbooks/<tool-slug>/
+# Fill in all required fields. See CONTRIBUTING.md for field rules.
+
+# -----------------------------------------------------------------------------
+# friendly_id — Unique identifier. Must end with -playbook (e.g. epic-ehr-playbook)
+# -----------------------------------------------------------------------------
+friendly_id: "wxcc-graphql-wallboard-playbook"
+
+# -----------------------------------------------------------------------------
+# title — Display name for the Playbook (matches ContentStack field)
+# -----------------------------------------------------------------------------
+title: "Webex Contact Center — GraphQL reporting wallboard sample"
+
+# -----------------------------------------------------------------------------
+# tag_line — Short tagline for App Hub detail page (required, max 128 chars)
+# -----------------------------------------------------------------------------
+tag_line: "WxCC Search API wallboard: GraphQL queries and charts for queues, agents, and entry points"
+
+# -----------------------------------------------------------------------------
+# description — App Hub listing copy (substantive overview and use case)
+# -----------------------------------------------------------------------------
+description: |
+  Run a small Node.js and Express wallboard that charts Webex Contact Center
+  metrics using the documented GraphQL Search API. The sample shows how to
+  authenticate with a developer token, scope calls to your org, and render
+  call counts by entry point, agent statistics, queue statistics, and active
+  task counts. Use it to learn Search query shape and how to wire a browser UI
+  to WxCC reporting data before you harden auth and multi-tenant operations.
+
+# -----------------------------------------------------------------------------
+# product_types — Where this Playbook appears. Pick one or more.
+# Valid: teams | meetings | calling | rooms | contact_center
+# -----------------------------------------------------------------------------
+product_types:
+  - "contact_center"
+
+# -----------------------------------------------------------------------------
+# app_context — Where the integration runs. Pick one or more.
+# Valid: space | in_meeting | call | device | contact_center | sidebar | mcp | a2a
+# -----------------------------------------------------------------------------
+app_context:
+  - "contact_center"
+  - "sidebar"
+
+# -----------------------------------------------------------------------------
+# categories — App Hub category slugs. Pick one or more.
+# Verticals: healthcare | financial-services | retail-ecommerce
+# App categories (use kebab-case slugs):
+#   ai-agent-testing-observability | agent-supervisor-tools | analytics |
+#   calendar-scheduling | collaboration-management | customer-relations |
+#   customer-support | developer-tools | doc-management | education |
+#   finance | government | healthcare | human-resources | internet-of-things |
+#   marketing-sales | orchestration | platform | productivity |
+#   project-management | recording-transcriptions | security-compliance |
+#   self-service-bots | social-and-fun | strategy-team-planning |
+#   workflow-automation | workforce-optimization | other
+# -----------------------------------------------------------------------------
+categories:
+  - "analytics"
+  - "developer-tools"
+  - "workforce-optimization"
+
+# -----------------------------------------------------------------------------
+# company_name — Your company or team name
+# -----------------------------------------------------------------------------
+company_name: "Webex for Developers"
+
+# -----------------------------------------------------------------------------
+# company_url — Your company or project URL
+# -----------------------------------------------------------------------------
+company_url: "https://developer.webex.com"
+
+# -----------------------------------------------------------------------------
+# support_url — Issues or support link (e.g. GitHub issues)
+# -----------------------------------------------------------------------------
+support_url: "https://github.com/webex/WebexPlaybooks/issues"
+
+# -----------------------------------------------------------------------------
+# product_url — Link to this Playbook in the repo (required)
+# -----------------------------------------------------------------------------
+product_url: "https://github.com/webex/WebexPlaybooks/tree/main/playbooks/wxcc-graphql-wallboard"
+
+# -----------------------------------------------------------------------------
+# logo — (Optional) URL to your logo image. If not provided, defaults to the
+# standard Webex Playbook logo.
+# -----------------------------------------------------------------------------
+logo: "https://images.contentstack.io/v3/assets/bltd14fd2a03236233f/blta2de9daa773c6604/60f71f81e2de935fc7e35dbe/download"
+
+# -----------------------------------------------------------------------------
+# estimated_implementation_time — e.g. "2-4 hours", "1 day"
+# -----------------------------------------------------------------------------
+estimated_implementation_time: "2-4 hours"
+
+# -----------------------------------------------------------------------------
+# third_party_tool — (Optional) The tool being integrated (e.g. Salesforce, Epic)
+# Omit for generic playbooks (e.g. "any CMS")
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# privacy_url — Privacy policy URL (required; use Cisco default for Webex-authored)
+# -----------------------------------------------------------------------------
+privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"
+
+# -----------------------------------------------------------------------------
+# submission_date — (Optional) ISO date (e.g. 2025-03-01)
+# -----------------------------------------------------------------------------
+submission_date: "2026-03-30"
