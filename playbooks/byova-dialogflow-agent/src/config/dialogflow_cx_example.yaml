@@ -1,0 +1,178 @@
+# Example Google Dialogflow CX Connector Configuration
+# Copy this configuration and add it to your config/config.yaml file
+
+dialogflow_cx_connector:
+  type: "dialogflow_cx_connector"
+  class: "DialogflowCXConnector"
+  module: "connectors.dialogflow_cx_connector"
+  config:
+    # Required: Google Cloud project ID
+    project_id: "YOUR_PROJECT_ID"
+
+    # Required: Dialogflow CX agent ID
+    # You can find this in the Dialogflow CX console under Agent Settings
+    agent_id: "YOUR_AGENT_ID"
+
+    # Required: Location where your agent is hosted
+    # Common values: 'global', 'us-central1', 'europe-west1', 'asia-northeast1'
+    location: "global"
+
+    # Optional: Path to service account JSON key file
+    # If not specified, will use Application Default Credentials (ADC) or OAuth
+    # For production, use ADC or secret management instead of a file path
+    service_account_key: "path/to/your-service-account-key.json"
+
+    # Alternative: OAuth 2.0 User Credentials
+    # Use this if you want to authenticate as a user instead of a service account
+    # oauth_client_id: "YOUR_CLIENT_ID.apps.googleusercontent.com"
+    # oauth_client_secret: "YOUR_CLIENT_SECRET"
+    # oauth_token_file: "oauth_token.pickle"  # Where to store the OAuth token
+
+    # Optional: Language code for conversations
+    # Default: 'en-US'
+    # See: https://cloud.google.com/dialogflow/cx/docs/reference/language
+    language_code: "en-US"
+
+    # Optional: Audio sample rate in Hertz
+    # Default: 8000
+    # WxCC typically uses 8000 Hz for telephony
+    sample_rate_hertz: 8000
+
+    # Optional: Audio encoding format
+    # Default: 'AUDIO_ENCODING_MULAW'
+    # Options: AUDIO_ENCODING_LINEAR_16, AUDIO_ENCODING_MULAW, AUDIO_ENCODING_FLAC, etc.
+    # WxCC typically uses MULAW encoding
+    audio_encoding: "AUDIO_ENCODING_MULAW"
+
+    # Optional: List of agent display names for WxCC
+    # These are the agent IDs that will appear in the ListVirtualAgents response
+    agents:
+      - "Dialogflow CX Agent"
+      - "My Customer Service Bot"
+
+# Example configurations for different environments:
+
+# Development/Testing
+dialogflow_cx_dev:
+  type: "dialogflow_cx_connector"
+  class: "DialogflowCXConnector"
+  module: "connectors.dialogflow_cx_connector"
+  config:
+    project_id: "my-dev-project"
+    agent_id: "abc123-dev-agent"
+    location: "us-central1"
+    language_code: "en-US"
+    sample_rate_hertz: 8000
+    audio_encoding: "AUDIO_ENCODING_MULAW"
+    # Using ADC in development (no service_account_key specified)
+    agents:
+      - "Dev Agent"
+
+# Production
+# dialogflow_cx_prod:
+#   type: "dialogflow_cx_connector"
+#   class: "DialogflowCXConnector"
+#   module: "connectors.dialogflow_cx_connector"
+#   config:
+#     project_id: "my-prod-project"
+#     agent_id: "xyz789-prod-agent"
+#     location: "global"
+#     language_code: "en-US"
+#     sample_rate_hertz: 8000
+#     audio_encoding: "AUDIO_ENCODING_MULAW"
+#     # Using ADC in production (recommended for GCP environments)
+#     agents:
+#       - "Production Customer Support"
+#       - "Production Sales Bot"
+
+# # Multi-language Example
+# dialogflow_cx_multilang:
+#   type: "dialogflow_cx_connector"
+#   class: "DialogflowCXConnector"
+#   module: "connectors.dialogflow_cx_connector"
+#   config:
+#     project_id: "my-multilang-project"
+#     agent_id: "multi-lang-agent"
+#     location: "global"
+#     # Set default language (can be overridden per request if needed)
+#     language_code: "es-ES" # Spanish
+#     sample_rate_hertz: 8000
+#     audio_encoding: "AUDIO_ENCODING_MULAW"
+#     agents:
+#       - "Spanish Support Agent"
+
+# OAuth 2.0 Authentication Example
+dialogflow_cx_oauth:
+  type: "dialogflow_cx_connector"
+  class: "DialogflowCXConnector"
+  module: "connectors.dialogflow_cx_connector"
+  config:
+    project_id: "my-project"
+    agent_id: "my-agent-id"
+    location: "global"
+    language_code: "en-US"
+    sample_rate_hertz: 8000
+    audio_encoding: "AUDIO_ENCODING_MULAW"
+
+    # OAuth 2.0 credentials (user authentication)
+    oauth_client_id: "id"
+    oauth_client_secret: "secret"
+    oauth_token_file: "dialogflow_oauth_token.pickle"
+
+    agents:
+      - "OAuth Authenticated Agent"
+# Notes:
+# 1. Authentication Options (Priority Order):
+#
+#    - Option 1: Service Account Key File (development/testing)
+#      Set service_account_key to path of JSON key file
+#      Example: service_account_key: "/path/to/key.json"
+#
+#    - Option 2: OAuth 2.0 User Credentials (user-based access)
+#      Set oauth_client_id, oauth_client_secret, and optionally oauth_token_file
+#      First run will open browser for authorization
+#      Token is cached for subsequent runs
+#      Example:
+#        oauth_client_id: "YOUR_ID.apps.googleusercontent.com"
+#        oauth_client_secret: "YOUR_SECRET"
+#        oauth_token_file: "oauth_token.pickle"
+#
+#    - Option 3: Application Default Credentials/ADC (recommended for production)
+#      Don't set any auth parameters, instead:
+#      - On GCP (Compute Engine, GKE, Cloud Run): Automatically uses attached service account
+#      - Locally: Use 'gcloud auth application-default login'
+#      - Docker/K8s: Mount credentials or use workload identity
+#      - Environment variable: Set GOOGLE_APPLICATION_CREDENTIALS=/path/to/key.json
+#
+# 2. Setting Up OAuth 2.0:
+#    a. Go to Google Cloud Console > APIs & Services > Credentials
+#    b. Create OAuth 2.0 Client ID (Application type: Desktop app)
+#    c. Download the client configuration
+#    d. Extract client_id and client_secret
+#    e. Add them to your config
+#    f. First run will prompt for authorization (opens browser)
+#    g. Subsequent runs use cached token from oauth_token_file
+#
+# 3. Audio Settings:
+#    - WxCC uses 8000 Hz, 8-bit μ-law encoding
+#    - Make sure your Dialogflow CX agent is configured for telephony
+#    - Enable "Audio Export" in your agent settings if you need audio responses
+#
+# 4. Security Best Practices:
+#    - Never commit service account keys or OAuth secrets to version control
+#    - Use environment variables or secret management for sensitive data
+#    - Grant minimal required permissions to service accounts
+#    - Rotate keys regularly
+#    - Add *.pickle files to .gitignore (OAuth tokens)
+#
+# 5. Required IAM Roles:
+#    Your service account or OAuth user needs these roles:
+#    - roles/dialogflow.client (or roles/dialogflow.admin)
+#    - roles/dialogflow.reader
+#
+# 6. Testing Your Configuration:
+#    - Test your agent in Dialogflow CX console first
+#    - Verify your service account has proper permissions
+#    - Check that your agent is published and has flows configured
+#    - Monitor logs for connection issues
+
