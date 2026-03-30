@@ -111,16 +111,28 @@ Create the following structure:
 
 ```text
 playbooks/<slug>/
-├── README.md
+├── README.md                 # exactly one README in the playbook (see policy below)
 ├── APPHUB.yaml
 ├── diagrams/
 │   └── architecture-diagram.md
+├── docs/                     # optional — upstream notes, not a second README
+│   └── (e.g. upstream-overview.md)
 └── src/
-    ├── (copy source files here — preserve original paths and filenames)
-    └── env.template
-    ├── (original structure — e.g. client/, server/, package.json)
-    └── env.template (if similar file is not present already, else do not create this file.)
+    ├── …                     # vendored code; preserve paths (see src/ section)
+    └── env.template          # at src/ when none copied from upstream
 ```
+
+### Single README.md policy
+
+- There must be **exactly one** file named `README.md` under `playbooks/<slug>/`: the
+  playbook root file with the six required sections.
+- **Do not** create `src/README.md`, `diagrams/README.md`, or any other `README.md`
+  anywhere under the playbook folder.
+- When copying from `.import-playbook-cache/<slug>/`, **omit** upstream
+  `README.md`, `README.rst`, and `README.txt` from `src/` (and from nested paths if
+  they would introduce another `README.md`). If the upstream README contains content
+  developers still need (install steps, API quirks), add `docs/upstream-overview.md` or
+  `docs/source-repo-notes.md` with that material and link to it from the root README.
 
 ### README.md
 
@@ -161,7 +173,9 @@ Exhaustive list based on source repo docs:
 
 Introduce the source code, explain what it demonstrates, and note what it does NOT do
 (not production-hardened, minimal error handling, secrets must move to environment
-variables). Reference the files in /src/.
+variables). Describe the layout under `/src/` in this section. If lengthy upstream-only
+material lives in `docs/` (for example `docs/upstream-overview.md`), link to it here
+instead of adding a second README under `src/`.
 
 #### ## Deployment Guide
 
@@ -222,7 +236,10 @@ Webex SDK compatibility.
 
 If the repo was cloned in Step 0, copy and adapt relevant files from
 `.import-playbook-cache/<slug>/` into `playbooks/<slug>/src/` rather than writing from
-scratch. Extract the minimal integration logic needed for the Playbook.
+scratch. Extract the minimal integration logic needed for the Playbook. Preserve
+original paths under `src/` where helpful, but **exclude** any `README*` files per the
+**Single README.md policy** above; summarize or relocate needed upstream readme content
+to `docs/upstream-overview.md` or `docs/source-repo-notes.md`.
 
 The source code must:
 
@@ -237,9 +254,10 @@ The source code must:
 Use the tool's existing SDK or client library if one exists — do not use raw HTTP calls
 when an SDK is available.
 
-Include `env.template` listing all required environment variables with descriptive
-comments. (Use `env.template` rather than `.env.example` to avoid dotfile limitations
-in some orgs.)
+Include `src/env.template` listing all required environment variables with descriptive
+comments unless the copied upstream tree already has an equivalent env example under
+`src/` — in that case adapt it in place and do not add a redundant file. (Use
+`env.template` rather than `.env.example` to avoid dotfile limitations in some orgs.)
 
 ---
 
