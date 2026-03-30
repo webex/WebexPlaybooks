@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Webex Presence Connector">
+    <Require feature="pubsub-2" />
+    <Require feature="dynamic-height" />
+    <Require feature="settitle" />
+  </ModulePrefs>
+  <Content type="html">
+    <![CDATA[
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <link rel="stylesheet" type="text/css" href="/WebexPresenceConnector.css" />
+      </head>
+      <body>
+        <div id="embeddedPresenceGadget"></div>
+        <script>
+          <!--
+          // IMPORTANT: Replace the value below with your server's public HTTPS URL.
+          // This must match the URL where your Node.js server is deployed.
+          // Example: HOSTNAME = "https://finesse-presence.your-company.com"
+          // For local development with ngrok: HOSTNAME = "https://abc123.ngrok.io"
+          HOSTNAME = "https://YOUR_SERVER_HOSTNAME";
+          console.log("presence-gadget-logger: loading css");
+          let cssLink = document.createElement('link');
+          cssLink.rel = "stylesheet";
+          cssLink.type = "text/css";
+          cssLink.href = HOSTNAME+"/WebexPresenceConnector.css";
+          document.head.append(cssLink);
+          console.log("presence-gadget-logger: appended css");
+          console.log("presence-gadget-logger: loading script");
+          let script = document.createElement('script');
+          script.src = HOSTNAME+"/WebexPresenceConnector.js";
+          script.onload = function(){
+            console.log("presence-gadget-logger: loaded WebexPresenceConnector.js");
+            console.log("presence-gadget-logger: gadgets.HubSettings:", gadgets.HubSettings);
+            let initFlag = false;
+            gadgets.HubSettings.onConnect = function () {
+              if(!initFlag){
+                initFlag = true;
+                console.log("presence-gadget-logger: initializing WebexPresenceConnector in onConnect");
+                finesse.modules.WebexPresenceConnector.init();
+              }
+            };
+            setTimeout(function(){
+              if(!initFlag){
+                initFlag = true;
+                console.log("presence-gadget-logger: setTimeout triggered, initializing WebexPresenceConnector");
+                finesse.modules.WebexPresenceConnector.init();
+              }
+            },5000);
+          }
+          document.body.append(script);
+          // -->
+        </script>
+      </body>
+    </html>
+    ]]>
+  </Content>
+</Module>

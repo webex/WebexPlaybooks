@@ -1,0 +1,133 @@
+# APPHUB.yaml — Playbook metadata for Webex App Hub
+# Copy this file into your Playbook folder under playbooks/<tool-slug>/
+# Fill in all required fields. See CONTRIBUTING.md for field rules.
+
+# -----------------------------------------------------------------------------
+# friendly_id — Unique identifier. Must end with -playbook (e.g. epic-ehr-playbook)
+# -----------------------------------------------------------------------------
+friendly_id: "finesse-agent-presence-playbook"
+
+# -----------------------------------------------------------------------------
+# title — Display name for the Playbook (matches ContentStack field)
+# -----------------------------------------------------------------------------
+title: "Cisco Finesse + Webex Presence Sync Integration"
+
+# -----------------------------------------------------------------------------
+# tag_line — Short tagline for App Hub detail page (required, max 128 chars)
+# -----------------------------------------------------------------------------
+tag_line: "Automatically sync Webex presence to Cisco Finesse agent status — no manual toggling required"
+
+# -----------------------------------------------------------------------------
+# description — 1–2 sentences, used as App Hub listing copy
+# -----------------------------------------------------------------------------
+description: |
+  This Playbook shows how to build an integration that automatically mirrors a Webex
+  user's real-time presence state into their Cisco Finesse (UCCX/UCCE) agent status,
+  eliminating the manual step of toggling Finesse between READY and NOT_READY when agents
+  join Webex calls or meetings.
+
+  The integration is a Node.js server that uses a Webex Bot token to subscribe to presence
+  events via the Webex Mercury WebSocket. When a monitored agent's Webex presence changes,
+  the server maps the Webex presence state to a Finesse agent state and applies it
+  automatically. Five Webex presence states trigger a Finesse NOT_READY transition:
+
+    - Do Not Disturb (reason code: "Webex DND")
+    - Active Webex Call (reason code: "Webex Call")
+    - Active Webex Meeting (reason code: "Webex Meeting")
+    - Presenting in a Webex Meeting (reason code: "Webex Meeting")
+    - Unknown/Unavailable (reason code: "Webex Unavailable")
+
+  When the Webex presence clears, the agent is automatically returned to READY.
+
+  Two operating modes are provided:
+
+    Gadget mode (recommended): The server pushes presence updates to a Finesse XML gadget
+    running in the agent's desktop browser via Socket.io. The gadget calls the Finesse
+    client-side JavaScript API (user.setState) to set the agent's own status, including the
+    specific NOT_READY reason code. This mode requires adding a gadget entry to the Finesse
+    desktop layout and is the only mode that supports granular reason codes.
+
+    Server mode: The Node.js server calls the Finesse REST API directly using a supervisor
+    Basic Auth token (PUT /finesse/api/User/:id). This mode requires no gadget configuration
+    but is limited to setting READY or a generic "Supervisor Initiated" NOT_READY — it cannot
+    assign specific reason codes like "Webex DND" or "Webex Meeting".
+
+  To get started, a developer needs:
+    - A Webex Bot token (created at developer.webex.com)
+    - A Cisco Finesse server (UCCX or UCCE) with admin and supervisor Basic Auth credentials
+    - Four NOT_READY reason codes pre-created in Unified CCE Management:
+        "Webex DND", "Webex Meeting", "Webex Call", "Webex Unavailable"
+    - Node.js v21.5+ (or Docker) and a publicly accessible HTTPS endpoint for the server
+    - The Finesse agent email addresses must follow the pattern: finesseLoginName@your-domain
+
+# -----------------------------------------------------------------------------
+# product_types — Where this Playbook appears. Pick one or more.
+# Valid: teams | meetings | calling | rooms | contact_center
+# -----------------------------------------------------------------------------
+product_types:
+  - "contact_center"
+
+# -----------------------------------------------------------------------------
+# categories — App Hub category slugs. Pick one or more.
+# Verticals: healthcare | financial-services | retail-ecommerce
+# App categories (use kebab-case slugs):
+#   ai-agent-testing-observability | agent-supervisor-tools | analytics |
+#   calendar-scheduling | collaboration-management | customer-relations |
+#   customer-support | developer-tools | doc-management | education |
+#   finance | government | healthcare | human-resources | internet-of-things |
+#   marketing-sales | orchestration | platform | productivity |
+#   project-management | recording-transcriptions | security-compliance |
+#   self-service-bots | social-and-fun | strategy-team-planning |
+#   workflow-automation | workforce-optimization | other
+# -----------------------------------------------------------------------------
+categories:
+  - "agent-supervisor-tools"
+  - "workforce-optimization"
+  - "developer-tools"
+
+# -----------------------------------------------------------------------------
+# company_name — Your company or team name
+# -----------------------------------------------------------------------------
+company_name: "Webex for Developers"
+
+# -----------------------------------------------------------------------------
+# company_url — Your company or project URL
+# -----------------------------------------------------------------------------
+company_url: "https://developer.webex.com"
+
+# -----------------------------------------------------------------------------
+# support_url — Issues or support link (e.g. GitHub issues)
+# -----------------------------------------------------------------------------
+support_url: "https://github.com/webex/webexplaybooks/issues"
+
+# -----------------------------------------------------------------------------
+# product_url — Link to this Playbook in the repo (required)
+# -----------------------------------------------------------------------------
+product_url: "https://github.com/webex/WebexPlaybooks/tree/main/playbooks/finesse-agent-presence"
+
+# -----------------------------------------------------------------------------
+# logo — (Optional) URL to your logo image. If not provided, defaults to the
+# standard Webex Playbook logo.
+# -----------------------------------------------------------------------------
+logo: "https://images.contentstack.io/v3/assets/bltd14fd2a03236233f/blta2de9daa773c6604/60f71f81e2de935fc7e35dbe/download"
+
+# -----------------------------------------------------------------------------
+# estimated_implementation_time — e.g. "2-4 hours", "1 day"
+# -----------------------------------------------------------------------------
+estimated_implementation_time: "4-8 hours"
+
+# -----------------------------------------------------------------------------
+# third_party_tool — (Optional) The tool being integrated (e.g. Salesforce, Epic)
+# Omit for generic playbooks (e.g. "any CMS")
+# -----------------------------------------------------------------------------
+third_party_tool: "Cisco Finesse"
+
+# -----------------------------------------------------------------------------
+# privacy_url — Privacy policy URL (required; use Cisco default for Webex-authored)
+# -----------------------------------------------------------------------------
+privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"
+
+# -----------------------------------------------------------------------------
+# submission_date — (Optional) ISO date (e.g. 2025-03-01)
+# -----------------------------------------------------------------------------
+submission_date: "2026-03-30"

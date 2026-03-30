@@ -1,0 +1,24 @@
+{
+  "name": "agent-presence",
+  "version": "1.0.0",
+  "description": "Webex presence to Cisco Finesse agent status sync",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "Taylor Hanson",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "fast-xml-parser": "^5.0.8",
+    "node-fetch": "^3.3.2",
+    "socket.io": "^4.7.2",
+    "webex": "^3.7"
+  },
+  "devDependencies": {}
+}
