@@ -1,0 +1,38 @@
+{
+  "name": "cc-cherry-picker",
+  "version": "1.0.0",
+  "description": "transfer a call to a webex sip meeting.",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Taylor Hanson",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@wxcc-desktop/sdk": "^1.2.10",
+    "babel-loader": "^8.2.5",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "socket.io": "^4.8.1",
+    "ttl-mem-cache": "^4.1.0",
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2"
+  },
+  "devDependencies": {
+    "@wxcc-desktop/sdk-types": "^1.0.3",
+    "dotenv": "^16.0.1",
+    "dotenv-webpack": "^8.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wxsd-sales/cc-meeting-transfer-widget.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wxsd-sales/cc-meeting-transfer-widget/issues"
+  },
+  "homepage": "https://github.com/wxsd-sales/cc-meeting-transfer-widget#readme"
+}
