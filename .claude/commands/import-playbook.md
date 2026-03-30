@@ -18,6 +18,9 @@ The source repo to process is: $ARGUMENTS
   `.import-playbook-cache/<slug>`. Parse owner and repo from the URL; derive slug
   from repo name (lowercase, kebab-case, strip webex-/cisco- prefixes).
 
+- **Single README:** Only `playbooks/<slug>/README.md` — no `src/README.md` or other
+  README under the playbook; see Step 3 in `docs/commands/import_playbook.md`.
+
 - **Step 1:** If the source repo is primarily for Genesys, NICE, Five9, or Talkdesk,
   stop and explain the competitor-tools restriction — do not proceed.
 
