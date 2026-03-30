@@ -1,0 +1,65 @@
+import fetch from "node-fetch";
+import { decide } from "../decide.js";
+import { wxccSearchEndpoint, wallboardQueryTimeRange } from "../wxccApi.js";
+
+export async function totalAgentSessionsRealTime() {
+  let info = await decide();
+  let org_id = info.org_id;
+  let token = await info.fetchToken;
+
+  try {
+    const { from, to } = wallboardQueryTimeRange();
+    // graphQL Query
+    const query = `
+  {
+    #FILTER: Fetch Real-time (Active) Queued Tasks on the System - using filters.
+    task(
+      from: ${from}
+      to: ${to}
+      filter: {
+        #The main filter for active tasks is isActive: true
+        and: [
+          { channelType: { equals: telephony } }
+           #{ status: { equals: "parked" } }
+          { direction: { equals: "inbound" } }
+          { isActive: { equals: true } }
+        ]
+      }aggregations: {
+        field: "isActive"
+        type: count
+        name: "Total Active Calls"
+      }
+    ) {
+      tasks {
+        #Add more fields here as needed
+        
+        isActive
+        
+        aggregation {
+          name
+          value
+        }
+      }
+    }
+  }
+  `;
+
+    const posts = await fetch(wxccSearchEndpoint(org_id), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        query
+      })
+    });
+    const response = await posts.json();
+    let results = await response.data.task.tasks;
+
+    return results;
+  } catch (error) {
+    // console.log(`network issue ${error}`);
+  }
+}
