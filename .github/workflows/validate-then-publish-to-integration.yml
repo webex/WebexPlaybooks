@@ -25,24 +25,19 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            const files = await github.rest.pulls.listFiles({
+            const path = require('path');
+            const { playbookFoldersFromFilenames } = require(path.join(process.env.GITHUB_WORKSPACE, 'scripts/ci/playbook-folders-from-pr-files.js'));
+
+            const files = await github.paginate(github.rest.pulls.listFiles, {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.issue.number
+              pull_number: context.issue.number,
+              per_page: 100
             });
 
-            const playbookFolders = new Set();
-
-            for (const file of files.data) {
-              const path = file.filename;
-              const match = path.match(/^playbooks\/([^/]+)\//);
-              if (match) {
-                playbookFolders.add(`playbooks/${match[1]}`);
-              }
-            }
-
-            core.setOutput('folders', [...playbookFolders].join('\n'));
-            core.setOutput('count', playbookFolders.size.toString());
+            const { folders, count } = playbookFoldersFromFilenames(files.map((f) => f.filename));
+            core.setOutput('folders', folders.join('\n'));
+            core.setOutput('count', count.toString());
 
       - name: Enforce single playbook per PR
         if: steps.changed.outputs.count != '0'
