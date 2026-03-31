@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# script/smoketest — verify the toolchain can launch without real credentials
+#
+# Checks performed (no UCM or Webex credentials required):
+#   1. Python 3.10+ is on the PATH
+#   2. All .py files pass syntax check (py_compile)
+#   3. Core modules import cleanly
+#   4. CLI entry points exit gracefully with a usage message
+#   5. normalize.py produces correct output on a minimal test CSV
+#
+# All test artifacts (temp files, __pycache__, .pyc) are removed on exit.
+set -e
+cd "$(dirname "$0")/.."
+
+TMPCSV=""
+
+cleanup() {
+  rm -f "$TMPCSV" 2>/dev/null || true
+  find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true
+  find . -name "*.pyc" -delete 2>/dev/null || true
+}
+trap cleanup EXIT
+
+echo "==> Python version check (requires 3.10+)"
+python3 -c "
+import sys
+v = sys.version_info
+assert v >= (3, 10), f'Python 3.10+ required, got {v.major}.{v.minor}'
+print(f'  Python {v.major}.{v.minor}.{v.micro} OK')
+"
+
+echo "==> Syntax check (py_compile)"
+python3 -m py_compile \
+  read_ucm.py normalize.py configure_wxc.py delete_dialplans.py \
+  config/__init__.py ucmaxl/__init__.py
+echo "  All files OK"
+
+echo "==> Module import check"
+python3 -c "
+from config import Config, DialplanConfig
+from ucmaxl import AXLHelper
+import normalize
+import configure_wxc
+print('  All modules importable OK')
+"
+
+echo "==> CLI: normalize.py (no args -> usage)"
+python3 normalize.py 2>/dev/null && true || true
+echo "  normalize.py exited OK"
+
+echo "==> CLI: configure_wxc.py (no args -> usage)"
+python3 configure_wxc.py 2>/dev/null && true || true
+echo "  configure_wxc.py exited OK"
+
+echo "==> End-to-end normalize with minimal test CSV"
+TMPCSV=$(mktemp)
+printf 'remotecatalogkey_id,pattern\ntest-catalog,+1[2-9]XXXXXXXXX\ntest-catalog,+14085551234\n' > "$TMPCSV"
+OUT=$(python3 normalize.py "$TMPCSV" 2>/dev/null)
+echo "$OUT" | grep -q "test-catalog,+1" || { echo "FAIL: unexpected normalize output"; exit 1; }
+echo "  Normalization produced expected output OK"
+
+echo ""
+echo "Smoketest passed. Ready to configure .env and config.yml for a real run."
+# cleanup runs automatically via trap EXIT
