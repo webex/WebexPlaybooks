@@ -1,0 +1,46 @@
+# config.yml.example — Dial plan mapping configuration
+#
+# Copy this file to config.yml in the src/ directory and adapt it to your environment.
+# NEVER commit config.yml to source control — it will contain OAuth tokens after first run.
+#
+# Usage:
+#   cp config.yml.example config.yml
+#   # then edit config.yml with your dial plan mapping
+#
+# -----------------------------------------------------------------------------
+# tokens:
+#   Leave this field empty (null) on first run. The configure_wxc.py script will
+#   perform an OAuth flow and automatically populate this field with your access
+#   and refresh tokens. On subsequent runs the stored token is reused and refreshed.
+#
+#   SECURITY: Do not manually paste tokens here. Let the OAuth flow manage this.
+# -----------------------------------------------------------------------------
+tokens:
+
+# -----------------------------------------------------------------------------
+# dialplans:
+#   List of dial plan configurations. Each entry maps one or more UCM remote
+#   catalog identifiers (routestring values from UCM ILS) to a Webex Calling
+#   dial plan, routed via a named Trunk or Route Group.
+#
+#   Steps to find your catalog identifiers:
+#     1. Run: python read_ucm.py
+#     2. Open read_ucm.csv — the 'remotecatalogkey_id' column contains the
+#        routestring values to use as catalog names here.
+#
+#   route_type: TRUNK or ROUTE_GROUP
+#   route_choice: exact name of the Trunk or Route Group in Webex Calling
+# -----------------------------------------------------------------------------
+dialplans:
+  - catalogs:
+      - '<ucm-routestring-catalog-1>'
+      - '<ucm-routestring-catalog-2>'
+    name: dial plan 1
+    route_choice: <webex-calling-trunk-name>
+    route_type: TRUNK
+
+  - catalogs:
+      - '<ucm-routestring-catalog-3>'
+    name: dial plan 2
+    route_choice: <webex-calling-route-group-name>
+    route_type: ROUTE_GROUP

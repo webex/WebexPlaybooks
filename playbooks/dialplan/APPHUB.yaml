@@ -1,0 +1,107 @@
+# APPHUB.yaml — Playbook metadata for Webex App Hub
+# Copy this file into your Playbook folder under playbooks/<tool-slug>/
+# Fill in all required fields. See CONTRIBUTING.md for field rules.
+
+# -----------------------------------------------------------------------------
+# friendly_id — Unique identifier. Must end with -playbook (e.g. epic-ehr-playbook)
+# -----------------------------------------------------------------------------
+friendly_id: "dialplan-playbook"
+
+# -----------------------------------------------------------------------------
+# title — Display name for the Playbook (matches ContentStack field)
+# -----------------------------------------------------------------------------
+title: "Cisco UCM Dial Plan + Webex Calling Integration"
+
+# -----------------------------------------------------------------------------
+# tag_line — Short tagline for App Hub detail page (required, max 128 chars)
+# -----------------------------------------------------------------------------
+tag_line: "Migrate ILS-learned dial patterns from Cisco UCM to Webex Calling dial plans automatically"
+
+# -----------------------------------------------------------------------------
+# description — 1–2 sentences, used as App Hub listing copy
+# -----------------------------------------------------------------------------
+description: |
+  Migrating from Cisco UCM to Webex Calling means recreating hundreds of ILS-learned dial
+  patterns by hand — error-prone and time-consuming. This Playbook automates the entire
+  process with a three-step Python CLI pipeline.
+
+  What it does:
+  1. Read — queries UCM's ILS pattern tables via the Thin AXL SOAP API and exports to CSV
+  2. Normalize — expands bracket notation (e.g. [2-9]XXXXXXX), resolves cross-catalog
+     conflicts, and produces a clean pattern list for Webex Calling
+  3. Provision — idempotently creates or updates Webex Calling dial plans and patterns
+     via the wxc-sdk, adding new patterns and removing obsolete ones on each run
+
+  Requirements: Python 3.10+, a Webex Calling org with admin access, a Webex OAuth
+  Integration (client ID + secret), and a Cisco UCM cluster with AXL API access (port 8443).
+
+# -----------------------------------------------------------------------------
+# product_types — Where this Playbook appears. Pick one or more.
+# Valid: teams | meetings | calling | rooms | contact_center
+# -----------------------------------------------------------------------------
+product_types:
+  - "calling"
+
+# -----------------------------------------------------------------------------
+# categories — App Hub category slugs. Pick one or more.
+# Verticals: healthcare | financial-services | retail-ecommerce
+# App categories (use kebab-case slugs):
+#   ai-agent-testing-observability | agent-supervisor-tools | analytics |
+#   calendar-scheduling | collaboration-management | customer-relations |
+#   customer-support | developer-tools | doc-management | education |
+#   finance | government | healthcare | human-resources | internet-of-things |
+#   marketing-sales | orchestration | platform | productivity |
+#   project-management | recording-transcriptions | security-compliance |
+#   self-service-bots | social-and-fun | strategy-team-planning |
+#   workflow-automation | workforce-optimization | other
+# -----------------------------------------------------------------------------
+categories:
+  - "developer-tools"
+  - "workflow-automation"
+
+# -----------------------------------------------------------------------------
+# company_name — Your company or team name
+# -----------------------------------------------------------------------------
+company_name: "Webex for Developers"
+
+# -----------------------------------------------------------------------------
+# company_url — Your company or project URL
+# -----------------------------------------------------------------------------
+company_url: "https://developer.webex.com"
+
+# -----------------------------------------------------------------------------
+# support_url — Issues or support link (e.g. GitHub issues)
+# -----------------------------------------------------------------------------
+support_url: "https://github.com/webex/webexplaybooks/issues"
+
+# -----------------------------------------------------------------------------
+# product_url — Link to this Playbook in the repo (required)
+# -----------------------------------------------------------------------------
+product_url: "https://github.com/webex/webexplaybooks/tree/main/playbooks/dialplan"
+
+# -----------------------------------------------------------------------------
+# logo — (Optional) URL to your logo image. If not provided, defaults to the
+# standard Webex Playbook logo.
+# -----------------------------------------------------------------------------
+logo: "https://images.contentstack.io/v3/assets/bltd14fd2a03236233f/blta2de9daa773c6604/60f71f81e2de935fc7e35dbe/download"
+
+# -----------------------------------------------------------------------------
+# estimated_implementation_time — e.g. "2-4 hours", "1 day"
+# -----------------------------------------------------------------------------
+estimated_implementation_time: "4-8 hours"
+
+# -----------------------------------------------------------------------------
+# third_party_tool — (Optional) The tool being integrated (e.g. Salesforce, Epic)
+# Omit for generic playbooks (e.g. "any CMS")
+# -----------------------------------------------------------------------------
+third_party_tool: "Cisco UCM"
+
+# -----------------------------------------------------------------------------
+# privacy_url — Privacy policy URL (required; use Cisco default for Webex-authored)
+# -----------------------------------------------------------------------------
+privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"
+
+# -----------------------------------------------------------------------------
+# submission_date — (Optional) ISO date (e.g. 2025-03-01)
+# -----------------------------------------------------------------------------
+submission_date: "2026-03-31"
