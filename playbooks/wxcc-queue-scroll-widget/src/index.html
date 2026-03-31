@@ -1,0 +1,35 @@
+<!doctype html>
+<!--
+  Standalone test harness for the <queue-scroll> web component.
+
+  Use this file to test the widget outside the Webex Contact Center Agent Desktop.
+  Fill in the four attribute values on the <queue-scroll> tag below with values
+  collected from Control Hub and the Webex Developer Portal.
+
+  See env.template for a description of each required value.
+
+  To start the dev server: npm run dev  (serves at http://localhost:5173/)
+  To build + preview:      npm run build && npm run demo  (serves at http://localhost:4173/)
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WxCC Queue Scroll Widget — Standalone Test</title>
+    <link rel="stylesheet" href="./index.css" />
+    <script type="module" src="./queue-scroll.ts"></script>
+  </head>
+  <body>
+    <!--
+      Replace the empty string values below with real values for local testing.
+      In the Agent Desktop these are injected automatically via $STORE.* bindings.
+    -->
+    <queue-scroll
+      orgId=""
+      token=""
+      agentId=""
+      teamId="">
+    </queue-scroll>
+  </body>
+</html>
