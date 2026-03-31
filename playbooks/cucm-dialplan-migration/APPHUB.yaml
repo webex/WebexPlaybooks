@@ -5,12 +5,12 @@
 # -----------------------------------------------------------------------------
 # friendly_id — Unique identifier. Must end with -playbook (e.g. epic-ehr-playbook)
 # -----------------------------------------------------------------------------
-friendly_id: "dialplan-playbook"
+friendly_id: "cucm-dialplan-migration-playbook"
 
 # -----------------------------------------------------------------------------
 # title — Display name for the Playbook (matches ContentStack field)
 # -----------------------------------------------------------------------------
-title: "Cisco UCM Dial Plan + Webex Calling Integration"
+title: "CUCM to Webex Calling Dial Plan Migration"
 
 # -----------------------------------------------------------------------------
 # tag_line — Short tagline for App Hub detail page (required, max 128 chars)
@@ -77,7 +77,7 @@ support_url: "https://github.com/webex/webexplaybooks/issues"
 # -----------------------------------------------------------------------------
 # product_url — Link to this Playbook in the repo (required)
 # -----------------------------------------------------------------------------
-product_url: "https://github.com/webex/webexplaybooks/tree/main/playbooks/dialplan"
+product_url: "https://github.com/webex/webexplaybooks/tree/main/playbooks/cucm-dialplan-migration"
 
 # -----------------------------------------------------------------------------
 # logo — (Optional) URL to your logo image. If not provided, defaults to the

@@ -1,4 +1,4 @@
-# Cisco UCM Dial Plan + Webex Calling Integration
+# CUCM to Webex Calling Dial Plan Migration
 
 This Playbook is adapted from the [cisco_dialplan](https://github.com/jeokrohn/cisco_dialplan) sample on GitHub by Johannes Krohn.
 
@@ -102,7 +102,7 @@ Verify: `python3 --version`. Install from [python.org](https://www.python.org/do
 
 ```bash
 git clone https://github.com/webex/WebexPlaybooks.git
-cd WebexPlaybooks/playbooks/dialplan/src
+cd WebexPlaybooks/playbooks/cucm-dialplan-migration/src
 ```
 
 ### 3. Create a Python virtual environment and install dependencies
