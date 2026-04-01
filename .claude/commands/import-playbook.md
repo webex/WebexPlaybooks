@@ -18,6 +18,10 @@ The source repo to process is: $ARGUMENTS
   `.import-playbook-cache/<slug>`. Parse owner and repo from the URL; derive slug
   from repo name (lowercase, kebab-case, strip webex-/cisco- prefixes).
 
+- **Before playbook files (Step 3):** In the WebexPlaybooks repo, run the **Git working
+  branch in WebexPlaybooks** steps from Step 3 in `docs/commands/import_playbook.md`
+  (fetch `origin`, fast-forward `main`, `git switch -c playbook/<slug>`).
+
 - **Single README:** Only `playbooks/<slug>/README.md` — no `src/README.md` or other
   README under the playbook; see Step 3 in `docs/commands/import_playbook.md`.
 

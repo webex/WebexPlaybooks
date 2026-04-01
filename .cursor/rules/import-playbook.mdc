@@ -28,6 +28,11 @@ Follow the full instructions in `docs/commands/import_playbook.md`.
   strip webex-/cisco- prefixes). The clone lives in the workspace under
   `.import-playbook-cache/` (gitignored) so files stay local to the project.
 
+- **Before playbook files (Step 3):** In the WebexPlaybooks repo, run the **Git working
+  branch in WebexPlaybooks** steps from Step 3 in `docs/commands/import_playbook.md`
+  (fetch `origin`, fast-forward `main`, `git switch -c playbook/<slug>`). In Cursor,
+  request **git_write** permission when running these commands.
+
 - **Single README:** Only `playbooks/<slug>/README.md` — no `src/README.md` or other
   README under the playbook; see Step 3 in `docs/commands/import_playbook.md`.
 

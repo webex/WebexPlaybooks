@@ -107,6 +107,40 @@ If the integration spans multiple products (e.g. Meetings + Teams), include mult
 
 ## Step 3 — Create the Playbook folder and files
 
+### Git working branch in WebexPlaybooks
+
+These steps apply to **this repository** (the WebexPlaybooks workspace), not to
+`.import-playbook-cache/<slug>/`. Run them **after** the slug is settled (end of Step 2)
+and **before** adding any files under `playbooks/<slug>/`. Branch naming must match
+[CONTRIBUTING.md — Branch naming](../../CONTRIBUTING.md#branch-naming): `playbook/<slug>`.
+
+1. Ensure a **clean working tree** in WebexPlaybooks (`git status`). If there are
+   uncommitted changes, stop and tell the user to stash, commit, or discard them — do
+   not proceed on a dirty tree.
+2. Update `main` and fast-forward only:
+
+   ```bash
+   git fetch origin
+   git checkout main
+   git pull --ff-only origin main
+   ```
+
+   If `git pull --ff-only` fails (e.g. local `main` has diverged), stop and tell the
+   user to reset or merge `main` with `origin/main` before importing.
+3. Create the playbook branch:
+
+   ```bash
+   git switch -c playbook/<slug>
+   ```
+
+   Use `git checkout -b playbook/<slug>` if `git switch` is unavailable.
+
+4. **If `playbook/<slug>` already exists:** check it out, merge `origin/main` into it
+   to reduce drift, then continue. If the merge conflicts, stop and tell the user to
+   resolve conflicts before creating playbook files.
+
+---
+
 Create the following structure:
 
 ```text
@@ -321,11 +355,11 @@ Output a summary covering:
 4. **APPHUB.yaml review** — remind the author to review all fields (categories,
    third_party_tool, estimated_implementation_time) and re-run validation if they
    change anything
-5. **Suggested next steps** — review architecture diagram for accuracy,
-   run the code against a real Webex sandbox, then open a PR using the branch naming
-   convention: `playbook/<slug>`
+5. **Suggested next steps** — confirm you are on branch `playbook/<slug>` (created in
+   Step 3), review the architecture diagram for accuracy, run the code against a real
+   Webex sandbox if applicable, then push and open a PR against `main`.
 
-Do not open a PR or create a branch — leave that to the author.
+Do not open a PR automatically — the author pushes and opens the PR when ready.
 
 ---
 
