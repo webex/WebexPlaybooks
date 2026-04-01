@@ -10,22 +10,41 @@ friendly_id: "wxcc-token-management-sample-playbook"
 # -----------------------------------------------------------------------------
 # title — Display name for the Playbook (matches ContentStack field)
 # -----------------------------------------------------------------------------
-title: "Webex Contact Center — OAuth token management sample"
+title: "Webex Contact Center — Express OAuth token service"
 
 # -----------------------------------------------------------------------------
 # tag_line — Short tagline for App Hub detail page (required, max 128 chars)
 # -----------------------------------------------------------------------------
-tag_line: "Scheduled Webex OAuth refresh with SQLite and a header-guarded token HTTP API for WxCC"
+tag_line: "Flow Designer–friendly: store Webex tokens, scheduled refresh, GET /api/token with trusted headers."
 
 # -----------------------------------------------------------------------------
 # description — App Hub listing copy (substantive overview and use case)
 # -----------------------------------------------------------------------------
 description: |
-  Run a Node.js and Express sample that refreshes Webex OAuth tokens on a
-  schedule, stores access and refresh tokens in SQLite with Sequelize, and
-  exposes GET /api/token for trusted callers such as Flow Designer. Learn how
-  to align headers, org ID, and source IP with Webex Contact Center security
-  guidance before hardening for production secret stores and multi-tenant use.
+  A compact **Node.js** and **Express** service for teams that need a durable
+  Webex access token for **Webex Contact Center** automation—especially **Flow
+  Designer** HTTP Request blocks—without embedding long-lived secrets in the
+  flow itself.
+
+  ### What you get
+
+  - **Browser OAuth** — Visit `/login` once; the callback exchanges the
+    authorization code and stores tokens.
+  - **Scheduled refresh** — A background job loads the refresh token from
+    **SQLite** (Sequelize), refreshes with Webex, and keeps access tokens
+    current.
+  - **`GET /api/token`** — Trusted callers retrieve a token when **headers**
+    (org, cluster, source IP) match the checks in this Playbook—mirroring the
+    kind of alignment WxCC integration guides recommend.
+
+  ### Good for
+
+  Backend developers and contact-center engineers who want a **repeatable
+  pattern** to experiment with token storage, refresh timing, and header
+  validation before moving to vault-backed secrets, full authz, and
+  multi-tenant operations.
+
+  *Demonstration code for learning; not a production-hardened service.*
 
 # -----------------------------------------------------------------------------
 # product_types — Where this Playbook appears. Pick one or more.
