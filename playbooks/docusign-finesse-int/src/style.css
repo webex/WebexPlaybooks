@@ -1,0 +1,123 @@
+#layout {
+  width: unset;
+}
+
+#self-view {
+  width: 100%;
+  border-radius: 15px;
+}
+
+#self {
+  position: absolute;
+  margin: 10px;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 25%;
+  cursor: move;
+}
+
+#remote-view {
+  position: relative;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  #remote-view {
+    position: relative;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    /* top: 40%; */
+    /* margin-top: -50px; */
+  }
+}
+
+#remote-view-video {
+  display: block;
+  width: 100%;
+  z-index: 0;
+}
+
+#remote-view-stats-resolution {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+#loading-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -50px;
+  width: 100px;
+  height: 100px;
+}
+
+#videos {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-item {
+  width: auto !important;
+}
+
+.dropdown-menu {
+  background-color: #000;
+  color: #fff;
+}
+
+#icon {
+  margin-right: 0px;
+}
+
+.button {
+  border: 1px solid #e6e8e8;
+}
+
+.buttons-column {
+  margin-top: auto;
+  height: 100px;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  height: 100%;
+}
+
+.custom-button {
+  border-radius: 1000px;
+  border-color: transparent;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.button-desktop {
+  height: 55px;
+  width: 55px;
+}
+
+.button-grey {
+  color: #000;
+  background-color: #e6e8e8;
+}
+
+#hangup {
+  background-color: #ff5c4a;
+}
+
+.img-desktop {
+  height: 30px;
+}

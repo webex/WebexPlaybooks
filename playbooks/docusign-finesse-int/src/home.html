@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assistance Page</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: url("https://wxsd-sales.github.io/codelabs/video-kiosk/images/cisco-impact-background.jpg")
+          no-repeat center center fixed;
+        background-size: cover;
+        font-family: Arial, sans-serif;
+      }
+
+      .center-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #1a1a1a;
+        padding: 40px 50px;
+        border-radius: 10px;
+        text-align: center;
+        color: white;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .center-button:hover {
+        background-color: #333;
+      }
+
+      .center-button img {
+        width: 200px;
+        height: 200px;
+        display: block;
+        margin: 0 auto 20px auto;
+      }
+
+      .button-text {
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: white;
+        font-size: 35px;
+        display: inline-block;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <script>
+    async function reset_hash() {
+      console.log(`Resetting hash_url`);
+      return (window.location.hash = "null");
+    }
+    async function call_queue(target) {
+      console.log(`Calling queue - ${target}`);
+      reset_hash();
+      setTimeout(dial, 100, target);
+      setTimeout(reset_hash, 500);
+    }
+
+    function dial(target) {
+      window.location.hash = target;
+    }
+  </script>
+  <body>
+    <!-- Here 1111 is the call queue number, please change it to your call queue number -->
+    <div class="center-button" onclick="call_queue('1111')">
+      <img
+        src="https://img.icons8.com/ios-filled/100/ffffff/online-support.png"
+        alt="Support Icon"
+      />
+      <div class="button-text">Looking For Assistance?</div>
+    </div>
+  </body>
+</html>

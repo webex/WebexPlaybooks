@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Agent Page</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+      body {
+        background-color: #f4f4f4;
+        padding-top: 40px;
+      }
+      .status-box {
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <section class="section">
+      <div class="container">
+        <h1 class="title has-text-centered">Send Agreement</h1>
+
+        <div class="box">
+          <form id="sendForm">
+            <div class="field">
+              <label class="label">Customer Name</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="text"
+                  id="name"
+                  placeholder="Enter customer name"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Customer Email</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="email"
+                  id="email"
+                  placeholder="Enter customer email"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field is-grouped is-justify-content-center">
+              <div class="control">
+                <button class="button is-primary" type="submit">
+                  Send Document
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div id="output" class="status-box has-text-centered">
+          <p id="status" class="has-text-weight-semibold has-text-info"></p>
+          <hr class="my-3" />
+          <p id="env" class="has-text-weight-semibold has-text-info"></p>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      const socket = io("https://tunnel-rkanthet.wxsd.us", {
+        transports: ["websocket"],
+        secure: true,
+      });
+
+      socket.emit("register-client");
+
+      socket.on("envelope-status", ({ envelopeId, status }) => {
+        document.getElementById("env").innerText = `Envelope is ${status}`;
+      });
+
+      document
+        .getElementById("sendForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const name = document.getElementById("name").value;
+          const email = document.getElementById("email").value;
+
+          const response = await fetch("/send-document", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ customerName: name, customerEmail: email }),
+          });
+
+          const result = await response.json();
+          document.getElementById("status").innerText =
+            result.message || result.error;
+        });
+    </script>
+  </body>
+</html>
