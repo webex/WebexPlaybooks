@@ -1,0 +1,56 @@
+# requirements.txt — Python dependencies for the UCM to Webex Calling migration scripts
+#
+# Install with:
+#   pip install -r requirements.txt
+#
+# Requires Python 3.10+ (upstream repo targets Python 3.10; tested on Python 3.13).
+#
+# Notes:
+#   - ucmaxl is installed from a pinned GitHub commit (no versioned release available).
+#     This is a supply-chain consideration: audit the ucmaxl source before use in production.
+#   - wxc-sdk was absent from the upstream requirements.txt but is required by main.py.
+#     Version 1.32.0 has been added here. Upgrade with caution — review the wxc-sdk
+#     changelog at https://github.com/jeokrohn/wxc_sdk before upgrading.
+#   - pyyaml, lxml, and pydantic have been updated from the original upstream pins to
+#     versions that provide pre-built wheels for Python 3.12+/3.13+.
+
+-i https://pypi.org/simple
+
+# Webex Calling Python SDK (required by main.py; was missing from upstream requirements)
+wxc-sdk==1.32.0
+
+# UCM AXL helper — pinned to a specific commit (no versioned release)
+# Supply-chain note: review this package before production use.
+-e git+https://github.com/jeokrohn/ucmaxl@41fd647731fc8176f1c59a081598b627607814cc#egg=ucmaxl
+
+# Core dependencies
+# Notes on version changes from the upstream 2023 pins:
+#   - pyyaml: 6.0 → 6.0.2 (Python 3.13 pre-built wheel)
+#   - lxml: 4.9.2 → 5.3.2 (Python 3.13 pre-built wheel; API-compatible with 4.x)
+#   - pydantic: upstream pinned v1 (1.10.8), but wxc-sdk requires pydantic>=2.0.
+#     pydantic v2 retains deprecated v1-style helpers (parse_obj_as, BaseModel.parse_obj,
+#     __fields__) so the migration scripts run. However, ucm_reader/base.py uses
+#     field_info.extra and __repr_args__ which are v1-only internals; those will raise
+#     AttributeError at runtime. Migrating those to pydantic v2 native APIs is a
+#     TODO for production hardening.
+#   - typing-extensions: 4.6.2 → >=4.14.1 required by pydantic-core v2 (pre-built
+#     Python 3.13 wheel). Pinned here to 4.15.0 for reproducibility.
+#   - zeep: 4.2.1 → 4.3.1 (4.2.x uses the `cgi` stdlib module removed in Python 3.13)
+attrs==23.1.0
+certifi==2023.5.7
+charset-normalizer==3.1.0
+idna==3.4
+isodate==0.6.1
+lxml==5.3.2
+platformdirs==3.5.1
+pydantic>=2.0.0
+python-dotenv==0.21.1
+pytz==2023.3
+pyyaml==6.0.2
+requests==2.31.0
+requests-file==1.5.1
+requests-toolbelt==1.0.0
+six==1.16.0
+typing-extensions==4.15.0
+urllib3==1.26.16
+zeep==4.3.1
