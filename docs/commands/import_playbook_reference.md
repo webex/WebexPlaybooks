@@ -78,6 +78,11 @@ in upstream documentation.
 
 ## Step 3 — Create the Playbook folder and files
 
+Before creating any playbook files, follow **Git working branch in WebexPlaybooks** in
+[import_playbook.md — Step 3](import_playbook.md#git-working-branch-in-webexplaybooks)
+(same steps as the standard import: clean tree, fast-forward `main`, branch
+`playbook/<slug>`).
+
 Create this structure:
 
 ```text
