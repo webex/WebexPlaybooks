@@ -5,9 +5,10 @@ workflow: a Playbook that **points developers to an existing canonical repo**
 (SDK, sample application, or multi-package project) **without vendoring** that
 code into `playbooks/<slug>/src/`.
 
-It is referenced by `.cursor/rules/import-playbook-reference.mdc` (Cursor) and
-`.claude/commands/import-playbook-reference.md` (Claude Code). Do not duplicate
-content between those files — edit here and both adapters pick up the change.
+It is referenced by `.cursor/rules/import-playbook-reference.mdc` (Cursor),
+`.claude/commands/import-playbook-reference.md` (Claude Code), and
+`.codex/commands/import-playbook-reference.md` (Codex). Do not duplicate
+content between those files — edit here and all adapters pick up the change.
 
 For the standard workflow that **copies** minimal integration code into `src/`,
 see [import_playbook.md](import_playbook.md).

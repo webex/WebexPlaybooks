@@ -90,8 +90,8 @@ reviewers and authors still require a **followable path** to documented Webex AP
 
 Two workflows:
 
-| Workflow | Document | Command (Claude/Cursor) |
-| -------- | -------- | ------------------------ |
+| Workflow | Document | Command (Claude/Cursor/Codex) |
+| -------- | -------- | ------------------------------ |
 | **Standard** — copy minimal integration code into `playbooks/<slug>/src/` | [docs/commands/import_playbook.md](docs/commands/import_playbook.md) | `/import-playbook` |
 | **Reference upstream** — guide only; canonical SDK/sample stays in its repo | [docs/commands/import_playbook_reference.md](docs/commands/import_playbook_reference.md) | `/import-playbook-reference` |
 

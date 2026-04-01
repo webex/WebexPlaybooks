@@ -1,9 +1,10 @@
 # import-playbook — Core Instructions
 
 This document is the single source of truth for the import-playbook command.
-It is referenced by both `.claude/commands/import-playbook.md` (Claude Code) and
-`.cursor/rules/import-playbook.mdc` (Cursor). Do not duplicate content between those
-files — edit here and both adapters pick up the change.
+It is referenced by `.claude/commands/import-playbook.md` (Claude Code),
+`.cursor/rules/import-playbook.mdc` (Cursor), and
+`.codex/commands/import-playbook.md` (Codex). Do not duplicate content between those
+files — edit here and all adapters pick up the change.
 
 To produce a Playbook that **references** a canonical upstream repo without copying
 SDK or sample sources into `src/`, use [import_playbook_reference.md](import_playbook_reference.md).
