@@ -1,4 +1,4 @@
-# Architecture — Webhook to Adaptive Card
+# Architecture — Incoming Webhook to Webex Messaging Adaptive Card
 
 External systems can signal events with HTTP POSTs. This sample turns a structured JSON payload into a **Webex message** that includes an **Adaptive Card** attachment.
 

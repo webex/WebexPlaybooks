@@ -1,4 +1,4 @@
-# Webhook to Adaptive Card + Webex Teams
+# Incoming Webhook to Webex Messaging Adaptive Card
 
 This Playbook is adapted from the [Webhook to Adaptive Card](https://github.com/WebexSamples/webhook-to-card) sample on GitHub.
 

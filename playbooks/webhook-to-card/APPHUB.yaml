@@ -10,19 +10,36 @@ friendly_id: "webhook-to-card-playbook"
 # -----------------------------------------------------------------------------
 # title — Display name for the Playbook (matches ContentStack field)
 # -----------------------------------------------------------------------------
-title: "Webhook to Adaptive Card + Webex Teams Integration"
+title: "Incoming Webhook to Webex Messaging Adaptive Card"
 
 # -----------------------------------------------------------------------------
 # tag_line — Short tagline for App Hub detail page (required, max 128 chars)
 # -----------------------------------------------------------------------------
-tag_line: "Turn JSON webhook payloads into Adaptive Card messages posted to a Webex space by a bot"
+tag_line: "Receive HTTP webhooks and post Adaptive Card messages to Webex Messaging spaces with a bot"
 
 # -----------------------------------------------------------------------------
-# description — 1–2 sentences, used as App Hub listing copy
+# description — App Hub listing / detail copy (markdown supported where CMS renders it)
 # -----------------------------------------------------------------------------
 description: |
-  This Playbook adapts a Python Flask sample that exposes POST /webhook, builds an Adaptive Card from
-  structured JSON, and posts it to a Webex Teams space with the Messages API and a bot token.
+  **Bring external events into Webex Messaging without a custom client.** Monitoring tools, CI/CD
+  pipelines, ticketing systems, and internal services already speak HTTP and JSON. This Playbook
+  shows how to turn those **webhook payloads** into **Adaptive Card** messages—structured facts,
+  images, and action buttons—delivered to a **space** by a **bot** using the public Messages API.
+
+  **Why use this**
+
+  - **Meet people where they work:** Operators and stakeholders stay in Webex instead of checking
+    another dashboard or email filter.
+  - **Richer than plain text:** Cards summarize context at a glance and can link out to runbooks,
+    tickets, or live views.
+  - **Small, inspectable surface:** A single Flask route and a bot token are enough to prototype;
+    you can harden auth, signing, and hosting once the flow is proven.
+
+  **What you get**
+
+  Sample **Python** code (`POST /webhook`), environment-based configuration, a worked **rocket-launch**
+  JSON shape you can replace with your own fields, and a deployment guide aligned with
+  [WebexSamples/webhook-to-card](https://github.com/WebexSamples/webhook-to-card).
 
 # -----------------------------------------------------------------------------
 # product_types — Where this Playbook appears. Pick one or more.
