@@ -16,6 +16,16 @@ DevNet). Use it together with the root [README](../README.md) in this Playbook.
 - **HTTP API:** `GET /api/token` returns the stored access token when request headers
   match values in `auth.js` (org, sender, passphrase, source IP, content types).
 
+## Extensions in this Playbook (not in upstream Express app)
+
+- **`GET /login`** and **`GET /auth/webex/callback`** — Browser **OAuth 2.0
+  authorization-code** flow: redirect to Webex authorize, exchange `code` for tokens,
+  persist via `tokenService.updateToken`. Uses **`REDIRECT_URI`**, **`OAUTH_SCOPES`**,
+  and a short-lived **`oauth_state`** cookie for CSRF protection on the callback.
+- **Scheduler refresh source:** Prefers **`refresh_token`** stored in SQLite after OAuth;
+  falls back to **`REFRESH_TOKEN`** in `.env` if the database has none; **no-op** if
+  neither is set (avoids failed refresh calls before first login).
+
 ## Video and tutorials
 
 - [REFRESH Token Management and Calling WebexCC API from Flow Designer](https://app.vidcast.io/share/c5876929-2d94-40b6-96e5-ae541b42b413)
@@ -24,10 +34,8 @@ DevNet). Use it together with the root [README](../README.md) in this Playbook.
 
 ## `REDIRECT_URI` in env template
 
-The upstream `copy.env` includes `REDIRECT_URI` for a browser OAuth redirect. The
-vendored **Express app in this Playbook does not register `/auth/webex/callback`**.
-Obtain an initial **refresh token** using your Integration’s OAuth flow (developer
-portal or a separate small redirect app), then set `REFRESH_TOKEN` in `.env`.
+Register this URI on your Webex Integration so it matches **`REDIRECT_URI`** in `.env`
+exactly (including scheme, host, port, and path **`/auth/webex/callback`**).
 
 ## Support (upstream)
 

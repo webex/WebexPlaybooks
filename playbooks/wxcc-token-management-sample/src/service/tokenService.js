@@ -16,8 +16,20 @@ const getToken = () => {
 };
 
 const updateToken = (token) => {
-  // Updates the existing Token in the Database
-  let [accessToken, clusterId, orgId] = token.access_token.split('_');
+  const raw = token.access_token || '';
+  const parts = raw.split('_');
+  let accessToken;
+  let clusterId;
+  let orgId;
+
+  // Legacy WxCC composite: accessCluster_org in three segments
+  if (parts.length === 3) {
+    [accessToken, clusterId, orgId] = parts;
+  } else {
+    accessToken = raw;
+    orgId = process.env.ORG_ID || '';
+    clusterId = process.env.CLUSTER_ID || 'unknown';
+  }
 
   const record = Token.upsert(
     {

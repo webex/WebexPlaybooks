@@ -7,7 +7,7 @@
  *
  * What this does NOT do: production-grade secret storage, multi-tenant isolation, or log redaction.
  *
- * Environment: CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN (see env.template).
+ * Environment: CLIENT_ID, CLIENT_SECRET; refresh_token from DB row id=1 if set, else REFRESH_TOKEN (see env.template).
  */
 
 // Scheduler
@@ -27,7 +27,6 @@ const { getToken, updateToken } = require('../service/tokenService');
 // Global Constants - You may refactor this into another file if required.
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
-const refreshToken = process.env.REFRESH_TOKEN;
 const authUrl = 'https://webexapis.com/v1/access_token';
 // You can externalize this property as well - interval in hours OR minutes OR seconds
 const INTERVAL = 10;
@@ -40,12 +39,43 @@ db.sync({
   .catch((err) => console.log(err));
 
 const getRefreshToken = async () => {
+  if (!clientId || !clientSecret) {
+    console.log('Skipping refresh_token grant: CLIENT_ID or CLIENT_SECRET not set');
+    return;
+  }
+
+  let refreshTokenValue = '';
+  try {
+    const row = await getToken();
+    if (row && row.refresh_token) {
+      refreshTokenValue = row.refresh_token;
+    } else if (row && typeof row.get === 'function') {
+      const plain = row.get({ plain: true });
+      if (plain && plain.refresh_token) {
+        refreshTokenValue = plain.refresh_token;
+      }
+    }
+  } catch (e) {
+    console.error('Error reading refresh_token from DB:', e.message);
+  }
+
+  if (!refreshTokenValue) {
+    refreshTokenValue = process.env.REFRESH_TOKEN || '';
+  }
+
+  if (!refreshTokenValue) {
+    console.log(
+      'Skipping refresh_token grant: no refresh_token in database or REFRESH_TOKEN env'
+    );
+    return;
+  }
+
   const webexUrl = authUrl;
   const params = {
     grant_type: 'refresh_token',
     client_id: clientId,
     client_secret: clientSecret,
-    refresh_token: refreshToken,
+    refresh_token: refreshTokenValue,
   };
 
   console.log(

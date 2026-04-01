@@ -1,12 +1,14 @@
 /**
  * Express server exposing GET /api/token for authenticated callers (e.g. Webex Contact Center Flow Designer).
  * Tokens are refreshed in the background by scheduler/scheduler.js and stored in SQLite.
+ * Browser OAuth: GET /login and GET /auth/webex/callback (see routes/oauth.js).
  *
- * Does NOT implement: OAuth browser redirect routes, TLS termination, robust auth beyond header checks.
- * Environment: see env.template (ORG_ID, PASSPHRASE, FROM, SOURCE_IP, PORT, HOST).
+ * Does NOT implement: TLS termination, robust auth beyond header checks on /api/token.
+ * Environment: see env.template (ORG_ID, PASSPHRASE, FROM, SOURCE_IP, PORT, HOST, REDIRECT_URI, OAUTH_SCOPES).
  */
 
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const app = express();
 const dotenv = require('dotenv');
 // Scheduler Service
@@ -15,6 +17,7 @@ const { initializeScheduler } = require('./scheduler/scheduler');
 const { getToken } = require('./service/tokenService');
 // Check Request Headers
 const { checkRequestHeaders } = require('./auth');
+const oauthRoutes = require('./routes/oauth');
 // Env Variables
 dotenv.config();
 
@@ -35,6 +38,9 @@ const requireHTTPS = (req, res, next) => {
 
 // Use JSON as the primary method of exchange in the body for the parser
 app.use(express.json());
+app.use(cookieParser());
+
+app.use(oauthRoutes);
 
 // Build the Token API
 app.get('/api/token', async (req, res) => {
