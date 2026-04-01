@@ -18,12 +18,32 @@ title: "MyCRM + Webex Contact Center Integration"
 tag_line: "Connect MyCRM to Webex Contact Center for screen pop and customer context"
 
 # -----------------------------------------------------------------------------
-# description — 1–2 sentences, used as App Hub listing copy
+# description — App Hub supports Markdown. Use a block scalar (description: |) with
+# blank lines between sections: opening paragraph (bold key terms), **Why use this
+# playbook** (3–5 outcome bullets), **What it does** (concrete behaviors/endpoints).
+# Do not put upstream repo URLs or install-only instructions here—use README and
+# src/README.md for reference playbooks. See docs/commands/import_playbook.md.
 # -----------------------------------------------------------------------------
 description: |
-  This sample demonstrates how to build an integration between MyCRM and Webex Contact Center.
-  Agents receive customer context and screen pop when handling calls. The code includes
-  webhook handling, REST API calls, and Agent Desktop configuration.
+  A **Node.js** sample that connects **MyCRM** to **Webex Contact Center** for agent
+  **screen pop**: webhooks, customer lookup, and context surfaced in **Agent Desktop**.
+
+  **Why use this playbook**
+
+  - **Faster delivery:** Start from a working **Express** service instead of an empty
+    repo when you need CRM context on a call.
+  - **Fewer integration mistakes:** Shows the expected **REST** payloads and **Webex**
+    API usage so you are not guessing field names or auth order.
+  - **Secrets handled safely:** **Client ID**, **client secret**, and tokens load from
+    **environment variables**, matching how you will configure non-dev environments.
+  - **Easy to verify:** Local run plus simple HTTP checks so you can confirm the flow
+    before wiring production routing or scaling.
+
+  **What it does**
+
+  - Accepts **MyCRM** events over HTTP and validates incoming requests.
+  - Calls documented **Webex** APIs to resolve or push customer context for **WxCC**.
+  - Returns structured data your **Agent Desktop** or flow can display to agents.
 
 # -----------------------------------------------------------------------------
 # product_types — Where this Playbook appears. Pick one or more.

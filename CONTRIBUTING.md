@@ -105,7 +105,7 @@ required fields must be present and non-empty for App Hub submission.
 friendly_id: ""              # {folder-slug}-playbook (e.g. epic-ehr-playbook, my-crm-playbook)
 title: ""                    # Display name for the Playbook (matches ContentStack field)
 tag_line: ""                 # Short tagline for App Hub detail page (required, max 128 chars)
-description: ""              # 1–2 sentences, used as App Hub listing copy
+description: ""              # App Hub supports Markdown; use YAML | block (opening + Why + What); see Field Rules
 
 product_types: []            # Array: one or more of teams | meetings | calling | rooms | contact_center
 
@@ -138,6 +138,17 @@ submission_date: ""          # ISO date (e.g. 2025-03-01)
 
 - **tag_line** — Short tagline displayed on the App Hub detail page. Required.
   Max 128 characters.
+
+- **description** — App Hub supports **Markdown**. Use a YAML block scalar
+  (`description: |`) with **blank lines** between sections: an opening paragraph
+  (**bold** key terms such as Webex product, flow, and stack), a
+  **Why use this playbook** heading with 3–5 outcome-focused bullets, and a
+  **What it does** heading with bullets for concrete behaviors and endpoints.
+  Stay accurate to the playbook. Do **not** use this field for canonical upstream
+  repository URLs, clone or package-install instructions, or “code lives
+  elsewhere”—document that in **README** and, for reference playbooks, in
+  **`src/README.md`**. Full importer checklist and example shape:
+  [import_playbook.md — APPHUB.yaml](docs/commands/import_playbook.md#apphubyaml).
 
 - **product_types** — Array of one or more of: `teams`, `meetings`, `calling`,
   `rooms`, `contact_center`. Playbooks can span multiple products (e.g.
