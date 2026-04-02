@@ -70,3 +70,8 @@ env/
 .ruff_cache/
 *.egg-info/
 *.egg
+
+# auto-leave-spaces — local runtime config and token cache (see playbooks/auto-leave-spaces/src)
+playbooks/auto-leave-spaces/src/auto_leave.yml
+playbooks/auto-leave-spaces/src/auto_leave_tokens.yml
+playbooks/auto-leave-spaces/src/auto_leave_rest.log
