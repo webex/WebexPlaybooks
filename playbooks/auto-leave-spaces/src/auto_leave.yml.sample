@@ -1,0 +1,17 @@
+# Copy this file to auto_leave.yml in the same directory you run auto_leave.py from.
+#
+# Both flags default false: a matching space title only logs until you set at least one
+# to true (then the app calls Webex Memberships APIs).
+
+# Hide 1:1 (direct) spaces from the messaging list when they match the block list
+hide_direct: false
+# Leave group spaces when they match. Caution: you cannot rejoin without a new invite.
+leave_group_spaces: false
+# Verbose console logging
+debug_logging: true
+# Log REST traffic to auto_leave_rest.log on disk
+rest_logging: true
+blocked:
+  # Regex strings; each must match the full space title (anchored in code as ^pattern$).
+  - example-bot-space
+  - .+Notification.*

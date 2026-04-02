@@ -1,0 +1,7 @@
+services:
+  auto_leave:
+    build: .
+    ports:
+      - "6001:6001"
+    volumes:
+      - ./:/app
