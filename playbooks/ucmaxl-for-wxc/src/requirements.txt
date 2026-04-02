@@ -1,0 +1,43 @@
+# requirements.txt — Python dependencies for ucmaxl-for-wxc
+#
+# Install with:
+#   pip install -r requirements.txt
+#
+# Requires Python 3.10+.
+#
+# Notes:
+#   - ucmaxl is installed from a pinned GitHub commit (no versioned release available).
+#     This is a supply-chain consideration: audit the ucmaxl source before use in production.
+#   - zeep 4.3.1 is required for Python 3.13+ (zeep 4.2.x references the `cgi` module
+#     removed in Python 3.13).
+
+-i https://pypi.org/simple
+
+# UCM AXL helper — pinned to a specific commit (no versioned release)
+# Supply-chain note: review this package before production use.
+-e git+https://github.com/jeokrohn/ucmaxl@41fd647731fc8176f1c59a081598b627607814cc#egg=ucmaxl
+
+# HTTP client
+requests==2.31.0
+
+# .env file loader
+python-dotenv==0.21.1
+
+# SOAP client (transitive via ucmaxl)
+zeep==4.3.1
+
+# Transitive dependencies (pinned for reproducibility)
+attrs==23.1.0
+certifi==2023.5.7
+charset-normalizer==3.1.0
+idna==3.4
+isodate==0.6.1
+lxml==5.3.2
+platformdirs==3.5.1
+pydantic>=2.0.0
+pytz==2023.3
+requests-file==1.5.1
+requests-toolbelt==1.0.0
+six==1.16.0
+typing-extensions==4.15.0
+urllib3==1.26.16
