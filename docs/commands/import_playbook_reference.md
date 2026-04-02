@@ -160,7 +160,16 @@ items where relevant:
 
 ### APPHUB.yaml
 
-Same rules as [import_playbook.md — APPHUB.yaml](import_playbook.md#apphubyaml).
+Same rules as [import_playbook.md — APPHUB.yaml](import_playbook.md#apphubyaml),
+including the structured Markdown `description` (`description: |`, **Why use this
+playbook**, **What it does**). Reference-upstream playbooks use the **same**
+description quality bar as standard imports.
+
+Do **not** use App Hub `description` to point at the canonical upstream GitHub repo,
+package install commands, or “get the code from upstream”—that belongs in **README**
+and in **`src/README.md`**. Keep `description` focused on outcomes and concrete
+behaviors this Playbook documents, like any other playbook.
+
 `product_url` remains
 `https://github.com/webex/WebexPlaybooks/tree/main/playbooks/<slug>`.
 

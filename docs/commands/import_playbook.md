@@ -241,7 +241,61 @@ Use the full schema from PLAYBOOK_TEMPLATE/APPHUB.yaml. **Preserve the section c
   `meetings-exporter-playbook`) to reduce App Hub name collisions with actual integrations
 - `title` — `{ThirdPartyTool} + Webex {Product} Integration`
 - `tag_line` — one-line value proposition (required, max 128 chars)
-- `description` — 1–2 sentences for App Hub listing
+- `description` — App Hub **supports Markdown** in this field. Use a YAML block scalar
+  (`description: |`) and separate sections with **blank lines**. Do **not** use
+  `description` for canonical upstream URLs, clone or install commands, or
+  “source lives elsewhere”—put those in **README** (and in **`src/README.md`** for
+  [reference imports](import_playbook_reference.md)). Keep **`tag_line`** as the short
+  one-liner (max 128 characters); `description` carries the expanded detail.
+
+  **Structure**
+
+  - **Opening paragraph:** Short summary of what the playbook offers; use **bold**
+    on key terms (Webex product, integration flow, language or stack).
+  - **Why use this playbook:** A line `**Why use this playbook**`, then **3–5
+    bullets** focused on user outcomes—for example faster delivery, fewer auth
+    mistakes, correct token or API usage, framework fit, a workable test path,
+    secrets loaded from environment variables.
+  - **What it does:** A line `**What it does**` (or equivalent), then bullets for
+    **concrete behaviors**: OAuth or callback handling, REST calls, named routes or
+    endpoints the sample exposes, configuration the reader can verify.
+
+  **Importer checklist**
+
+  - [ ] `description: |` with blank lines between the opening paragraph, Why, and What
+  - [ ] Opening paragraph uses **bold** on product, flow, and stack terms where helpful
+  - [ ] **Why use this playbook** has 3–5 outcome-oriented bullets
+  - [ ] **What it does** lists behaviors and endpoints that match the actual playbook
+  - [ ] No upstream repo links, package install lines, or pointer-only copy in
+    `description`
+
+  **Example shape:** For pacing, depth, and Markdown formatting, compare
+  [`playbooks/wxcc-token-java-sample/APPHUB.yaml`](../../playbooks/wxcc-token-java-sample/APPHUB.yaml)
+  (`description`). Generic pattern (substitute your integration’s facts):
+
+  ```yaml
+  description: |
+    A **Node.js** sample that wires **MyCRM** into **Webex Contact Center** for
+    agent screen pop: webhook intake, customer lookup, and Agent Desktop context.
+
+    **Why use this playbook**
+
+    - **Ship faster:** Reuse a minimal **Express** service pattern instead of
+      designing the flow from a blank editor.
+    - **Fewer auth mistakes:** Shows how to validate **Webex** signatures and store
+      tokens using **environment variables** only.
+    - **Right API shape:** Demonstrates the exact **REST** calls and payloads your
+      flow needs before you harden for production.
+    - **Testable path:** Includes a local run and curl-friendly checks so you can
+      confirm behavior before deploying.
+
+    **What it does**
+
+    - Receives **MyCRM**-originated events and normalizes them for **WxCC**.
+    - Calls documented **Webex** APIs with the scoped **access token** from your app.
+    - Returns structured customer context your **Agent Desktop** or flow can consume.
+  ```
+
 - `product_types` — from integration type mapping (Step 2)
 - `categories` — default `["productivity", "developer-tools"]`; include verticals
   (healthcare, financial-services, retail-ecommerce) and app categories as appropriate
