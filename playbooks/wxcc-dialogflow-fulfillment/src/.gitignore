@@ -1,0 +1,8 @@
+# Dependencies — never commit installed packages
+node_modules/
+
+# Lockfiles — generated on install, not needed in the playbook
+package-lock.json
+
+# Local environment — contains secrets, never commit
+.env
