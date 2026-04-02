@@ -1,0 +1,136 @@
+# APPHUB.yaml — Playbook metadata for Webex App Hub
+# Copy this file into your Playbook folder under playbooks/<tool-slug>/
+# Fill in all required fields. See CONTRIBUTING.md for field rules.
+
+# -----------------------------------------------------------------------------
+# friendly_id — Unique identifier. Must end with -playbook (e.g. epic-ehr-playbook)
+# -----------------------------------------------------------------------------
+friendly_id: "wxcc-token-java-sample-playbook"
+
+# -----------------------------------------------------------------------------
+# title — Display name for the Playbook (matches ContentStack field)
+# -----------------------------------------------------------------------------
+title: "Webex Contact Center — Java OAuth token sample"
+
+# -----------------------------------------------------------------------------
+# tag_line — Short tagline for App Hub detail page (required, max 128 chars)
+# -----------------------------------------------------------------------------
+tag_line: "Java OAuth2 for WxCC: self-contained token for Flow Builder, WxCC APIs—inspect at /userinfo"
+
+# -----------------------------------------------------------------------------
+# description — App Hub listing / detail copy (Markdown supported for formatting)
+# -----------------------------------------------------------------------------
+description: |
+  A **Java / Spring Boot** sample that completes the **OAuth 2.0 authorization code**
+  flow against Webex, exchanges the code for tokens using the parameters WxCC expects,
+  and exposes the result for quick API testing.
+
+  **Why use this playbook**
+
+  - **Avoid guesswork on token shape:** Webex Contact Center APIs often need a
+    **self-contained** access token. The sample adds the right token-exchange
+    parameters so you are not debugging opaque 401s before your first successful call.
+  - **Working reference in your stack:** If your team ships on **Java 17** and
+    **Spring Security OAuth2**, you can copy patterns (client config, redirect URI,
+    session-backed login) instead of translating from another language or framework.
+  - **Fast path to a testable token:** After login, call **`/userinfo`** to see
+    claims and copy a **Bearer** token into Postman, curl, **Webex Contact Center
+    Flow Builder** HTTP activities, or your own middleware—useful when you are
+    validating scopes, org entitlements, or WxCC endpoints inside real contact-center
+    flows.
+  - **Secrets stay out of source:** Client ID and secret are loaded from **environment
+    variables**, aligning with how you will configure staging and production apps.
+
+  **What it does**
+
+  - Redirects the browser to Webex for sign-in, handles the callback, and stores
+    the session server-side.
+  - Performs token exchange with **`self_contained_token=true`** where applicable.
+  - Serves a small static UI after login and a **`GET /userinfo`** JSON endpoint for
+    inspection and tooling.
+
+  **Contact center (not generic OAuth)**
+
+  - Tokens from this sample are intended for **Webex Contact Center** scenarios:
+    calling **WxCC REST/GraphQL** APIs and supplying **`Authorization: Bearer`**
+    from **Flow Builder** or other automation that runs in your CC deployment.
+  - **`product_types: contact_center`** reflects that focus: same OAuth stack as
+    broader Webex, but scope defaults and token exchange match WxCC integration
+    patterns from the official WxCC samples.
+
+# -----------------------------------------------------------------------------
+# product_types — Where this Playbook appears. Pick one or more.
+# Valid: teams | meetings | calling | rooms | contact_center
+# -----------------------------------------------------------------------------
+product_types:
+  - "contact_center"
+
+# -----------------------------------------------------------------------------
+# app_context — Where the integration runs. Pick one or more.
+# Valid: space | in_meeting | call | device | contact_center | sidebar | mcp | a2a
+# -----------------------------------------------------------------------------
+app_context:
+  - "contact_center"
+
+# -----------------------------------------------------------------------------
+# categories — App Hub category slugs. Pick one or more.
+# Verticals: healthcare | financial-services | retail-ecommerce
+# App categories (use kebab-case slugs):
+#   ai-agent-testing-observability | agent-supervisor-tools | analytics |
+#   calendar-scheduling | collaboration-management | customer-relations |
+#   customer-support | developer-tools | doc-management | education |
+#   finance | government | healthcare | human-resources | internet-of-things |
+#   marketing-sales | orchestration | platform | productivity |
+#   project-management | recording-transcriptions | security-compliance |
+#   self-service-bots | social-and-fun | strategy-team-planning |
+#   workflow-automation | workforce-optimization | other
+# -----------------------------------------------------------------------------
+categories:
+  - "developer-tools"
+  - "security-compliance"
+
+# -----------------------------------------------------------------------------
+# company_name — Your company or team name
+# -----------------------------------------------------------------------------
+company_name: "Webex for Developers"
+
+# -----------------------------------------------------------------------------
+# company_url — Your company or project URL
+# -----------------------------------------------------------------------------
+company_url: "https://developer.webex.com"
+
+# -----------------------------------------------------------------------------
+# support_url — Issues or support link (e.g. GitHub issues)
+# -----------------------------------------------------------------------------
+support_url: "https://github.com/webex/WebexPlaybooks/issues"
+
+# -----------------------------------------------------------------------------
+# product_url — Link to this Playbook in the repo (required)
+# -----------------------------------------------------------------------------
+product_url: "https://github.com/webex/WebexPlaybooks/tree/main/playbooks/wxcc-token-java-sample"
+
+# -----------------------------------------------------------------------------
+# logo — (Optional) URL to your logo image. If not provided, defaults to the
+# standard Webex Playbook logo.
+# -----------------------------------------------------------------------------
+logo: "https://images.contentstack.io/v3/assets/bltd14fd2a03236233f/blta2de9daa773c6604/60f71f81e2de935fc7e35dbe/download"
+
+# -----------------------------------------------------------------------------
+# estimated_implementation_time — e.g. "2-4 hours", "1 day"
+# -----------------------------------------------------------------------------
+estimated_implementation_time: "2-4 hours"
+
+# -----------------------------------------------------------------------------
+# third_party_tool — (Optional) The tool being integrated (e.g. Salesforce, Epic)
+# Omit for generic playbooks (e.g. "any CMS")
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# privacy_url — Privacy policy URL (required; use Cisco default for Webex-authored)
+# -----------------------------------------------------------------------------
+privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"
+
+# -----------------------------------------------------------------------------
+# submission_date — (Optional) ISO date (e.g. 2025-03-01)
+# -----------------------------------------------------------------------------
+submission_date: "2026-04-01"

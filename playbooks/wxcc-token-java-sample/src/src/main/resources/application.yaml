@@ -1,0 +1,29 @@
+# OAuth client credentials must be supplied via environment variables (see env.template).
+# Do not commit real secrets.
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          webexcc:
+            client-id: ${WXCC_OAUTH_CLIENT_ID}
+            client-secret: ${WXCC_OAUTH_CLIENT_SECRET}
+            scope: ${WXCC_OAUTH_SCOPE:cjp:user,spark:people_read,cjp:config_write,cjp:config,cjp:config_read}
+            authorization-grant-type: authorization_code
+            redirect-uri: ${WXCC_OAUTH_REDIRECT_URI:http://localhost:8080/login/oauth2/code/webexcc}
+            login-uri: ${WXCC_OAUTH_LOGIN_URI:/}
+            login-success-uri: ${WXCC_OAUTH_LOGIN_SUCCESS_URI:/index.html}
+            logout-success-uri: ${WXCC_OAUTH_LOGOUT_SUCCESS_URI:/}
+        provider:
+          webexcc:
+            authorization-uri: ${WXCC_OAUTH_AUTHORIZATION_URI:https://webexapis.com/v1/authorize}
+            token-uri: ${WXCC_OAUTH_TOKEN_URI:https://webexapis.com/v1/access_token}
+            user-info-uri: ${WXCC_OAUTH_USER_INFO_URI:https://webexapis.com/v1/people/me}
+            user-name-attribute: userName
+
+logging:
+  level:
+    ROOT: INFO
+
+server:
+  port: ${SERVER_PORT:8080}
