@@ -1,0 +1,9 @@
+{
+  "extends": "@parcel/config-default",
+  "transformers": {
+    "*.ts": ["@parcel/transformer-typescript-tsc"],
+    "*.wav": ["@parcel/transformer-raw"],
+    "*.mp3": ["@parcel/transformer-raw"],
+    "*.ogg": ["@parcel/transformer-raw"]
+  }
+}

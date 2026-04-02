@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking CRM</title>
+    <!-- External CSS dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="banking-crm.css" />
+</head>
+<body>
+    <!-- Main application header -->  <!-- Plain HTML file for loading the CRM -->
+    <div class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1><i class="fas fa-university"></i> Banking CRM</h1>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Left Panel - Customer Management -->
+            <div class="left-panel active">
+                <!-- Navigation tabs for different CRM sections -->
+                <div class="tabs">
+                    <div class="tab active" onclick="switchTab(event, 'customer-search')">
+                        <i class="fas fa-search"></i> Search
+                    </div>
+                    <div class="tab" onclick="switchTab(event, 'customer-details')">
+                        <i class="fas fa-user"></i> Details
+                    </div>
+                    <div class="tab" onclick="switchTab(event, 'accounts')">
+                        <i class="fas fa-credit-card"></i> Accounts
+                    </div>
+                    <div class="tab" onclick="switchTab(event, 'transactions')">
+                        <i class="fas fa-list"></i> Transactions
+                    </div>
+                </div>
+
+                <!-- Customer Search Tab -->
+                <div class="tab-content active" id="customer-search">
+                    <!-- Search interface -->
+                    <div class="customer-search">
+                        <input type="text" class="search-input" id="search-input" placeholder="Search by name, phone, or account number...">
+                        <button class="btn btn-primary" onclick="searchCustomers()">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                    
+                    <!-- Dynamic customer results populated by crm-app.js -->
+                    <div id="customer-results">
+                        <!-- Customer cards will be dynamically populated by crm-app.js -->
+                    </div>
+                </div>
+
+                <!-- Customer Details Tab -->
+                <div class="tab-content" id="customer-details">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-input" id="first-name" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-input" id="last-name" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-input" id="phone" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-input" id="email" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Address</label>
+                        <input type="text" class="form-input" id="address" readonly>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Date of Birth</label>
+                            <input type="date" class="form-input" id="dob" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Customer Since</label>
+                            <input type="date" class="form-input" id="member-since" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Notes</label>
+                        <textarea class="form-input" id="notes" rows="4" placeholder="Add customer notes..."></textarea>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="saveCustomerNotes()">
+                        <i class="fas fa-save"></i> Save Notes
+                    </button>
+                </div>
+
+                <!-- Accounts Tab -->
+                <div class="tab-content" id="accounts">
+                    <div id="account-list">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--gray-100); border-radius: 8px; margin-bottom: 0.5rem;">
+                            <div>
+                                <div style="font-weight: 500;">Checking Account</div>
+                                <div style="font-size: 14px; color: var(--gray-600);">****1234</div>
+                            </div>
+                            <div style="color: var(--success); font-weight: 600;">$2,450.00</div>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--gray-100); border-radius: 8px; margin-bottom: 0.5rem;">
+                            <div>
+                                <div style="font-weight: 500;">Savings Account</div>
+                                <div style="font-size: 14px; color: var(--gray-600);">****5678</div>
+                            </div>
+                            <div style="color: var(--success); font-weight: 600;">$15,750.00</div>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; background: var(--gray-100); border-radius: 8px;">
+                            <div>
+                                <div style="font-weight: 500;">Credit Card</div>
+                                <div style="font-size: 14px; color: var(--gray-600);">****9012</div>
+                            </div>
+                            <div style="color: var(--danger); font-weight: 600;">-$1,200.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transactions Tab -->
+                <div class="tab-content" id="transactions">
+                    <div id="transaction-list">
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border-bottom: 1px solid var(--gray-200);">
+                            <div>
+                                <div style="font-weight: 500;">Grocery Store</div>
+                                <div style="font-size: 14px; color: var(--gray-600);">Today, 2:30 PM</div>
+                            </div>
+                            <div style="font-weight: 600; color: var(--danger);">-$85.42</div>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border-bottom: 1px solid var(--gray-200);">
+                            <div>
+                                <div style="font-weight: 500;">Salary Deposit</div>
+                                <div style="font-size: 14px; color: var(--gray-600);">Yesterday, 9:00 AM</div>
+                            </div>
+                            <div style="font-weight: 600; color: var(--success);">+$3,200.00</div>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border-bottom: 1px solid var(--gray-200);">
+                            <div>
+                                <div style="font-weight: 500;">ATM Withdrawal</div>
+                                <div style="font-size: 14px; color: var(--gray-600);">2 days ago, 6:15 PM</div>
+                            </div>
+                            <div style="font-weight: 600; color: var(--danger);">-$100.00</div>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem;">
+                            <div>
+                                <div style="font-weight: 500;">Interest Payment</div>
+                                <div style="font-size: 14px; color: var(--gray-600);">1 week ago</div>
+                            </div>
+                            <div style="font-weight: 600; color: var(--success);">+$12.50</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Customer Actions -->
+           <div class="right-panel">
+
+                <!-- Customer Quick Actions -->
+                <div class="section">
+                    <div class="section-header">
+                        <i class="fas fa-bolt"></i>
+                        Quick Actions
+                    </div>
+                    <div class="section-content">
+                        <button class="btn btn-primary" style="width: 100%; margin-bottom: 0.5rem;" onclick="createCase()">
+                            <i class="fas fa-plus"></i> Create Case
+                        </button>
+                        <button class="btn btn-secondary" style="width: 100%; margin-bottom: 0.5rem;" onclick="scheduleCallback()">
+                            <i class="fas fa-calendar"></i> Schedule Callback
+                        </button>
+                        <button class="btn btn-secondary" style="width: 100%;" onclick="sendEmail()">
+                            <i class="fas fa-envelope"></i> Send Email
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Webex Contact Center Integration -->
+                <div class="section">
+                    <div class="section-header">
+                        <i class="fas fa-phone"></i>
+                        Webex Contact Center
+                    </div>
+                    <div class="section-content">
+                        <!-- Webex SDK component -->
+                        <wx1-sdk></wx1-sdk>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="section">
+                    <div class="section-header">
+                        <i class="fas fa-clock"></i>
+                        Recent Activities
+                    </div>
+                    <div class="section-content">
+                        <div style="font-size: 14px; color: var(--gray-600); margin-bottom: 0.5rem;">
+                            <i class="fas fa-phone" style="color: var(--success);"></i>
+                            Call completed - 10:30 AM
+                        </div>
+                        <div style="font-size: 14px; color: var(--gray-600); margin-bottom: 0.5rem;">
+                            <i class="fas fa-envelope" style="color: var(--info);"></i>
+                            Email sent - 9:45 AM
+                        </div>
+                        <div style="font-size: 14px; color: var(--gray-600);">
+                            <i class="fas fa-edit" style="color: var(--warning);"></i>
+                            Case updated - 9:15 AM
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+
+
+    <!-- JavaScript modules for CRM functionality -->
+    <!-- Include the Webex SDK component -->
+    <script type="module" src="./wx1-sdk.ts"></script>
+    
+    <!-- Include the CRM app.js file -->
+    <script type="module" src="./crm-app.js"></script>
+</body>
+</html>
