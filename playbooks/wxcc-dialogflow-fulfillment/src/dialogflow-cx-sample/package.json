@@ -1,0 +1,17 @@
+{
+  "name": "dialogflow-cx-fulfillment",
+  "description": "Dialogflow CX fulfillment webhook for Webex Contact Center — deploys to Google Cloud Functions",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache-2.0",
+  "engines": {
+    "node": "18"
+  },
+  "scripts": {
+    "start": "functions-framework --target=acc_balance --source=inline-editor.js",
+    "deploy": "gcloud functions deploy acc_balance --runtime nodejs18 --trigger-http --allow-unauthenticated"
+  },
+  "devDependencies": {
+    "@google-cloud/functions-framework": "^3.0.0"
+  }
+}

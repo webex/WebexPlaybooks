@@ -1,0 +1,131 @@
+# APPHUB.yaml — Playbook metadata for Webex App Hub
+# Copy this file into your Playbook folder under playbooks/<tool-slug>/
+# Fill in all required fields. See CONTRIBUTING.md for field rules.
+
+# -----------------------------------------------------------------------------
+# friendly_id — Unique identifier. Must end with -playbook (e.g. epic-ehr-playbook)
+# -----------------------------------------------------------------------------
+friendly_id: "wxcc-dialogflow-fulfillment-playbook"
+
+# -----------------------------------------------------------------------------
+# title — Display name for the Playbook (matches ContentStack field)
+# -----------------------------------------------------------------------------
+title: "Google Dialogflow Virtual Agent Fulfillment for Webex Contact Center"
+
+# -----------------------------------------------------------------------------
+# tag_line — Short tagline for App Hub detail page (required, max 128 chars)
+# -----------------------------------------------------------------------------
+tag_line: "Add AI voice self-service to Webex Contact Center using Google Dialogflow CX or ES fulfillment webhooks"
+
+# -----------------------------------------------------------------------------
+# description — App Hub supports Markdown. Use a block scalar (description: |) with
+# blank lines between sections: opening paragraph (bold key terms), **Why use this
+# playbook** (3–5 outcome bullets), **What it does** (concrete behaviors/endpoints).
+# Do not put upstream repo URLs or install-only instructions here—use README and
+# src/README.md for reference playbooks. See docs/commands/import_playbook.md.
+# -----------------------------------------------------------------------------
+description: |
+  A **Node.js** sample that wires **Google Dialogflow** into **Webex Contact Center**
+  for AI-powered voice self-service: caller context flows from **WxCC** into a
+  Dialogflow virtual agent, a **Cloud Functions** webhook fetches account or CRM data,
+  and the result is spoken back to the caller — all without a separate middleware server.
+  Covers both **Dialogflow CX** (recommended for new projects) and **Dialogflow ES**
+  (for teams extending existing agents).
+
+  **Why use this playbook**
+
+  - **Pick the right generation fast:** A side-by-side comparison table in the README
+    maps Dialogflow CX vs ES across runtime, dependency footprint, WxCC integration path,
+    and "pick this if…" guidance so you decide before writing a single line.
+  - **Start from working code:** Both samples are adapted from official **WebexSamples**
+    and show the exact request/response shapes **WxCC** and **Dialogflow** expect.
+  - **Lighter where it counts:** The **CX** sample uses only the Node.js built-in
+    `https` module — no framework overhead — while the **ES** sample shows the full
+    **Firebase** + `dialogflow-fulfillment` pattern for teams already on that stack.
+  - **Secrets handled safely:** All backend API URLs load from **environment variables**;
+    no credentials are hardcoded.
+  - **Easy to verify locally:** Import the bundled **WxCC flow JSON** files and the
+    mock API URLs let you confirm end-to-end behavior before connecting a real backend.
+
+  **What it does**
+
+  - Receives a **Dialogflow CX** webhook request and returns a `fulfillment_response`
+    with an account balance fetched from a configurable backend API.
+  - Receives a **Dialogflow ES** fulfillment request, reads caller context
+    (`name`, `email`, `reason`, `pin`) from `originalDetectIntentRequest.payload`,
+    performs a CRM lookup, sets Dialogflow output context, and returns a personalized
+    spoken greeting via the `dialogflow-fulfillment` SDK.
+  - Includes importable **WxCC flow JSON** for both variants so you can wire the
+    demo end-to-end in **Flow Designer** without building flows from scratch.
+
+# -----------------------------------------------------------------------------
+# product_types — Where this Playbook appears. Pick one or more.
+# Valid: teams | meetings | calling | rooms | contact_center
+# -----------------------------------------------------------------------------
+product_types:
+  - "contact_center"
+
+# -----------------------------------------------------------------------------
+# categories — App Hub category slugs. Pick one or more.
+# Verticals: healthcare | financial-services | retail-ecommerce
+# App categories (use kebab-case slugs):
+#   ai-agent-testing-observability | agent-supervisor-tools | analytics |
+#   calendar-scheduling | collaboration-management | customer-relations |
+#   customer-support | developer-tools | doc-management | education |
+#   finance | government | healthcare | human-resources | internet-of-things |
+#   marketing-sales | orchestration | platform | productivity |
+#   project-management | recording-transcriptions | security-compliance |
+#   self-service-bots | social-and-fun | strategy-team-planning |
+#   workflow-automation | workforce-optimization | other
+# -----------------------------------------------------------------------------
+categories:
+  - "developer-tools"
+  - "self-service-bots"
+  - "customer-support"
+
+# -----------------------------------------------------------------------------
+# company_name — Your company or team name
+# -----------------------------------------------------------------------------
+company_name: "Webex for Developers"
+
+# -----------------------------------------------------------------------------
+# company_url — Your company or project URL
+# -----------------------------------------------------------------------------
+company_url: "https://developer.webex.com"
+
+# -----------------------------------------------------------------------------
+# support_url — Issues or support link (e.g. GitHub issues)
+# -----------------------------------------------------------------------------
+support_url: "https://github.com/webex/webexplaybooks/issues"
+
+# -----------------------------------------------------------------------------
+# product_url — Link to this Playbook in the repo (required)
+# -----------------------------------------------------------------------------
+product_url: "https://github.com/webex/webexplaybooks/tree/main/playbooks/wxcc-dialogflow-fulfillment"
+
+# -----------------------------------------------------------------------------
+# logo — (Optional) URL to your logo image. If not provided, defaults to the
+# standard Webex Playbook logo.
+# -----------------------------------------------------------------------------
+logo: "https://images.contentstack.io/v3/assets/bltd14fd2a03236233f/blta2de9daa773c6604/60f71f81e2de935fc7e35dbe/download"
+
+# -----------------------------------------------------------------------------
+# estimated_implementation_time — e.g. "2-4 hours", "1 day"
+# -----------------------------------------------------------------------------
+estimated_implementation_time: "2-4 hours"
+
+# -----------------------------------------------------------------------------
+# third_party_tool — (Optional) The tool being integrated (e.g. Salesforce, Epic)
+# Omit for generic playbooks (e.g. "any CMS")
+# -----------------------------------------------------------------------------
+third_party_tool: "Google Dialogflow"
+
+# -----------------------------------------------------------------------------
+# privacy_url — Privacy policy URL (required; use Cisco default for Webex-authored)
+# -----------------------------------------------------------------------------
+privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"
+
+# -----------------------------------------------------------------------------
+# submission_date — (Optional) ISO date (e.g. 2025-03-01)
+# -----------------------------------------------------------------------------
+submission_date: "2026-04-02"
