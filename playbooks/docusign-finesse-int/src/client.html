@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebView Wrapper</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="frame-ancestors *;" />
+  </head>
+  <body style="margin: 0">
+    <iframe
+      id="docFrame"
+      src=""
+      style="border: none; width: 100vw; height: 100vh"
+    ></iframe>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const targetUrl = params.get("url");
+
+      if (targetUrl) {
+        document.getElementById("docFrame").src = decodeURIComponent(targetUrl);
+      } else {
+        document.body.innerHTML = "<h2>No URL Provided</h2>";
+      }
+    </script>
+  </body>
+</html>
