@@ -1,0 +1,121 @@
+# APPHUB.yaml — Playbook metadata for Webex App Hub
+# Copy this file into your Playbook folder under playbooks/<tool-slug>/
+# Fill in all required fields. See CONTRIBUTING.md for field rules.
+
+# -----------------------------------------------------------------------------
+# friendly_id — Unique identifier. Must end with -playbook (e.g. epic-ehr-playbook)
+# -----------------------------------------------------------------------------
+friendly_id: "webhook-to-card-playbook"
+
+# -----------------------------------------------------------------------------
+# title — Display name for the Playbook (matches ContentStack field)
+# -----------------------------------------------------------------------------
+title: "Incoming Webhook to Webex Messaging Adaptive Card"
+
+# -----------------------------------------------------------------------------
+# tag_line — Short tagline for App Hub detail page (required, max 128 chars)
+# -----------------------------------------------------------------------------
+tag_line: "Receive HTTP webhooks and post Adaptive Card messages to Webex Messaging spaces with a bot"
+
+# -----------------------------------------------------------------------------
+# description — App Hub listing / detail copy (markdown supported where CMS renders it)
+# -----------------------------------------------------------------------------
+description: |
+  **Bring external events into Webex Messaging without a custom client.** Monitoring tools, CI/CD
+  pipelines, ticketing systems, and internal services already speak HTTP and JSON. This Playbook
+  shows how to turn those **webhook payloads** into **Adaptive Card** messages—structured facts,
+  images, and action buttons—delivered to a **space** by a **bot** using the public Messages API.
+
+  **Why use this**
+
+  - **Meet people where they work:** Operators and stakeholders stay in Webex instead of checking
+    another dashboard or email filter.
+  - **Richer than plain text:** Cards summarize context at a glance and can link out to runbooks,
+    tickets, or live views.
+  - **Small, inspectable surface:** A single Flask route and a bot token are enough to prototype;
+    you can harden auth, signing, and hosting once the flow is proven.
+
+  **What you get**
+
+  Sample **Python** code (`POST /webhook`), environment-based configuration, a worked **rocket-launch**
+  JSON shape you can replace with your own fields, and a deployment guide aligned with
+  [WebexSamples/webhook-to-card](https://github.com/WebexSamples/webhook-to-card).
+
+# -----------------------------------------------------------------------------
+# product_types — Where this Playbook appears. Pick one or more.
+# Valid: teams | meetings | calling | rooms | contact_center
+# -----------------------------------------------------------------------------
+product_types:
+  - "teams"
+
+# -----------------------------------------------------------------------------
+# app_context — Where the integration runs. Pick one or more.
+# Valid: space | in_meeting | call | device | contact_center | sidebar | mcp | a2a
+# -----------------------------------------------------------------------------
+app_context:
+  - "space"
+
+# -----------------------------------------------------------------------------
+# categories — App Hub category slugs. Pick one or more.
+# Verticals: healthcare | financial-services | retail-ecommerce
+# App categories (use kebab-case slugs):
+#   ai-agent-testing-observability | agent-supervisor-tools | analytics |
+#   calendar-scheduling | collaboration-management | customer-relations |
+#   customer-support | developer-tools | doc-management | education |
+#   finance | government | healthcare | human-resources | internet-of-things |
+#   marketing-sales | orchestration | platform | productivity |
+#   project-management | recording-transcriptions | security-compliance |
+#   self-service-bots | social-and-fun | strategy-team-planning |
+#   workflow-automation | workforce-optimization | other
+# -----------------------------------------------------------------------------
+categories:
+  - "developer-tools"
+  - "workflow-automation"
+  - "productivity"
+
+# -----------------------------------------------------------------------------
+# company_name — Your company or team name
+# -----------------------------------------------------------------------------
+company_name: "Webex for Developers"
+
+# -----------------------------------------------------------------------------
+# company_url — Your company or project URL
+# -----------------------------------------------------------------------------
+company_url: "https://developer.webex.com"
+
+# -----------------------------------------------------------------------------
+# support_url — Issues or support link (e.g. GitHub issues)
+# -----------------------------------------------------------------------------
+support_url: "https://github.com/webex/WebexPlaybooks/issues"
+
+# -----------------------------------------------------------------------------
+# product_url — Link to this Playbook in the repo (required)
+# -----------------------------------------------------------------------------
+product_url: "https://github.com/webex/WebexPlaybooks/tree/main/playbooks/webhook-to-card"
+
+# -----------------------------------------------------------------------------
+# logo — (Optional) URL to your logo image. If not provided, defaults to the
+# standard Webex Playbook logo.
+# -----------------------------------------------------------------------------
+logo: "https://images.contentstack.io/v3/assets/bltd14fd2a03236233f/blta2de9daa773c6604/60f71f81e2de935fc7e35dbe/download"
+
+# -----------------------------------------------------------------------------
+# estimated_implementation_time — e.g. "2-4 hours", "1 day"
+# -----------------------------------------------------------------------------
+estimated_implementation_time: "1-2 hours"
+
+# -----------------------------------------------------------------------------
+# third_party_tool — (Optional) The tool being integrated (e.g. Salesforce, Epic)
+# Omit for generic playbooks (e.g. "any CMS")
+# -----------------------------------------------------------------------------
+third_party_tool: "HTTP webhooks"
+
+# -----------------------------------------------------------------------------
+# privacy_url — Privacy policy URL (required; use Cisco default for Webex-authored)
+# -----------------------------------------------------------------------------
+privacy_url: "https://www.cisco.com/c/en/us/about/legal/privacy-full.html"
+
+# -----------------------------------------------------------------------------
+# submission_date — (Optional) ISO date (e.g. 2025-03-01)
+# -----------------------------------------------------------------------------
+submission_date: "2026-04-01"
