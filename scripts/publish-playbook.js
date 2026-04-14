@@ -15,6 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { setTimeout: delay } = require('node:timers/promises');
 const { loadApphub, apphubToEntry } = require('./lib/apphub-to-entries');
 const { stripPreviewFooter, appendPreviewFooter } = require('./lib/preview-description');
 const {
@@ -116,10 +117,18 @@ async function main() {
     }
 
     if (!noPublish && envNames.length > 0) {
-      for (const name of envNames) {
+      const envDelayMs = Math.min(
+        30_000,
+        Math.max(0, parseInt(process.env.CMS_PUBLISH_ENV_DELAY_MS || '3000', 10) || 3000)
+      );
+      for (let i = 0; i < envNames.length; i++) {
+        const name = envNames[i];
         const envUid = await getEnvironmentUid(name);
         console.log(`Publishing to ${name} (${envUid})...`);
         await publishEntry(entry.uid, version, envUid);
+        if (i < envNames.length - 1 && envDelayMs > 0) {
+          await delay(envDelayMs);
+        }
       }
       console.log('Published successfully.');
 

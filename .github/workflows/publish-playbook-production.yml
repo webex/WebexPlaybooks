@@ -1,4 +1,5 @@
 # Publishes changed playbooks to Contentstack production environment on merge to main.
+# Manual runs: Actions → Publish Playbook to Production → Run workflow (comma-separated paths).
 # Requires GitHub Secrets: CONTENTSTACK_MANAGEMENT_TOKEN, CMS_API_KEY
 name: Publish Playbook to Production
 
@@ -7,6 +8,12 @@ on:
     branches: [main]
     paths:
       - 'playbooks/**'
+  workflow_dispatch:
+    inputs:
+      playbook_paths:
+        description: 'Comma-separated paths (e.g. playbooks/foo,playbooks/bar)'
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -32,20 +39,34 @@ jobs:
       - name: Get changed Playbook folders
         id: changed
         run: |
-          BEFORE="${{ github.event.before }}"
-          # Skip if before is all zeros (new branch or tag)
-          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
-            echo "Initial push, no previous commit. Skipping."
-            {
-              echo "folders="
-              echo "count=0"
-            } >> "$GITHUB_OUTPUT"
-            exit 0
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            RAW='${{ inputs.playbook_paths }}'
+            FOLDERS=$(echo "$RAW" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | grep -E '^playbooks/[^/]+$' | sort -u)
+            if [ -z "$FOLDERS" ]; then
+              echo "::error::No valid playbooks/* paths. Use comma-separated paths like playbooks/my-slug"
+              exit 1
+            fi
+          else
+            BEFORE="${{ github.event.before }}"
+            # Skip if before is all zeros (new branch or tag)
+            if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+              echo "Initial push, no previous commit. Skipping."
+              {
+                echo "folders="
+                echo "count=0"
+              } >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+
+            FILES=$(git diff --name-only "$BEFORE" "${{ github.sha }}" 2>/dev/null || true)
+            FOLDERS=$(echo "$FILES" | sed -n 's|^playbooks/\([^/]*\)/.*|playbooks/\1|p' | sort -u)
           fi
 
-          FILES=$(git diff --name-only "$BEFORE" "${{ github.sha }}" 2>/dev/null || true)
-          FOLDERS=$(echo "$FILES" | sed -n 's|^playbooks/\([^/]*\)/.*|playbooks/\1|p' | sort -u)
-          COUNT=$(echo "$FOLDERS" | grep -c . 2>/dev/null || echo 0)
+          if [ -z "$FOLDERS" ]; then
+            COUNT=0
+          else
+            COUNT=$(echo "$FOLDERS" | grep -c . || true)
+          fi
 
           {
             echo "folders<<DELIM"
@@ -55,7 +76,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Check for friendly_id changes
-        if: steps.changed.outputs.count != '0'
+        if: steps.changed.outputs.count != '0' && github.event_name != 'workflow_dispatch'
         run: |
           BEFORE="${{ github.event.before }}"
           [ "$BEFORE" = "0000000000000000000000000000000000000000" ] && exit 0

@@ -10,6 +10,7 @@
     "check-competitors": "node scripts/check-competitor-tools.js",
     "fetch-contentstack": "node scripts/fetch-contentstack-data.js",
     "publish-playbook": "node scripts/publish-playbook.js",
+    "bulk-publish-production": "node scripts/bulk-publish-playbooks-production.js",
     "test": "node --test test/**/*.test.js"
   },
   "devDependencies": {

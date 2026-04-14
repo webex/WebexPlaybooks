@@ -26,6 +26,18 @@ function loadEnv() {
 }
 loadEnv();
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/** Parse Retry-After header (seconds) or return null. */
+function retryAfterMs(headerVal) {
+  if (!headerVal) return null;
+  const n = parseInt(String(headerVal).trim(), 10);
+  if (!Number.isFinite(n) || n < 0) return null;
+  return Math.min(120_000, n * 1000);
+}
+
 async function cmaFetch(endpoint, options = {}) {
   const token = (process.env.CONTENTSTACK_MANAGEMENT_TOKEN || '').replace(/^Bearer\s+/i, '').trim();
   const apiKey = process.env.CMS_API_KEY || API_KEY;
@@ -36,12 +48,24 @@ async function cmaFetch(endpoint, options = {}) {
     authorization: token,
     ...options.headers
   };
-  const res = await fetch(url, { ...options, headers });
-  if (!res.ok) {
+
+  const maxAttempts = 6;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const res = await fetch(url, { ...options, headers });
+    if (res.ok) {
+      return res.json();
+    }
     const text = await res.text();
+    if (res.status === 429 && attempt < maxAttempts) {
+      const fromHeader = retryAfterMs(res.headers.get('retry-after'));
+      const backoff = Math.min(120_000, 5000 * 2 ** (attempt - 1));
+      const waitMs = fromHeader ?? backoff;
+      await sleep(waitMs);
+      continue;
+    }
     throw new Error(`CMA ${res.status} ${endpoint}: ${text}`);
   }
-  return res.json();
+  throw new Error(`CMA exhausted retries ${endpoint}`);
 }
 
 async function fetchAllEntries(contentTypeUid) {
